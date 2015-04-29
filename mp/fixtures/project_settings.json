@@ -1,0 +1,25 @@
+[
+{
+  "pk": 1, 
+  "model": "mp_settings.marineplannersettings", 
+  "fields": {
+    "bitly_username": "", 
+    "default_hash": "#x=-126.68&y=41.37&z=5&logo=false&basemap=ESRI+Satellite&tab=data", 
+    "project_name": "Essential Groundfish Habitat", 
+    "table_of_contents": 6, 
+    "project_icon": "/media/ico/favicon.ico", 
+    "bitly_api_key": "", 
+    "bitly_registered_domain": "", 
+    "max_zoom": 12, 
+    "zoom": 5, 
+    "longitude": -117.0, 
+    "latitude": 39.75, 
+    "min_zoom": 4, 
+    "slug_name": "essential-groundfish-habitat", 
+    "project_logo": "http://placehold.it/250x100", 
+    "active": true, 
+    "enable_drawing": true, 
+    "project_home_page": "http://www.pewtrusts.org/"
+  }
+}
+]
