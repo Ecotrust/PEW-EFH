@@ -65,14 +65,14 @@ class Scenario(Analysis):
     # cnt_penn_max = models.FloatField(null=True, blank=True)
     cnt_penn_input = models.TextField(null=True, blank=True)
 
-    ra_cs = models.BooleanField()
-    ra_cs_min = models.FloatField(null=True, blank=True)
-    ra_cs_max = models.FloatField(null=True, blank=True)
+    # ra_cs = models.BooleanField()
+    # ra_cs_min = models.FloatField(null=True, blank=True)
+    # ra_cs_max = models.FloatField(null=True, blank=True)
     # ra_cs_input = models.TextField(null=True, blank=True)
 
-    ra_penn = models.BooleanField()
-    ra_penn_min = models.FloatField(null=True, blank=True)
-    ra_penn_max = models.FloatField(null=True, blank=True)
+    # ra_penn = models.BooleanField()
+    # ra_penn_min = models.FloatField(null=True, blank=True)
+    # ra_penn_max = models.FloatField(null=True, blank=True)
     # ra_penn_input = models.TextField(null=True, blank=True)
 
     # hsalcy1_m2 = models.BooleanField()
@@ -242,66 +242,106 @@ class Scenario(Analysis):
 
         # Step 1
         if self.mean_fthm:
-            attributes.append({ 'title': 'Depth Range',
-                                'data':  str(int(self.mean_fthm_min)) + ' to ' + str(int(self.mean_fthm_max)) + ' meters'})
+            attributes.append({ 
+                'title': 'Depth Range',
+                'data':  str(int(self.mean_fthm_min)) + ' to ' + str(int(self.mean_fthm_max)) + ' meters'
+            })
+        if self.hsall1_m2:
+            attributes.append({
+                'title': 'Predicted Class 1 Deep Sea Coral Habitat',
+                'data':  str(int(self.hsall1_m2_min)) + ' to ' + str(int(self.hsall1_m2_max)) + ' m<sup>2</sup>'
+            })
+        if self.hsall2_m2:
+            attributes.append({
+                'title': 'Predicted Class 2 Deep Sea Coral Habitat',
+                'data':  str(int(self.hsall2_m2_min)) + ' to ' + str(int(self.hsall2_m2_max)) + ' m<sup>2</sup>'
+            })
+        if self.hsall3_m2:
+            attributes.append({
+                'title': 'Predicted Class 3 Deep Sea Coral Habitat',
+                'data':  str(int(self.hsall3_m2_min)) + ' to ' + str(int(self.hsall3_m2_max)) + ' m<sup>2</sup>'
+            })
+        if self.hsall4_m2:
+            attributes.append({
+                'title': 'Predicted Class 4 Deep Sea Coral Habitat',
+                'data':  str(int(self.hsall4_m2_min)) + ' to ' + str(int(self.hsall4_m2_max)) + ' m<sup>2</sup>'
+            })
+        if self.hpc_est_m2:
+            attributes.append({
+                'title': 'Estuary Habitat',
+                'data':  str(int(self.hpc_est_m2_min)) + ' to ' + str(int(self.hpc_est_m2_max)) + ' m<sup>2</sup>'
+            })
+        if self.hpc_klp_m2:
+            attributes.append({
+                'title': 'Kelp Habitat',
+                'data':  str(int(self.hpc_klp_m2_min)) + ' to ' + str(int(self.hpc_klp_m2_max)) + ' m<sup>2</sup>'
+            })
+        if self.hpc_rck_m2:
+            attributes.append({
+                'title': 'Rocky Reef Habitat',
+                'data':  str(int(self.hpc_rck_m2_min)) + ' to ' + str(int(self.hpc_rck_m2_max)) + ' m<sup>2</sup>'
+            })
+        if self.hpc_sgr_m2:
+            attributes.append({
+                'title': 'Seagrass Habitat',
+                'data':  str(int(self.hpc_sgr_m2_min)) + ' to ' + str(int(self.hpc_sgr_m2_max)) + ' m<sup>2</sup>'
+            })
 
         # Step 2
-
-        # if self.anchor_desc:
-        #     attributes.append({'title': 'Anchorage',
-        #                        'data': self.anchor_desc_input})
-        
         if self.sft_sub_m2:
             if self.sft_sub_m2_input == 'Y':
                 title = 'Contains soft substrate'
             else:
                 title = 'Does not contain any soft substrate'
-            attributes.append({ 'title': title,
-                                'data':  ''})
-
-
-        # Step 3
-        # if self.prcnt_sg:
-        #     attributes.append({ 'title': 'Minimum amount of Seagrass',
-        #                         'data':  str(int(self.prcnt_sg_min)) + '%'})        
-        # if self.prcnt_reef:
-        #     attributes.append({ 'title': 'Minimum amount of Reef',
-        #                         'data':  str(int(self.prcnt_reef_min)) + '%'})       
-        # if self.prcnt_sand:
-        #     attributes.append({ 'title': 'Minimum amount of Sand',
-        #                         'data':  str(int(self.prcnt_sand_min)) + '%'})       
-        # if self.prcnt_art:
-        #     attributes.append({ 'title': 'Minimum amount of Artificial Substrate',
-        #                         'data':  str(int(self.prcnt_art_min)) + '%'})
-
-        # Step 4
-        # if self.fish_richness: 
-        # 	attributes.append({ 'title': 'Minimum estimated fish species per survey area',
-        # 						'data':  str(int(self.fish_richness_max))})
-
-        # if self.coral_density: 
-        # 	attributes.append({ 'title': 'Minimum estimated coral organisms per sq meter',
-        # 						'data':  str(int(self.coral_density_max))})
-
-        # if self.coral_richness: 
-        # 	attributes.append({ 'title': 'Minimum estimated coral species per survey area',
-        # 						'data':  str(int(self.coral_richness_max))})
-
-        # if self.coral_size: 
-        # 	attributes.append({ 'title': 'Minimum Coral Size',
-        # 						'data':  str(int(self.coral_size_max)) + ' units'})
-
-
-        # if self.coral_p or self.subveg_p or self.protarea_p:
-        #     exclusions = ''
-        #     if self.coral_p:
-        #         exclusions += '<br>&nbsp;&nbsp; Corals'
-        #     if self.subveg_p:
-        #         exclusions += '<br>&nbsp;&nbsp; Submerged Vegetation'
-        #     if self.protarea_p:
-        #         exclusions += '<br>&nbsp;&nbsp; Protected Areas'
-
-        #     attributes.append(dict(title='Areas containing the following were excluded', data=exclusions))        
+            attributes.append({
+                'title': title,
+                'data':  ''
+            })
+        if self.mix_sub_m2:
+            if self.mix_sub_m2_input == 'Y':
+                title = 'Contains mixed substrate'
+            else:
+                title = 'Does not contain any mixed substrate'
+            attributes.append({
+                'title': title,
+                'data':  ''
+            })
+        if self.hrd_sub_m2:
+            if self.hrd_sub_m2_input == 'Y':
+                title = 'Contains hard substrate'
+            else:
+                title = 'Does not contain any hard substrate'
+            attributes.append({
+                'title': title,
+                'data':  ''
+            })
+        if self.rck_sub_m2:
+            if self.rck_sub_m2_input == 'Y':
+                title = 'Contains inferred rock substrate'
+            else:
+                title = 'Does not contain any inferred rock substrate'
+            attributes.append({
+                'title': title,
+                'data':  ''
+            })
+        if self.cnt_cs_m2:
+            if self.cnt_cs_m2_input == 'Y':
+                title = 'Contains coral'
+            else:
+                title = 'Not known to contain coral'
+            attributes.append({
+                'title': title,
+                'data':  ''
+            })
+        if self.cnt_penn_m2:
+            if self.cnt_penn_m2_input == 'Y':
+                title = 'Contains pennatulids (sea pen/sea whip) and sponges'
+            else:
+                title = 'Not known to contain pennatulids or sponges'
+            attributes.append({
+                'title': title,
+                'data':  ''
+            })
 
         attributes.append({'title': 'Number of Grid Cells', 
                            'data': '{:,}'.format(self.grid_cells.count(',')+1)})
