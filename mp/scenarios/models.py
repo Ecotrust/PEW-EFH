@@ -20,78 +20,210 @@ from django.forms.models import model_to_dict
 @register
 class Scenario(Analysis):
 
-    depth = models.BooleanField()
-    depth_min = models.FloatField(null=True, blank=True)
-    depth_max = models.FloatField(null=True, blank=True)
+    # min_fthm = models.BooleanField()
+    # min_fthm_min = models.FloatField(null=True, blank=True)
+    # min_fthm_max = models.FloatField(null=True, blank=True)
+    # min_fthm_input = models.TextField(null=True, blank=True)
 
-    shore_distance = models.BooleanField()
-    shore_distance_min = models.FloatField(null=True, blank=True)
-    shore_distance_max = models.FloatField(null=True, blank=True)
+    mean_fthm = models.BooleanField()
+    mean_fthm_min = models.FloatField(null=True, blank=True)
+    mean_fthm_max = models.FloatField(null=True, blank=True)
+    # mean_fthm_input = models.TextField(null=True, blank=True)
 
-    pier_distance = models.BooleanField()
-    pier_distance_min = models.FloatField(null=True, blank=True)
-    pier_distance_max = models.FloatField(null=True, blank=True)
+    # max_fthm = models.BooleanField()
+    # max_fthm_min = models.FloatField(null=True, blank=True)
+    # max_fthm_max = models.FloatField(null=True, blank=True)
+    # max_fthm_input = models.TextField(null=True, blank=True)
 
-    inlet_distance = models.BooleanField()
-    inlet_distance_min = models.FloatField(null=True, blank=True)
-    inlet_distance_max = models.FloatField(null=True, blank=True)
+    sft_sub_m2 = models.BooleanField()
+    # sft_sub_m2_min = models.FloatField(null=True, blank=True)
+    # sft_sub_m2_max = models.FloatField(null=True, blank=True)
+    sft_sub_m2_input = models.TextField(null=True, blank=True)
 
-    outfall_distance = models.BooleanField()
-    outfall_distance_min = models.FloatField(null=True, blank=True)
-    outfall_distance_max = models.FloatField(null=True, blank=True)
+    mix_sub_m2 = models.BooleanField()
+    # mix_sub_m2_min = models.FloatField(null=True, blank=True)
+    # mix_sub_m2_max = models.FloatField(null=True, blank=True)
+    mix_sub_m2_input = models.TextField(null=True, blank=True)
 
-    injury_site = models.BooleanField()
-    injury_site_input = models.TextField(null=True, blank=True)
+    hrd_sub_m2 = models.BooleanField()
+    # hrd_sub_m2_min = models.FloatField(null=True, blank=True)
+    # hrd_sub_m2_max = models.FloatField(null=True, blank=True)
+    hrd_sub_m2_input = models.TextField(null=True, blank=True)
 
-    large_live_coral = models.BooleanField()
-    large_live_coral_input = models.TextField(null=True, blank=True)
+    rck_sub_m2 = models.BooleanField()
+    # rck_sub_m2_min = models.FloatField(null=True, blank=True)
+    # rck_sub_m2_max = models.FloatField(null=True, blank=True)
+    rck_sub_m2_input = models.TextField(null=True, blank=True)
 
-    pillar_presence = models.BooleanField()
-    pillar_presence_input = models.TextField(null=True, blank=True)
+    cnt_cs = models.BooleanField()
+    # cnt_cs_min = models.FloatField(null=True, blank=True)
+    # cnt_cs_max = models.FloatField(null=True, blank=True)
+    cnt_cs_input = models.TextField(null=True, blank=True)
 
-    anchorage = models.BooleanField()
-    anchorage_input = models.TextField(null=True, blank=True)
+    cnt_penn = models.BooleanField()
+    # cnt_penn_min = models.FloatField(null=True, blank=True)
+    # cnt_penn_max = models.FloatField(null=True, blank=True)
+    cnt_penn_input = models.TextField(null=True, blank=True)
 
-    mooring_buoy = models.BooleanField()
-    mooring_buoy_input = models.TextField(null=True, blank=True)
-    
-    impacted = models.BooleanField()
-    impacted_input = models.TextField(null=True, blank=True)
+    ra_cs = models.BooleanField()
+    ra_cs_min = models.FloatField(null=True, blank=True)
+    ra_cs_max = models.FloatField(null=True, blank=True)
+    # ra_cs_input = models.TextField(null=True, blank=True)
 
-    acropora_pa = models.BooleanField()
-    acropora_pa_input = models.TextField(null=True, blank=True)
+    ra_penn = models.BooleanField()
+    ra_penn_min = models.FloatField(null=True, blank=True)
+    ra_penn_max = models.FloatField(null=True, blank=True)
+    # ra_penn_input = models.TextField(null=True, blank=True)
 
-    prcnt_sg = models.BooleanField()
-    prcnt_sg_min = models.FloatField(null=True, blank=True)
-    prcnt_sg_max = models.FloatField(null=True, blank=True)
-    
-    prcnt_reef = models.BooleanField()
-    prcnt_reef_min = models.FloatField(null=True, blank=True)
-    prcnt_reef_max = models.FloatField(null=True, blank=True)
-    
-    prcnt_sand = models.BooleanField()
-    prcnt_sand_min = models.FloatField(null=True, blank=True)
-    prcnt_sand_max = models.FloatField(null=True, blank=True)
-    
-    prcnt_art = models.BooleanField()
-    prcnt_art_min = models.FloatField(null=True, blank=True)
-    prcnt_art_max = models.FloatField(null=True, blank=True)
+    # hsalcy1_m2 = models.BooleanField()
+    # hsalcy1_m2_min = models.FloatField(null=True, blank=True)
+    # hsalcy1_m2_max = models.FloatField(null=True, blank=True)
+    # hsalcy1_m2_input = models.TextField(null=True, blank=True)
 
-    fish_richness = models.BooleanField()
-    fish_richness_min = models.FloatField(null=True, blank=True)
-    fish_richness_max = models.FloatField(null=True, blank=True)
+    # hsalcy2_m2 = models.BooleanField()
+    # hsalcy2_m2_min = models.FloatField(null=True, blank=True)
+    # hsalcy2_m2_max = models.FloatField(null=True, blank=True)
+    # hsalcy2_m2_input = models.TextField(null=True, blank=True)
 
-    coral_richness = models.BooleanField()
-    coral_richness_min = models.FloatField(null=True, blank=True)
-    coral_richness_max = models.FloatField(null=True, blank=True)
+    # hsalcy3_m2 = models.BooleanField()
+    # hsalcy3_m2_min = models.FloatField(null=True, blank=True)
+    # hsalcy3_m2_max = models.FloatField(null=True, blank=True)
+    # hsalcy3_m2_input = models.TextField(null=True, blank=True)
 
-    coral_density = models.BooleanField()
-    coral_density_min = models.FloatField(null=True, blank=True)
-    coral_density_max = models.FloatField(null=True, blank=True)
+    # hsalcy4_m2 = models.BooleanField()
+    # hsalcy4_m2_min = models.FloatField(null=True, blank=True)
+    # hsalcy4_m2_max = models.FloatField(null=True, blank=True)
+    # hsalcy4_m2_input = models.TextField(null=True, blank=True)
 
-    coral_size = models.BooleanField()
-    coral_size_min = models.FloatField(null=True, blank=True)
-    coral_size_max = models.FloatField(null=True, blank=True)
+    hsall1_m2 = models.BooleanField()
+    hsall1_m2_min = models.FloatField(null=True, blank=True)
+    hsall1_m2_max = models.FloatField(null=True, blank=True)
+    # hsall1_m2_input = models.TextField(null=True, blank=True)
+
+    hsall2_m2 = models.BooleanField()
+    hsall2_m2_min = models.FloatField(null=True, blank=True)
+    hsall2_m2_max = models.FloatField(null=True, blank=True)
+    # hsall2_m2_input = models.TextField(null=True, blank=True)
+
+    hsall3_m2 = models.BooleanField()
+    hsall3_m2_min = models.FloatField(null=True, blank=True)
+    hsall3_m2_max = models.FloatField(null=True, blank=True)
+    # hsall3_m2_input = models.TextField(null=True, blank=True)
+
+    hsall4_m2 = models.BooleanField()
+    hsall4_m2_min = models.FloatField(null=True, blank=True)
+    hsall4_m2_max = models.FloatField(null=True, blank=True)
+    # hsall4_m2_input = models.TextField(null=True, blank=True)
+
+    # hsanti1_m2 = models.BooleanField()
+    # hsanti1_m2_min = models.FloatField(null=True, blank=True)
+    # hsanti1_m2_max = models.FloatField(null=True, blank=True)
+    # hsanti1_m2_input = models.TextField(null=True, blank=True)
+
+    # hsanti2_m2 = models.BooleanField()
+    # hsanti2_m2_min = models.FloatField(null=True, blank=True)
+    # hsanti2_m2_max = models.FloatField(null=True, blank=True)
+    # hsanti2_m2_input = models.TextField(null=True, blank=True)
+
+    # hsanti3_m2 = models.BooleanField()
+    # hsanti3_m2_min = models.FloatField(null=True, blank=True)
+    # hsanti3_m2_max = models.FloatField(null=True, blank=True)
+    # hsanti3_m2_input = models.TextField(null=True, blank=True)
+
+    # hscalc1_m2 = models.BooleanField()
+    # hscalc1_m2_min = models.FloatField(null=True, blank=True)
+    # hscalc1_m2_max = models.FloatField(null=True, blank=True)
+    # hscalc1_m2_input = models.TextField(null=True, blank=True)
+
+    # hscalc2_m2 = models.BooleanField()
+    # hscalc2_m2_min = models.FloatField(null=True, blank=True)
+    # hscalc2_m2_max = models.FloatField(null=True, blank=True)
+    # hscalc2_m2_input = models.TextField(null=True, blank=True)
+
+    # hscalc3_m2 = models.BooleanField()
+    # hscalc3_m2_min = models.FloatField(null=True, blank=True)
+    # hscalc3_m2_max = models.FloatField(null=True, blank=True)
+    # hscalc3_m2_input = models.TextField(null=True, blank=True)
+
+    # hscalc4_m2 = models.BooleanField()
+    # hscalc4_m2_min = models.FloatField(null=True, blank=True)
+    # hscalc4_m2_max = models.FloatField(null=True, blank=True)
+    # hscalc4_m2_input = models.TextField(null=True, blank=True)
+
+    # hshola1_m2 = models.BooleanField()
+    # hshola1_m2_min = models.FloatField(null=True, blank=True)
+    # hshola1_m2_max = models.FloatField(null=True, blank=True)
+    # hshola1_m2_input = models.TextField(null=True, blank=True)
+
+    # hshola2_m2 = models.BooleanField()
+    # hshola2_m2_min = models.FloatField(null=True, blank=True)
+    # hshola2_m2_max = models.FloatField(null=True, blank=True)
+    # hshola2_m2_input = models.TextField(null=True, blank=True)
+
+    # hshola3_m2 = models.BooleanField()
+    # hshola3_m2_min = models.FloatField(null=True, blank=True)
+    # hshola3_m2_max = models.FloatField(null=True, blank=True)
+    # hshola3_m2_input = models.TextField(null=True, blank=True)
+
+    # hshola4_m2 = models.BooleanField()
+    # hshola4_m2_min = models.FloatField(null=True, blank=True)
+    # hshola4_m2_max = models.FloatField(null=True, blank=True)
+    # hshola4_m2_input = models.TextField(null=True, blank=True)
+
+    # hssclr1_m2 = models.BooleanField()
+    # hssclr1_m2_min = models.FloatField(null=True, blank=True)
+    # hssclr1_m2_max = models.FloatField(null=True, blank=True)
+    # hssclr1_m2_input = models.TextField(null=True, blank=True)
+
+    # hssclr2_m2 = models.BooleanField()
+    # hssclr2_m2_min = models.FloatField(null=True, blank=True)
+    # hssclr2_m2_max = models.FloatField(null=True, blank=True)
+    # hssclr2_m2_input = models.TextField(null=True, blank=True)
+
+    # hssclr3_m2 = models.BooleanField()
+    # hssclr3_m2_min = models.FloatField(null=True, blank=True)
+    # hssclr3_m2_max = models.FloatField(null=True, blank=True)
+    # hssclr3_m2_input = models.TextField(null=True, blank=True)
+
+    # hssclx1_m2 = models.BooleanField()
+    # hssclx1_m2_min = models.FloatField(null=True, blank=True)
+    # hssclx1_m2_max = models.FloatField(null=True, blank=True)
+    # hssclx1_m2_input = models.TextField(null=True, blank=True)
+
+    # hssclx2_m2 = models.BooleanField()
+    # hssclx2_m2_min = models.FloatField(null=True, blank=True)
+    # hssclx2_m2_max = models.FloatField(null=True, blank=True)
+    # hssclx2_m2_input = models.TextField(null=True, blank=True)
+
+    # hssclx3_m2 = models.BooleanField()
+    # hssclx3_m2_min = models.FloatField(null=True, blank=True)
+    # hssclx3_m2_max = models.FloatField(null=True, blank=True)
+    # hssclx3_m2_input = models.TextField(null=True, blank=True)
+
+    # hssclx4_m2 = models.BooleanField()
+    # hssclx4_m2_min = models.FloatField(null=True, blank=True)
+    # hssclx4_m2_max = models.FloatField(null=True, blank=True)
+    # hssclx4_m2_input = models.TextField(null=True, blank=True)
+
+    hpc_est_m2 = models.BooleanField()
+    hpc_est_m2_min = models.FloatField(null=True, blank=True)
+    hpc_est_m2_max = models.FloatField(null=True, blank=True)
+    # hpc_est_m2_input = models.TextField(null=True, blank=True)
+
+    hpc_klp_m2 = models.BooleanField()
+    hpc_klp_m2_min = models.FloatField(null=True, blank=True)
+    hpc_klp_m2_max = models.FloatField(null=True, blank=True)
+    # hpc_klp_m2_input = models.TextField(null=True, blank=True)
+
+    hpc_rck_m2 = models.BooleanField()
+    hpc_rck_m2_min = models.FloatField(null=True, blank=True)
+    hpc_rck_m2_max = models.FloatField(null=True, blank=True)
+    # hpc_rck_m2_input = models.TextField(null=True, blank=True)
+
+    hpc_sgr_m2 = models.BooleanField()
+    hpc_sgr_m2_min = models.FloatField(null=True, blank=True)
+    hpc_sgr_m2_max = models.FloatField(null=True, blank=True)
+    # hpc_sgr_m2_input = models.TextField(null=True, blank=True)
 
     description = models.TextField(null=True, blank=True)
     satisfied = models.BooleanField(default=True, help_text="Am I satisfied?")
@@ -109,103 +241,55 @@ class Scenario(Analysis):
         attributes = []
 
         # Step 1
-        if self.depth:
+        if self.mean_fthm:
             attributes.append({ 'title': 'Depth Range',
-                                'data':  str(int(self.depth_min)) + ' to ' + str(int(self.depth_max)) + ' meters'})
-        if self.shore_distance:
-        	attributes.append({ 'title': 'Distance to Shore',
-        						'data':  str(self.shore_distance_min) + ' to ' + str(self.shore_distance_max) + ' km'})
-        if self.pier_distance:
-            attributes.append({ 'title': 'Distance to Pier',
-                                'data':  str(self.pier_distance_min) + ' to ' + str(self.pier_distance_max) + ' km'})
-        if self.inlet_distance:
-            attributes.append({ 'title': 'Minimum Distance to Coastal Inlet',
-                                'data':  str(self.inlet_distance_min) + ' km'})
-        if self.outfall_distance:
-            attributes.append({ 'title': 'Minimum Distance to Outfall',
-                                'data':  str(self.outfall_distance_min) + ' km'})
+                                'data':  str(int(self.mean_fthm_min)) + ' to ' + str(int(self.mean_fthm_max)) + ' meters'})
 
         # Step 2
-        if self.injury_site:
-            if self.injury_site_input == 'Y':
-                title = 'Contains at least one recorded grounding or anchoring event in the DEP database'
+
+        # if self.anchor_desc:
+        #     attributes.append({'title': 'Anchorage',
+        #                        'data': self.anchor_desc_input})
+        
+        if self.sft_sub_m2:
+            if self.sft_sub_m2_input == 'Y':
+                title = 'Contains soft substrate'
             else:
-                title = 'Does not contain any recorded grounding or anchoring events'
+                title = 'Does not contain any soft substrate'
             attributes.append({ 'title': title,
                                 'data':  ''})
-        if self.large_live_coral:
-            if self.large_live_coral_input == 'Y':
-                title = 'Contains at least one known live coral greater than 2 meters in width'
-            else:
-                title = 'Does not contain any known live coral greater than 2 meters in width'
-            attributes.append({ 'title': title,
-                                'data':  ''})
-        if self.pillar_presence:
-            if self.acropora_pa_input == 'P':
-                title = 'Contains at least one recorded Pillar Coral'
-            else:
-                title = 'Does not contain any recorded Pillar Corals'
-            attributes.append({ 'title': title,
-                                'data':  ''})
-        if self.anchorage:
-            if self.acropora_pa_input == 'Y':
-                title = 'Intersects with a designated anchorage'
-            else:
-                title = 'Does not intersect with any designated anchorages'
-            attributes.append({ 'title': title,
-                                'data':  ''})
-        if self.mooring_buoy:
-            if self.acropora_pa_input == 'Y':
-                title = 'Contains at least one Mooring buoy'
-            else:
-                title = 'Does not contain any Mooring buoys'
-            attributes.append({ 'title': title,
-                                'data':  ''})
-        if self.impacted:
-            if self.acropora_pa_input == 'Y':
-                title = 'Intersects with a mapped impact source (artificial reefs, dredged areas, cables, reef injuries, anchorages, burials, etc.)'
-            else:
-                title = 'Does not intersect with any mapped impact sources (artificial reefs, dredged areas, cables, reef injuries, anchorages, burials, etc.)'
-            attributes.append({ 'title': title,
-                                'data':  ''})
-        if self.acropora_pa:
-            if self.acropora_pa_input == 'Y':
-                title = 'Intersects with at least one known dense Acropora patch'
-            else:
-                title = 'Does not intersect with any known dense Acropora patches'
-            attributes.append({ 'title': title,
-                                    'data':  ''})
+
 
         # Step 3
-        if self.prcnt_sg:
-            attributes.append({ 'title': 'Minimum amount of Seagrass',
-                                'data':  str(int(self.prcnt_sg_min)) + '%'})        
-        if self.prcnt_reef:
-            attributes.append({ 'title': 'Minimum amount of Reef',
-                                'data':  str(int(self.prcnt_reef_min)) + '%'})       
-        if self.prcnt_sand:
-            attributes.append({ 'title': 'Minimum amount of Sand',
-                                'data':  str(int(self.prcnt_sand_min)) + '%'})       
-        if self.prcnt_art:
-            attributes.append({ 'title': 'Minimum amount of Artificial Substrate',
-                                'data':  str(int(self.prcnt_art_min)) + '%'})
+        # if self.prcnt_sg:
+        #     attributes.append({ 'title': 'Minimum amount of Seagrass',
+        #                         'data':  str(int(self.prcnt_sg_min)) + '%'})        
+        # if self.prcnt_reef:
+        #     attributes.append({ 'title': 'Minimum amount of Reef',
+        #                         'data':  str(int(self.prcnt_reef_min)) + '%'})       
+        # if self.prcnt_sand:
+        #     attributes.append({ 'title': 'Minimum amount of Sand',
+        #                         'data':  str(int(self.prcnt_sand_min)) + '%'})       
+        # if self.prcnt_art:
+        #     attributes.append({ 'title': 'Minimum amount of Artificial Substrate',
+        #                         'data':  str(int(self.prcnt_art_min)) + '%'})
 
         # Step 4
-        if self.fish_richness: 
-        	attributes.append({ 'title': 'Minimum estimated fish species per survey area',
-        						'data':  str(int(self.fish_richness_max))})
+        # if self.fish_richness: 
+        # 	attributes.append({ 'title': 'Minimum estimated fish species per survey area',
+        # 						'data':  str(int(self.fish_richness_max))})
 
-        if self.coral_density: 
-        	attributes.append({ 'title': 'Minimum estimated coral organisms per sq meter',
-        						'data':  str(int(self.coral_density_max))})
+        # if self.coral_density: 
+        # 	attributes.append({ 'title': 'Minimum estimated coral organisms per sq meter',
+        # 						'data':  str(int(self.coral_density_max))})
 
-        if self.coral_richness: 
-        	attributes.append({ 'title': 'Minimum estimated coral species per survey area',
-        						'data':  str(int(self.coral_richness_max))})
+        # if self.coral_richness: 
+        # 	attributes.append({ 'title': 'Minimum estimated coral species per survey area',
+        # 						'data':  str(int(self.coral_richness_max))})
 
-        if self.coral_size: 
-        	attributes.append({ 'title': 'Minimum Coral Size',
-        						'data':  str(int(self.coral_size_max)) + ' units'})
+        # if self.coral_size: 
+        # 	attributes.append({ 'title': 'Minimum Coral Size',
+        # 						'data':  str(int(self.coral_size_max)) + ' units'})
 
 
         # if self.coral_p or self.subveg_p or self.protarea_p:
@@ -428,64 +512,62 @@ class Scenario(Analysis):
 #     def __unicode__(self):
 #         return u'%s' % self.name
 
+
 class GridCell(models.Model):
-    
-    region = models.TextField(null=True, blank=True)
-    county = models.TextField(null=True, blank=True)
 
-    fish_density = models.IntegerField(null=True, blank=True)    
-    fish_div = models.IntegerField(null=True, blank=True)
-    fish_richness = models.IntegerField(null=True, blank=True)
+    min_fthm = models.IntegerField(null=True, blank=True)
+    mean_fthm = models.IntegerField(null=True, blank=True)
+    max_fthm = models.IntegerField(null=True, blank=True)
+    sft_sub_m2 = models.IntegerField(null=True, blank=True)
+    mix_sub_m2 = models.IntegerField(null=True, blank=True)
+    hrd_sub_m2 = models.IntegerField(null=True, blank=True)
+    rck_sub_m2 = models.IntegerField(null=True, blank=True)
+    cnt_cs = models.IntegerField(null=True, blank=True)
+    cnt_penn = models.IntegerField(null=True, blank=True)
+    ra_cs = models.IntegerField(null=True, blank=True)
+    ra_penn = models.IntegerField(null=True, blank=True)
+    hsalcy1_m2 = models.IntegerField(null=True, blank=True)
+    hsalcy2_m2 = models.IntegerField(null=True, blank=True)
+    hsalcy3_m2 = models.IntegerField(null=True, blank=True)
+    hsalcy4_m2 = models.IntegerField(null=True, blank=True)
+    hsall1_m2 = models.IntegerField(null=True, blank=True)
+    hsall2_m2 = models.IntegerField(null=True, blank=True)
+    hsall3_m2 = models.IntegerField(null=True, blank=True)
+    hsall4_m2 = models.IntegerField(null=True, blank=True)
+    hsanti1_m2 = models.IntegerField(null=True, blank=True)
+    hsanti2_m2 = models.IntegerField(null=True, blank=True)
+    hsanti3_m2 = models.IntegerField(null=True, blank=True)
+    hscalc1_m2 = models.IntegerField(null=True, blank=True)
+    hscalc2_m2 = models.IntegerField(null=True, blank=True)
+    hscalc3_m2 = models.IntegerField(null=True, blank=True)
+    hscalc4_m2 = models.IntegerField(null=True, blank=True)
+    hshola1_m2 = models.IntegerField(null=True, blank=True)
+    hshola2_m2 = models.IntegerField(null=True, blank=True)
+    hshola3_m2 = models.IntegerField(null=True, blank=True)
+    hshola4_m2 = models.IntegerField(null=True, blank=True)
+    hssclr1_m2 = models.IntegerField(null=True, blank=True)
+    hssclr2_m2 = models.IntegerField(null=True, blank=True)
+    hssclr3_m2 = models.IntegerField(null=True, blank=True)
+    hssclx1_m2 = models.IntegerField(null=True, blank=True)
+    hssclx2_m2 = models.IntegerField(null=True, blank=True)
+    hssclx3_m2 = models.IntegerField(null=True, blank=True)
+    hssclx4_m2 = models.IntegerField(null=True, blank=True)
+    hpc_est_m2 = models.IntegerField(null=True, blank=True)
+    hpc_klp_m2 = models.IntegerField(null=True, blank=True)
+    hpc_rck_m2 = models.IntegerField(null=True, blank=True)
+    hpc_sgr_m2 = models.IntegerField(null=True, blank=True)
 
-    coral_bleach = models.IntegerField(null=True, blank=True)
-    coral_cover = models.IntegerField(null=True, blank=True)
-    coral_density = models.IntegerField(null=True, blank=True)
-    coral_richness = models.IntegerField(null=True, blank=True)
-    coral_size = models.IntegerField(null=True, blank=True)
-    
-    inlet_distance = models.FloatField(null=True, blank=True)
-    outfall_distance = models.FloatField(null=True, blank=True)
-    pier_distance = models.FloatField(null=True, blank=True)
-    shore_distance = models.FloatField(null=True, blank=True)
-
-    boat_use = models.IntegerField(null=True, blank=True)
-    dive_use = models.IntegerField(null=True, blank=True)
-    fish_use = models.IntegerField(null=True, blank=True)
-    rec_use = models.IntegerField(null=True, blank=True)
-
-    acropora_pa = models.TextField(null=True, blank=True)
-    esa_spp = models.TextField(null=True, blank=True)
-    injury_site = models.TextField(null=True, blank=True) 
-    large_live_coral = models.TextField(null=True, blank=True)
-    lionfish = models.IntegerField(null=True, blank=True) 
-
-    depth_min = models.FloatField(null=True, blank=True)
-    depth_max = models.FloatField(null=True, blank=True)
-    depth_mean = models.FloatField(null=True, blank=True)
-
-    acerv_area = models.IntegerField(null=True, blank=True)
-    art_area = models.IntegerField(null=True, blank=True)
-    reef_area = models.IntegerField(null=True, blank=True)
-    sand_area = models.IntegerField(null=True, blank=True)
-    sg_area = models.IntegerField(null=True, blank=True)
-
-    major_habitat = models.TextField(null=True, blank=True)
-    pillar_presence = models.TextField(null=True, blank=True)
-    anchorage = models.TextField(null=True, blank=True)
-    mooring_buoy = models.TextField(null=True, blank=True)
-    impacted = models.TextField(null=True, blank=True)
-
-    prcnt_sg = models.IntegerField(null=True, blank=True)
-    prcnt_reef = models.IntegerField(null=True, blank=True)
-    prcnt_sand = models.IntegerField(null=True, blank=True)
-    prcnt_art = models.IntegerField(null=True, blank=True)
-    
     unique_id = models.IntegerField(null=True, blank=True)
 
-    centroid = models.PointField(srid=settings.GEOMETRY_DB_SRID, null=True, blank=True)
+    centroid = models.PointField(
+        srid=settings.GEOMETRY_DB_SRID,
+        null=True,
+        blank=True
+    )
 
-    geometry = models.MultiPolygonField(srid=settings.GEOMETRY_DB_SRID, 
-                                    null=True, blank=True, 
-                                    verbose_name="Grid Cell Geometry")
+    geometry = models.MultiPolygonField(
+        srid=settings.GEOMETRY_DB_SRID,
+        null=True, blank=True,
+        verbose_name="Grid Cell Geometry"
+    )
     objects = models.GeoManager()
-
