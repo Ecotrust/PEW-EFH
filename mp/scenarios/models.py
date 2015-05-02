@@ -244,7 +244,7 @@ class Scenario(Analysis):
         if self.mean_fthm:
             attributes.append({ 
                 'title': 'Depth Range',
-                'data':  str(int(self.mean_fthm_min)) + ' to ' + str(int(self.mean_fthm_max)) + ' meters'
+                'data':  str(int(self.mean_fthm_min)) + ' to ' + str(int(self.mean_fthm_max)) + ' fathoms'
             })
         if self.hsall1_m2:
             attributes.append({
