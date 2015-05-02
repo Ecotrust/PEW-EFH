@@ -12,10 +12,13 @@ from models import *
 from widgets import AdminFileWidget, SliderWidgetWithTooltip, DualSliderWidgetWithTooltip, CheckboxSelectMultipleWithTooltip, CheckboxSelectMultipleWithObjTooltip 
 
 # http://www.neverfriday.com/sweetfriday/2008/09/-a-long-time-ago.html
+
+
 class FileValidationError(forms.ValidationError):
     def __init__(self):
         super(FileValidationError, self).__init__('Document types accepted: ' + ', '.join(ValidFileField.valid_file_extensions))
-        
+
+
 class ValidFileField(forms.FileField):
     """A validating document upload field"""
     valid_file_extensions = ['odt', 'pdf', 'doc', 'xls', 'txt', 'csv', 'kml', 'kmz', 'jpeg', 'jpg', 'png', 'gif', 'zip']
@@ -27,31 +30,32 @@ class ValidFileField(forms.FileField):
         f = super(ValidFileField, self).clean(data, initial)
         if f:
             ext = splitext(f.name)[1][1:].lower()
-            if ext in ValidFileField.valid_file_extensions: 
+            if ext in ValidFileField.valid_file_extensions:
                 # check data['content-type'] ?
                 return f
             raise FileValidationError()
 
 
 class InputWithUnit(Input):
-    """Modified Input class that accepts a "unit" parameter, and stores the 
-    value in the unit attribute. 
-    This is allows additional data associated with a field to be exposed to the 
-    template renderer. Later improvements would be to stick this value on the 
+    """Modified Input class that accepts a "unit" parameter, and stores the
+    value in the unit attribute.
+    This is allows additional data associated with a field to be exposed to the
+    template renderer. Later improvements would be to stick this value on the
     field itself rather than the widget. Also, make it a dictionary rather than
-    a single value, so other arbitrary values can be brough forward.   
+    a single value, so other arbitrary values can be brough forward.
     """
     def __init__(self, attrs=None, unit=None):
         super(InputWithUnit, self).__init__(attrs)
         self.unit = str(unit)
 
+
 class TextInputWithUnit(forms.TextInput, InputWithUnit):
     pass
+
 
 class ScenarioForm(FeatureForm):
     description = forms.CharField(
         widget=forms.Textarea(attrs={'cols': 30, 'rows': 3}), required=False)
-    
 
     # Step 1
     mean_fthm = forms.BooleanField(
@@ -69,7 +73,7 @@ class ScenarioForm(FeatureForm):
         initial=10,
         widget=forms.TextInput(
             attrs={
-                'class':'slidervalue',
+                'class': 'slidervalue',
                 'pre_text': 'Depth (in fathoms)'
             }
         )
@@ -79,7 +83,7 @@ class ScenarioForm(FeatureForm):
         initial=50,
         widget=forms.TextInput(
             attrs={
-                'class':'slidervalue',
+                'class': 'slidervalue',
                 'pre_text': 'to'
             }
         )
@@ -105,7 +109,7 @@ class ScenarioForm(FeatureForm):
         required=False,
         initial=1000000,
         widget=SliderWidget(
-            attrs={'class':'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 1 Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 1 Habitat', 'post_text': 'm<sup>2</sup>'},
             min=0,
             max=85747600,
             step=1000
@@ -123,7 +127,7 @@ class ScenarioForm(FeatureForm):
         required=False,
         initial=1000000,
         widget=SliderWidget(
-            attrs={'class':'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 2 Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 2 Habitat', 'post_text': 'm<sup>2</sup>'},
             min=0,
             max=85747600,
             step=1000
@@ -141,7 +145,7 @@ class ScenarioForm(FeatureForm):
         required=False,
         initial=1000000,
         widget=SliderWidget(
-            attrs={'class':'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 3 Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 3 Habitat', 'post_text': 'm<sup>2</sup>'},
             min=0,
             max=85747600,
             step=1000
@@ -159,7 +163,7 @@ class ScenarioForm(FeatureForm):
         required=False,
         initial=1000000,
         widget=SliderWidget(
-            attrs={'class':'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 4 Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 4 Habitat', 'post_text': 'm<sup>2</sup>'},
             min=0,
             max=85747600,
             step=1000
@@ -177,7 +181,7 @@ class ScenarioForm(FeatureForm):
         required=False,
         initial=1000000,
         widget=SliderWidget(
-            attrs={'class':'slidervalue', 'range': 'max', 'pre_text': 'Estuary Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Estuary Habitat', 'post_text': 'm<sup>2</sup>'},
             min=0,
             max=85747600,
             step=1000
@@ -195,7 +199,7 @@ class ScenarioForm(FeatureForm):
         required=False,
         initial=1000000,
         widget=SliderWidget(
-            attrs={'class':'slidervalue', 'range': 'max', 'pre_text': 'Kelp Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Kelp Habitat', 'post_text': 'm<sup>2</sup>'},
             min=0,
             max=13792480,
             step=1000
@@ -213,7 +217,7 @@ class ScenarioForm(FeatureForm):
         required=False,
         initial=1000000,
         widget=SliderWidget(
-            attrs={'class':'slidervalue', 'range': 'max', 'pre_text': 'Rocky Reef Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Rocky Reef Habitat', 'post_text': 'm<sup>2</sup>'},
             min=0,
             max=85747600,
             step=1000
@@ -231,7 +235,7 @@ class ScenarioForm(FeatureForm):
         required=False,
         initial=1000000,
         widget=SliderWidget(
-            attrs={'class':'slidervalue', 'range': 'max', 'pre_text': 'Seagrass Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Seagrass Habitat', 'post_text': 'm<sup>2</sup>'},
             min=0,
             max=65849998,
             step=1000
@@ -349,9 +353,9 @@ class ScenarioForm(FeatureForm):
     )
 
     # Depth Range (meters, avg: 0m - 212m)
-    # Boolean field is the anchor, and used as the base name for rendering the form. 
+    # Boolean field is the anchor, and used as the base name for rendering the form.
     # - Help_text on the boolean is included in the popup text "info" icon.
-    # - Label is used as the icon label 
+    # - Label is used as the icon label
 
     # depth = forms.BooleanField(label="Average Depth", required=False, help_text="Ocean depth in feet", widget=CheckboxInput(attrs={'class': 'parameters hidden_checkbox'}))
     # # depth_min = forms.FloatField(required=False, initial=10, widget=SliderWidget(attrs={'class':'slidervalue', 'pre_text': 'Distance in meters', 'post_text': 'meters'}, min=1, max=220, step=1))
@@ -368,19 +372,18 @@ class ScenarioForm(FeatureForm):
     # large_live_coral = forms.BooleanField(label="Large Live Corals", required=False, help_text="Whether a cell contains at least one known live coral greater than 2 meters in width", widget=CheckboxInput(attrs={'class': 'parameters hidden_checkbox'}))
     # large_live_coral_input = forms.ChoiceField(required=False, widget=forms.Select(attrs={'class': 'parameters'}), choices=(('Y', 'Yes'), ('N', 'No')), initial='Y')
 
-    
     '''
     Depth and Distances
     '''
     def get_step_1_fields(self):
-        """Defines the fields that we want to show on the form in step 1, and 
-        the order in which they appear, and in groups of 
+        """Defines the fields that we want to show on the form in step 1, and
+        the order in which they appear, and in groups of
             (parameter to test, user-min or user-selection, user-max, user-input)
-        where each parameter except the first is optional. 
+        where each parameter except the first is optional.
         """
         names = (
             ('mean_fthm', 'mean_fthm_min', 'mean_fthm_max', 'mean_fthm_input')
-        ) 
+        )
 
         return self._get_fields(names)
 
@@ -392,7 +395,7 @@ class ScenarioForm(FeatureForm):
             ('cnt_cs_m2', None, None, 'cnt_cs_m2_input'),
             ('cnt_penn_m2', None, None, 'cnt_penn_m2_input')
         )
-        
+
         return self._get_fields(names)
 
     '''
@@ -400,9 +403,9 @@ class ScenarioForm(FeatureForm):
     '''
     def get_step_3_fields(self):
         names = (
-            ('sft_sub_m2', None, None, 'sft_sub_m2_input'), 
-            ('mix_sub_m2', None, None, 'mix_sub_m2_input'), 
-            ('hrd_sub_m2', None, None, 'hrd_sub_m2_input'), 
+            ('sft_sub_m2', None, None, 'sft_sub_m2_input'),
+            ('mix_sub_m2', None, None, 'mix_sub_m2_input'),
+            ('hrd_sub_m2', None, None, 'hrd_sub_m2_input'),
             ('rck_sub_m2', None, None, 'rck_sub_m2_input')
         )
 
@@ -424,15 +427,14 @@ class ScenarioForm(FeatureForm):
         )
         return self._get_fields(names)
 
-
     def get_steps(self):
         return self.get_step_1_fields(), self.get_step_2_fields(), self.get_step_3_fields(), self.get_step_4_fields()
 
     def _get_fields(self, names):
         fields = []
-        for name_list in names: 
+        for name_list in names:
             group = []
-            for name in name_list: 
+            for name in name_list:
                 if name:
                     group.append(self[name])
                 else:
@@ -440,7 +442,6 @@ class ScenarioForm(FeatureForm):
             fields.append(group)
         return fields
 
-      
     def save(self, commit=True):
         inst = super(FeatureForm, self).save(commit=False)
         if self.data.get('clear_support_file'):
@@ -448,14 +449,11 @@ class ScenarioForm(FeatureForm):
         if commit:
             inst.save()
         return inst
-    
+
     class Meta(FeatureForm.Meta):
         model = Scenario
         exclude = list(FeatureForm.Meta.exclude)
         for f in model.output_fields():
             exclude.append(f.attname)
-        
-        widgets = {
-            
-        }
 
+        widgets = {}
