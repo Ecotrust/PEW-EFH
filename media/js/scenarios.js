@@ -107,32 +107,25 @@ var madrona = {
 
 function scenarioFormModel(options) {
     var self = this;
-    
-    // Step 1 Parameters    
-    self.shore_distance = ko.observable(false);
-    self.pier_distance = ko.observable(false);
-    self.inlet_distance = ko.observable(false);
-    self.outfall_distance = ko.observable(false);
-    self.depth = ko.observable(false);
+      
+    self.mean_fthm = ko.observable(false);
+    self.hsall1_m2 = ko.observable(false);
+    self.hsall2_m2 = ko.observable(false);
+    self.hsall3_m2 = ko.observable(false);
+    self.hsall4_m2 = ko.observable(false);
 
-    self.injury_site = ko.observable(false);
-    self.large_live_coral = ko.observable(false);
-    self.pillar_presence = ko.observable(false);
-    self.anchorage = ko.observable(false);
-    self.mooring_buoy = ko.observable(false);
-    self.impacted = ko.observable(false);
-    self.acropora_pa = ko.observable(false);
+    self.hpc_est_m2 = ko.observable(false);
+    self.hpc_klp_m2 = ko.observable(false);
+    self.hpc_rck_m2 = ko.observable(false);
+    self.hpc_sgr_m2 = ko.observable(false);
+    self.sft_sub_m2 = ko.observable(false);
+    self.mix_sub_m2 = ko.observable(false);
+    self.hrd_sub_m2 = ko.observable(false);
     
-    self.prcnt_sg = ko.observable(false);
-    self.prcnt_reef = ko.observable(false);
-    self.prcnt_sand = ko.observable(false);
+    self.rck_sub_m2 = ko.observable(false);
+    self.cnt_cs_m2 = ko.observable(false);
+    self.cnt_penn_m2 = ko.observable(false);
     self.prcnt_art = ko.observable(false);
-
-    // Step 2 Parameters
-    self.fish_richness = ko.observable(false);
-    self.coral_richness = ko.observable(false);
-    self.coral_density = ko.observable(false);
-    self.coral_size = ko.observable(false);
     
     self.lastChange = (new Date()).getTime();
 
@@ -568,11 +561,21 @@ function scenarioModel(options) {
                 ko.applyBindings(model, document.getElementById('scenario-form'));
 
                 var parameters = [
-                    'shore_distance', 'pier_distance', 'inlet_distance', 'outfall_distance', 'depth',
-                    'injury_site', 'large_live_coral', 'pillar_presence', 
-                    'anchorage', 'mooring_buoy', 'impacted', 'acropora_pa', 
-                    'prcnt_sg', 'prcnt_reef', 'prcnt_sand', 'prcnt_art',
-                    'fish_richness', 'coral_richness', 'coral_density', 'coral_size'
+                    'mean_fthm',
+                    'hsall1_m2',
+                    'hsall2_m2',
+                    'hsall3_m2',
+                    'hsall4_m2',
+                    'hpc_est_m2',
+                    'hpc_klp_m2',
+                    'hpc_rck_m2',
+                    'hpc_sgr_m2',
+                    'sft_sub_m2',
+                    'mix_sub_m2',
+                    'hrd_sub_m2',
+                    'rck_sub_m2',
+                    'cnt_cs_m2',
+                    'cnt_penn_m2'
                 ];
 
                 for (var i = 0; i < parameters.length; i++) {

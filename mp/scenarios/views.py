@@ -235,71 +235,65 @@ def run_filter_query(filters):
     # by name, and what kinds of filters they were. For now, hard code. 
     query = GridCell.objects.all() 
 
-    if 'shore_distance' in filters.keys() and filters['shore_distance']:
-        query = query.filter(shore_distance__range=(filters['shore_distance_min'], filters['shore_distance_max']))
+    # if 'shore_distance' in filters.keys() and filters['shore_distance']:
+    #     query = query.filter(shore_distance__range=(filters['shore_distance_min'], filters['shore_distance_max']))
 
-    if 'pier_distance' in filters.keys() and filters['pier_distance']:
-        query = query.filter(pier_distance__range=(filters['pier_distance_min'], filters['pier_distance_max']))
+    # if 'pier_distance' in filters.keys() and filters['pier_distance']:
+    #     query = query.filter(pier_distance__range=(filters['pier_distance_min'], filters['pier_distance_max']))
 
-    if 'inlet_distance' in filters.keys() and filters['inlet_distance']:
-        query = query.filter(inlet_distance__gte=filters['inlet_distance_min'])
+    # if 'inlet_distance' in filters.keys() and filters['inlet_distance']:
+    #     query = query.filter(inlet_distance__gte=filters['inlet_distance_min'])
     
-    if 'outfall_distance' in filters.keys() and filters['outfall_distance']:
-        query = query.filter(outfall_distance__gte=filters['outfall_distance_min'])
+    # if 'outfall_distance' in filters.keys() and filters['outfall_distance']:
+    #     query = query.filter(outfall_distance__gte=filters['outfall_distance_min'])
     
-    if 'depth' in filters.keys() and filters['depth']:
+    if 'mean_fthm' in filters.keys() and filters['mean_fthm']:
         # query = query.filter(depth_mean__range=(filters['depth_min'], filters['depth_max']))
-        query = query.filter(depth_min__gte=filters['depth_min'])
-        query = query.filter(depth_max__lte=filters['depth_max'])
-    
+        query = query.filter(depth_min__gte=filters['mean_fthm_min'])
+        query = query.filter(depth_max__lte=filters['mean_fthm_max'])
 
-    if 'injury_site' in filters.keys() and filters['injury_site']:
-        query = query.filter(injury_site=filters['injury_site_input'])
+    if 'cnt_cs_m2' in filters.keys() and filters['cnt_cs_m2']:
+        query = query.filter(cnt_cs_m2=filters['cnt_cs_m2_input'])
 
-    if 'large_live_coral' in filters.keys() and filters['large_live_coral']:
-        query = query.filter(large_live_coral=filters['large_live_coral_input'])
+    if 'cnt_penn_m2' in filters.keys() and filters['cnt_penn_m2']:
+        query = query.filter(cnt_penn_m2=filters['cnt_penn_m2_input'])
 
-    if 'pillar_presence'in filters.keys() and filters['pillar_presence']:
-        query = query.filter(pillar_presence=filters['pillar_presence_input'])
+    if 'sft_sub_m2' in filters.keys() and filters['sft_sub_m2']:
+        query = query.filter(sft_sub_m2=filters['sft_sub_m2_input'])
 
-    if 'anchorage' in filters.keys() and filters['anchorage']:
-        query = query.filter(anchorage=filters['anchorage_input'])
+    if 'mix_sub_m2' in filters.keys() and filters['mix_sub_m2']:
+        query = query.filter(mix_sub_m2=filters['mix_sub_m2_input'])
 
-    if 'mooring_buoy' in filters.keys() and filters['mooring_buoy']:
-        query = query.filter(mooring_buoy=filters['mooring_buoy_input'])
+    if 'hrd_sub_m2' in filters.keys() and filters['hrd_sub_m2']:
+        query = query.filter(hrd_sub_m2=filters['hrd_sub_m2_input'])
 
-    if 'impacted' in filters.keys() and filters['impacted']:
-        query = query.filter(impacted=filters['impacted_input'])
+    if 'rck_sub_m2' in filters.keys() and filters['rck_sub_m2']:
+        query = query.filter(rck_sub_m2=filters['rck_sub_m2_input'])
 
-    if 'acropora_pa' in filters.keys() and filters['acropora_pa']:
-        query = query.filter(acropora_pa=filters['acropora_pa_input'])
+    if 'hsall1_m2' in filters.keys() and filters['hsall1_m2']:
+        query = query.filter(hsall1_m2__gte=filters['hsall1_m2_min'])
 
+    if 'hsall2_m2' in filters.keys() and filters['hsall2_m2']:
+        query = query.filter(hsall2_m2__gte=filters['hsall2_m2_min'])
 
-    if 'prcnt_sg' in filters.keys() and filters['prcnt_sg']:
-        query = query.filter(prcnt_sg__gte=filters['prcnt_sg_min'])
+    if 'hsall3_m2' in filters.keys() and filters['hsall3_m2']:
+        query = query.filter(hsall3_m2__gte=filters['hsall3_m2_min'])
 
-    if 'prcnt_reef' in filters.keys() and filters['prcnt_reef']:
-        query = query.filter(prcnt_reef__gte=filters['prcnt_reef_min'])
+    if 'hsall4_m2' in filters.keys() and filters['hsall4_m2']:
+        query = query.filter(hsall4_m2__gte=filters['hsall4_m2_min'])
 
-    if 'prcnt_sand' in filters.keys() and filters['prcnt_sand']:
-        query = query.filter(prcnt_sand__gte=filters['prcnt_sand_min'])
+    if 'hpc_est_m2' in filters.keys() and filters['hpc_est_m2']:
+        query = query.filter(hpc_est_m2__gte=filters['hpc_est_m2_min'])
 
-    if 'prcnt_art' in filters.keys() and filters['prcnt_art']:
-        query = query.filter(prcnt_art__gte=filters['prcnt_art_min'])
+    if 'hpc_klp_m2' in filters.keys() and filters['hpc_klp_m2']:
+        query = query.filter(hpc_klp_m2__gte=filters['hpc_klp_m2_min'])
 
+    if 'hpc_rck_m2' in filters.keys() and filters['hpc_rck_m2']:
+        query = query.filter(hpc_rck_m2__gte=filters['hpc_rck_m2_min'])
 
-    if 'fish_richness' in filters.keys() and filters['fish_richness']:
-        query = query.filter(fish_richness__gte=filters['fish_richness_max'])
+    if 'hpc_sgr_m2' in filters.keys() and filters['hpc_sgr_m2']:
+        query = query.filter(hpc_sgr_m2__gte=filters['hpc_sgr_m2_min'])
 
-    if 'coral_richness' in filters.keys() and filters['coral_richness']:
-        query = query.filter(coral_richness__gte=filters['coral_richness_max'])
-    
-    if 'coral_density' in filters.keys() and filters['coral_density']:
-        query = query.filter(coral_density__gte=filters['coral_density_max'])
-    
-    if 'coral_size' in filters.keys() and filters['coral_size']:
-        query = query.filter(coral_size__gte=filters['coral_size_max'])
-    
     return query
 
 '''
