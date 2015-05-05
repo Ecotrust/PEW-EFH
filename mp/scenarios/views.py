@@ -249,8 +249,8 @@ def run_filter_query(filters):
     
     if 'mean_fthm' in filters.keys() and filters['mean_fthm']:
         # query = query.filter(depth_mean__range=(filters['depth_min'], filters['depth_max']))
-        query = query.filter(depth_min__gte=filters['mean_fthm_min'])
-        query = query.filter(depth_max__lte=filters['mean_fthm_max'])
+        query = query.filter(mean_fthm__gte=filters['mean_fthm_min'])
+        query = query.filter(mean_fthm__lte=filters['mean_fthm_max'])
 
     if 'cnt_cs' in filters.keys() and filters['cnt_cs']:
         query = query.filter(cnt_cs=filters['cnt_cs_input'])
