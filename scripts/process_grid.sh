@@ -8,8 +8,8 @@ thisdir=`dirname $BASH_SOURCE`
 # Variables that change frequently/on every import
 #SHP="_ofr_data/shp/OFR_OffshorePlanningGrid_200m_DSTbuild4_EPSG3857_9Feb2015.shp"
 #FINAL="_ofr_data/ofr_planning_grid_9Feb2015.sql"
-SHP="_ofr_data/shp/OFR_OffshorePlanningGrid_200m_DSTbuild8_EPSG3857_13Mar2015.shp"
-FINAL="_ofr_data/ofr_planning_grid_13Mar2015.sql"
+SHP="/home/vagrant/marine-planner/notes/PEW_Data/Planning_unit_grid/PEW_5nm_PUG.shp"
+FINAL="/home/vagrant/marine-planner/notes/PEW_Data/Planning_unit_grid/PEW_5nm_PUG.sql"
 
 ################################################################################
 # Probably no need to touch anything below here

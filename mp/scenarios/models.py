@@ -233,6 +233,39 @@ class Scenario(Analysis):
     geometry_final_area = models.FloatField(verbose_name='Total Area', null=True, blank=True)
     geometry_dissolved = models.MultiPolygonField(srid=settings.GEOMETRY_DB_SRID, null=True, blank=True, verbose_name="Filter result dissolved")
                 
+    # format attribute JSON and handle None values
+    def get_min_max_attributes(self, title, min_val, max_val, units):
+
+        if isinstance(min_val, (int, long)):
+            min_val_str = str(int(min_val))
+        else:
+            min_val_str = str(min_val)
+
+        if isinstance(max_val, (int, long)):
+            max_val_str = str(int(max_val))
+        else:
+            max_val_str = str(max_val)
+
+        attribute = {
+            'title': title,
+            'data':  min_val_str + ' to ' + max_val_str + ' ' + units
+        }
+        return attribute
+
+    # format attribute JSON and handle None values
+    def get_min_attributes(self, title, min_val, units):
+
+        if isinstance(min_val, (int, long)):
+            min_val_str = str(int(min_val))
+        else:
+            min_val_str = str(min_val)
+
+        attribute = {
+            'title': title,
+            'data':  'At least ' + min_val_str + ' ' + units
+        }
+        return attribute
+
     @property
     def serialize_attributes(self):
         """
@@ -242,50 +275,82 @@ class Scenario(Analysis):
 
         # Step 1
         if self.mean_fthm:
-            attributes.append({ 
-                'title': 'Depth Range',
-                'data':  str(int(self.mean_fthm_min)) + ' to ' + str(int(self.mean_fthm_max)) + ' fathoms'
-            })
+            attributes.append(
+                self.get_min_max_attributes(
+                    'Depth Range',
+                    self.mean_fthm_min,
+                    self.mean_fthm_max,
+                    'fathoms'
+                )
+            )
         if self.hsall1_m2:
-            attributes.append({
-                'title': 'Predicted Class 1 Deep Sea Coral Habitat',
-                'data':  str(int(self.hsall1_m2_min)) + ' to ' + str(int(self.hsall1_m2_max)) + ' m<sup>2</sup>'
-            })
+            attributes.append(
+                self.get_min_attributes(
+                    'Predicted Class 1 Deep Sea Coral Habitat',
+                    float(format_precision(self.hsall1_m2_min / 1000000, 2)),
+                    'km<sup>2</sup>'
+                )
+            )
         if self.hsall2_m2:
-            attributes.append({
-                'title': 'Predicted Class 2 Deep Sea Coral Habitat',
-                'data':  str(int(self.hsall2_m2_min)) + ' to ' + str(int(self.hsall2_m2_max)) + ' m<sup>2</sup>'
-            })
+            attributes.append(
+                self.get_min_attributes(
+                    'Predicted Class 2 Deep Sea Coral Habitat',
+                    float(format_precision(self.hsall2_m2_min / 1000000, 2)),
+                    'km<sup>2</sup>'
+                )
+            )
         if self.hsall3_m2:
-            attributes.append({
-                'title': 'Predicted Class 3 Deep Sea Coral Habitat',
-                'data':  str(int(self.hsall3_m2_min)) + ' to ' + str(int(self.hsall3_m2_max)) + ' m<sup>2</sup>'
-            })
+            attributes.append(
+                self.get_min_attributes(
+                    'Predicted Class 3 Deep Sea Coral Habitat',
+                    float(format_precision(self.hsall3_m2_min / 1000000, 2)),
+                    'km<sup>2</sup>'
+                )
+            )
         if self.hsall4_m2:
-            attributes.append({
-                'title': 'Predicted Class 4 Deep Sea Coral Habitat',
-                'data':  str(int(self.hsall4_m2_min)) + ' to ' + str(int(self.hsall4_m2_max)) + ' m<sup>2</sup>'
-            })
+            attributes.append(
+                self.get_min_attributes(
+                    'Predicted Class 4 Deep Sea Coral Habitat',
+                    float(format_precision(self.hsall4_m2_min / 1000000, 2)),
+                    'km<sup>2</sup>'
+                )
+            )
         if self.hpc_est_m2:
-            attributes.append({
-                'title': 'Estuary Habitat',
-                'data':  str(int(self.hpc_est_m2_min)) + ' to ' + str(int(self.hpc_est_m2_max)) + ' m<sup>2</sup>'
-            })
+            hpc_est_km2_min = float(format_precision(self.hpc_est_m2_min / 1000000, 2))
+            attributes.append(
+                self.get_min_attributes(
+                    'Estuary Habitat',
+                    hpc_est_km2_min,
+                    'km<sup>2</sup>'
+                )
+            )
         if self.hpc_klp_m2:
-            attributes.append({
-                'title': 'Kelp Habitat',
-                'data':  str(int(self.hpc_klp_m2_min)) + ' to ' + str(int(self.hpc_klp_m2_max)) + ' m<sup>2</sup>'
-            })
+            hpc_klp_km2_min = float(format_precision(self.hpc_klp_m2_min / 1000000, 2))
+            attributes.append(
+                self.get_min_attributes(
+                    'Kelp Habitat',
+                    hpc_klp_km2_min,
+                    'km<sup>2</sup>'
+                )
+            )
         if self.hpc_rck_m2:
-            attributes.append({
-                'title': 'Rocky Reef Habitat',
-                'data':  str(int(self.hpc_rck_m2_min)) + ' to ' + str(int(self.hpc_rck_m2_max)) + ' m<sup>2</sup>'
-            })
+            hpc_rck_km2_min = float(format_precision(self.hpc_rck_m2_min / 1000000, 2))
+            attributes.append(
+                self.get_min_attributes(
+                    'Rocky Reef Habitat',
+                    hpc_rck_km2_min,
+                    'km<sup>2</sup>'
+                )
+            )
         if self.hpc_sgr_m2:
-            attributes.append({
-                'title': 'Seagrass Habitat',
-                'data':  str(int(self.hpc_sgr_m2_min)) + ' to ' + str(int(self.hpc_sgr_m2_max)) + ' m<sup>2</sup>'
-            })
+            hpc_sgr_km2_min = float(format_precision(self.hpc_sgr_m2_min / 1000000, 2))
+            attributes.append(
+                self.get_min_attributes(
+                    'Seagrass Habitat',
+                    hpc_sgr_km2_min,
+                    'km<sup>2</sup>'
+                )
+            )
 
         # Step 2
         if self.sft_sub_m2:

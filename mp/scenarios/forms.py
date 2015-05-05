@@ -244,7 +244,7 @@ class ScenarioForm(FeatureForm):
 
     # Step 2
     sft_sub_m2 = forms.BooleanField(
-        label="Has Soft Subtrate",
+        label="Has Soft Substrate",
         required=False,
         help_text="Planning units that contain at least some soft substrate",
         widget=CheckboxInput(
@@ -262,7 +262,7 @@ class ScenarioForm(FeatureForm):
         initial='Y'
     )
     mix_sub_m2 = forms.BooleanField(
-        label="Has Soft Subtrate",
+        label="Has Mixed Substrate",
         required=False,
         help_text="Planning units that contain at least some mixed substrate",
         widget=CheckboxInput(
@@ -280,7 +280,7 @@ class ScenarioForm(FeatureForm):
         initial='Y'
     )
     hrd_sub_m2 = forms.BooleanField(
-        label="Has Hard Subtrate",
+        label="Has Hard Substrate",
         required=False,
         help_text="Planning units that contain at least some hard substrate",
         widget=CheckboxInput(
@@ -298,7 +298,7 @@ class ScenarioForm(FeatureForm):
         initial='Y'
     )
     rck_sub_m2 = forms.BooleanField(
-        label="Has Inferred Rock Subtrate (OR Only)",
+        label="Has Inferred Rock Substrate (OR Only)",
         required=False,
         help_text="Planning units that contain at least some inferred rock substrate",
         widget=CheckboxInput(
@@ -381,9 +381,9 @@ class ScenarioForm(FeatureForm):
             (parameter to test, user-min or user-selection, user-max, user-input)
         where each parameter except the first is optional.
         """
-        names = (
+        names = [
             ('mean_fthm', 'mean_fthm_min', 'mean_fthm_max', 'mean_fthm_input')
-        )
+        ]
 
         return self._get_fields(names)
 

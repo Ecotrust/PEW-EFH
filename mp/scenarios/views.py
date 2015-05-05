@@ -253,22 +253,40 @@ def run_filter_query(filters):
         query = query.filter(mean_fthm__lte=filters['mean_fthm_max'])
 
     if 'cnt_cs' in filters.keys() and filters['cnt_cs']:
-        query = query.filter(cnt_cs=filters['cnt_cs_input'])
+        if filters['cnt_cs_input'] == 'Y':
+            query = query.filter(cnt_cs__gt=0)
+        else:
+            query = query.exclude(cnt_cs__gt=0)
 
     if 'cnt_penn' in filters.keys() and filters['cnt_penn']:
-        query = query.filter(cnt_penn=filters['cnt_penn_input'])
+        if filters['cnt_penn_input'] == 'Y':
+            query = query.filter(cnt_penn__gt=0)
+        else:
+            query = query.exclude(cnt_penn__gt=0)
 
     if 'sft_sub_m2' in filters.keys() and filters['sft_sub_m2']:
-        query = query.filter(sft_sub_m2=filters['sft_sub_m2_input'])
+        if filters['sft_sub_m2_input'] == 'Y':
+            query = query.filter(sft_sub_m2__gt=0)
+        else:
+            query = query.exclude(sft_sub_m2__gt=0)
 
     if 'mix_sub_m2' in filters.keys() and filters['mix_sub_m2']:
-        query = query.filter(mix_sub_m2=filters['mix_sub_m2_input'])
+        if filters['mix_sub_m2_input'] == 'Y':
+            query = query.filter(mix_sub_m2__gt=0)
+        else:
+            query = query.exclude(mix_sub_m2__gt=0)
 
     if 'hrd_sub_m2' in filters.keys() and filters['hrd_sub_m2']:
-        query = query.filter(hrd_sub_m2=filters['hrd_sub_m2_input'])
+        if filters['hrd_sub_m2_input'] == 'Y':
+            query = query.filter(hrd_sub_m2__gt=0)
+        else:
+            query = query.exclude(hrd_sub_m2__gt=0)
 
     if 'rck_sub_m2' in filters.keys() and filters['rck_sub_m2']:
-        query = query.filter(rck_sub_m2=filters['rck_sub_m2_input'])
+        if filters['rck_sub_m2_input'] == 'Y':
+            query = query.filter(rck_sub_m2__gt=0)
+        else:
+            query = query.exclude(rck_sub_m2__gt=0)
 
     if 'hsall1_m2' in filters.keys() and filters['hsall1_m2']:
         query = query.filter(hsall1_m2__gte=filters['hsall1_m2_min'])
