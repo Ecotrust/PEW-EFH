@@ -391,18 +391,18 @@ class Scenario(Analysis):
             })
         if self.cnt_cs:
             if self.cnt_cs_input == 'Y':
-                title = 'Contains coral'
+                title = 'Contains coral and/or sponges'
             else:
-                title = 'Not known to contain coral'
+                title = 'Not known to contain coral or sponges'
             attributes.append({
                 'title': title,
                 'data':  ''
             })
         if self.cnt_penn:
             if self.cnt_penn_input == 'Y':
-                title = 'Contains pennatulids (sea pen/sea whip) and sponges'
+                title = 'Contains pennatulids (sea pen/sea whip)'
             else:
-                title = 'Not known to contain pennatulids or sponges'
+                title = 'Not known to contain pennatulids'
             attributes.append({
                 'title': title,
                 'data':  ''

@@ -115,7 +115,7 @@ function polygonFormModel(options) {
     self.editControl = new OpenLayers.Control.ModifyFeature(self.polygonLayer);
     app.map.addControl(self.editControl);
 
-    self.planningGridLayer = app.viewModel.getLayerById(373);
+    self.planningGridLayer = app.viewModel.getLayerById(434);
     if (self.planningGridLayer.active()) {
         self.planningGridLayerWasActive = true;
         if ( !self.planningGridLayer.visible() ) {
