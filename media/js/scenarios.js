@@ -123,9 +123,8 @@ function scenarioFormModel(options) {
     self.hrd_sub_m2 = ko.observable(false);
     
     self.rck_sub_m2 = ko.observable(false);
-    self.cnt_cs_m2 = ko.observable(false);
-    self.cnt_penn_m2 = ko.observable(false);
-    self.prcnt_art = ko.observable(false);
+    self.cnt_cs = ko.observable(false);
+    self.cnt_penn = ko.observable(false);
     
     self.lastChange = (new Date()).getTime();
 
@@ -574,8 +573,8 @@ function scenarioModel(options) {
                     'mix_sub_m2',
                     'hrd_sub_m2',
                     'rck_sub_m2',
-                    'cnt_cs_m2',
-                    'cnt_penn_m2'
+                    'cnt_cs',
+                    'cnt_penn'
                 ];
 
                 for (var i = 0; i < parameters.length; i++) {

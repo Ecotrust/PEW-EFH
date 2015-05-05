@@ -252,11 +252,11 @@ def run_filter_query(filters):
         query = query.filter(depth_min__gte=filters['mean_fthm_min'])
         query = query.filter(depth_max__lte=filters['mean_fthm_max'])
 
-    if 'cnt_cs_m2' in filters.keys() and filters['cnt_cs_m2']:
-        query = query.filter(cnt_cs_m2=filters['cnt_cs_m2_input'])
+    if 'cnt_cs' in filters.keys() and filters['cnt_cs']:
+        query = query.filter(cnt_cs=filters['cnt_cs_input'])
 
-    if 'cnt_penn_m2' in filters.keys() and filters['cnt_penn_m2']:
-        query = query.filter(cnt_penn_m2=filters['cnt_penn_m2_input'])
+    if 'cnt_penn' in filters.keys() and filters['cnt_penn']:
+        query = query.filter(cnt_penn=filters['cnt_penn_input'])
 
     if 'sft_sub_m2' in filters.keys() and filters['sft_sub_m2']:
         query = query.filter(sft_sub_m2=filters['sft_sub_m2_input'])

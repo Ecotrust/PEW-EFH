@@ -315,7 +315,7 @@ class ScenarioForm(FeatureForm):
             ('N', 'Exclude')),
         initial='Y'
     )
-    cnt_cs_m2 = forms.BooleanField(
+    cnt_cs = forms.BooleanField(
         label="Has Observed Corals or Sponges",
         required=False,
         help_text="Planning units that contain observed corals or sponges",
@@ -323,7 +323,7 @@ class ScenarioForm(FeatureForm):
             attrs={'class': 'parameters hidden_checkbox'}
         )
     )
-    cnt_cs_m2_input = forms.ChoiceField(
+    cnt_cs_input = forms.ChoiceField(
         required=False,
         widget=forms.Select(
             attrs={'class': 'parameters'}
@@ -333,7 +333,7 @@ class ScenarioForm(FeatureForm):
             ('N', 'Exclude')),
         initial='Y'
     )
-    cnt_penn_m2 = forms.BooleanField(
+    cnt_penn = forms.BooleanField(
         label="Has Observed Pennatulids",
         required=False,
         help_text="Planning units that contain observed pennatulids",
@@ -341,7 +341,7 @@ class ScenarioForm(FeatureForm):
             attrs={'class': 'parameters hidden_checkbox'}
         )
     )
-    cnt_penn_m2_input = forms.ChoiceField(
+    cnt_penn_input = forms.ChoiceField(
         required=False,
         widget=forms.Select(
             attrs={'class': 'parameters'}
@@ -392,8 +392,8 @@ class ScenarioForm(FeatureForm):
     '''
     def get_step_2_fields(self):
         names = (
-            ('cnt_cs_m2', None, None, 'cnt_cs_m2_input'),
-            ('cnt_penn_m2', None, None, 'cnt_penn_m2_input')
+            ('cnt_cs', None, None, 'cnt_cs_input'),
+            ('cnt_penn', None, None, 'cnt_penn_input')
         )
 
         return self._get_fields(names)

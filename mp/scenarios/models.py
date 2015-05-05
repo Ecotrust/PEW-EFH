@@ -20,7 +20,7 @@ from django.forms.models import model_to_dict
 @register
 class Scenario(Analysis):
 
-    # min_fthm = models.BooleanField()
+    min_fthm = models.BooleanField()
     # min_fthm_min = models.FloatField(null=True, blank=True)
     # min_fthm_max = models.FloatField(null=True, blank=True)
     # min_fthm_input = models.TextField(null=True, blank=True)
@@ -30,7 +30,7 @@ class Scenario(Analysis):
     mean_fthm_max = models.FloatField(null=True, blank=True)
     # mean_fthm_input = models.TextField(null=True, blank=True)
 
-    # max_fthm = models.BooleanField()
+    max_fthm = models.BooleanField()
     # max_fthm_min = models.FloatField(null=True, blank=True)
     # max_fthm_max = models.FloatField(null=True, blank=True)
     # max_fthm_input = models.TextField(null=True, blank=True)
@@ -65,32 +65,32 @@ class Scenario(Analysis):
     # cnt_penn_max = models.FloatField(null=True, blank=True)
     cnt_penn_input = models.TextField(null=True, blank=True)
 
-    # ra_cs = models.BooleanField()
+    ra_cs = models.BooleanField()
     # ra_cs_min = models.FloatField(null=True, blank=True)
     # ra_cs_max = models.FloatField(null=True, blank=True)
     # ra_cs_input = models.TextField(null=True, blank=True)
 
-    # ra_penn = models.BooleanField()
+    ra_penn = models.BooleanField()
     # ra_penn_min = models.FloatField(null=True, blank=True)
     # ra_penn_max = models.FloatField(null=True, blank=True)
     # ra_penn_input = models.TextField(null=True, blank=True)
 
-    # hsalcy1_m2 = models.BooleanField()
+    hsalcy1_m2 = models.BooleanField()
     # hsalcy1_m2_min = models.FloatField(null=True, blank=True)
     # hsalcy1_m2_max = models.FloatField(null=True, blank=True)
     # hsalcy1_m2_input = models.TextField(null=True, blank=True)
 
-    # hsalcy2_m2 = models.BooleanField()
+    hsalcy2_m2 = models.BooleanField()
     # hsalcy2_m2_min = models.FloatField(null=True, blank=True)
     # hsalcy2_m2_max = models.FloatField(null=True, blank=True)
     # hsalcy2_m2_input = models.TextField(null=True, blank=True)
 
-    # hsalcy3_m2 = models.BooleanField()
+    hsalcy3_m2 = models.BooleanField()
     # hsalcy3_m2_min = models.FloatField(null=True, blank=True)
     # hsalcy3_m2_max = models.FloatField(null=True, blank=True)
     # hsalcy3_m2_input = models.TextField(null=True, blank=True)
 
-    # hsalcy4_m2 = models.BooleanField()
+    hsalcy4_m2 = models.BooleanField()
     # hsalcy4_m2_min = models.FloatField(null=True, blank=True)
     # hsalcy4_m2_max = models.FloatField(null=True, blank=True)
     # hsalcy4_m2_input = models.TextField(null=True, blank=True)
@@ -115,92 +115,92 @@ class Scenario(Analysis):
     hsall4_m2_max = models.FloatField(null=True, blank=True)
     # hsall4_m2_input = models.TextField(null=True, blank=True)
 
-    # hsanti1_m2 = models.BooleanField()
+    hsanti1_m2 = models.BooleanField()
     # hsanti1_m2_min = models.FloatField(null=True, blank=True)
     # hsanti1_m2_max = models.FloatField(null=True, blank=True)
     # hsanti1_m2_input = models.TextField(null=True, blank=True)
 
-    # hsanti2_m2 = models.BooleanField()
+    hsanti2_m2 = models.BooleanField()
     # hsanti2_m2_min = models.FloatField(null=True, blank=True)
     # hsanti2_m2_max = models.FloatField(null=True, blank=True)
     # hsanti2_m2_input = models.TextField(null=True, blank=True)
 
-    # hsanti3_m2 = models.BooleanField()
+    hsanti3_m2 = models.BooleanField()
     # hsanti3_m2_min = models.FloatField(null=True, blank=True)
     # hsanti3_m2_max = models.FloatField(null=True, blank=True)
     # hsanti3_m2_input = models.TextField(null=True, blank=True)
 
-    # hscalc1_m2 = models.BooleanField()
+    hscalc1_m2 = models.BooleanField()
     # hscalc1_m2_min = models.FloatField(null=True, blank=True)
     # hscalc1_m2_max = models.FloatField(null=True, blank=True)
     # hscalc1_m2_input = models.TextField(null=True, blank=True)
 
-    # hscalc2_m2 = models.BooleanField()
+    hscalc2_m2 = models.BooleanField()
     # hscalc2_m2_min = models.FloatField(null=True, blank=True)
     # hscalc2_m2_max = models.FloatField(null=True, blank=True)
     # hscalc2_m2_input = models.TextField(null=True, blank=True)
 
-    # hscalc3_m2 = models.BooleanField()
+    hscalc3_m2 = models.BooleanField()
     # hscalc3_m2_min = models.FloatField(null=True, blank=True)
     # hscalc3_m2_max = models.FloatField(null=True, blank=True)
     # hscalc3_m2_input = models.TextField(null=True, blank=True)
 
-    # hscalc4_m2 = models.BooleanField()
+    hscalc4_m2 = models.BooleanField()
     # hscalc4_m2_min = models.FloatField(null=True, blank=True)
     # hscalc4_m2_max = models.FloatField(null=True, blank=True)
     # hscalc4_m2_input = models.TextField(null=True, blank=True)
 
-    # hshola1_m2 = models.BooleanField()
+    hshola1_m2 = models.BooleanField()
     # hshola1_m2_min = models.FloatField(null=True, blank=True)
     # hshola1_m2_max = models.FloatField(null=True, blank=True)
     # hshola1_m2_input = models.TextField(null=True, blank=True)
 
-    # hshola2_m2 = models.BooleanField()
+    hshola2_m2 = models.BooleanField()
     # hshola2_m2_min = models.FloatField(null=True, blank=True)
     # hshola2_m2_max = models.FloatField(null=True, blank=True)
     # hshola2_m2_input = models.TextField(null=True, blank=True)
 
-    # hshola3_m2 = models.BooleanField()
+    hshola3_m2 = models.BooleanField()
     # hshola3_m2_min = models.FloatField(null=True, blank=True)
     # hshola3_m2_max = models.FloatField(null=True, blank=True)
     # hshola3_m2_input = models.TextField(null=True, blank=True)
 
-    # hshola4_m2 = models.BooleanField()
+    hshola4_m2 = models.BooleanField()
     # hshola4_m2_min = models.FloatField(null=True, blank=True)
     # hshola4_m2_max = models.FloatField(null=True, blank=True)
     # hshola4_m2_input = models.TextField(null=True, blank=True)
 
-    # hssclr1_m2 = models.BooleanField()
+    hssclr1_m2 = models.BooleanField()
     # hssclr1_m2_min = models.FloatField(null=True, blank=True)
     # hssclr1_m2_max = models.FloatField(null=True, blank=True)
     # hssclr1_m2_input = models.TextField(null=True, blank=True)
 
-    # hssclr2_m2 = models.BooleanField()
+    hssclr2_m2 = models.BooleanField()
     # hssclr2_m2_min = models.FloatField(null=True, blank=True)
     # hssclr2_m2_max = models.FloatField(null=True, blank=True)
     # hssclr2_m2_input = models.TextField(null=True, blank=True)
 
-    # hssclr3_m2 = models.BooleanField()
+    hssclr3_m2 = models.BooleanField()
     # hssclr3_m2_min = models.FloatField(null=True, blank=True)
     # hssclr3_m2_max = models.FloatField(null=True, blank=True)
     # hssclr3_m2_input = models.TextField(null=True, blank=True)
 
-    # hssclx1_m2 = models.BooleanField()
+    hssclx1_m2 = models.BooleanField()
     # hssclx1_m2_min = models.FloatField(null=True, blank=True)
     # hssclx1_m2_max = models.FloatField(null=True, blank=True)
     # hssclx1_m2_input = models.TextField(null=True, blank=True)
 
-    # hssclx2_m2 = models.BooleanField()
+    hssclx2_m2 = models.BooleanField()
     # hssclx2_m2_min = models.FloatField(null=True, blank=True)
     # hssclx2_m2_max = models.FloatField(null=True, blank=True)
     # hssclx2_m2_input = models.TextField(null=True, blank=True)
 
-    # hssclx3_m2 = models.BooleanField()
+    hssclx3_m2 = models.BooleanField()
     # hssclx3_m2_min = models.FloatField(null=True, blank=True)
     # hssclx3_m2_max = models.FloatField(null=True, blank=True)
     # hssclx3_m2_input = models.TextField(null=True, blank=True)
 
-    # hssclx4_m2 = models.BooleanField()
+    hssclx4_m2 = models.BooleanField()
     # hssclx4_m2_min = models.FloatField(null=True, blank=True)
     # hssclx4_m2_max = models.FloatField(null=True, blank=True)
     # hssclx4_m2_input = models.TextField(null=True, blank=True)
@@ -324,8 +324,8 @@ class Scenario(Analysis):
                 'title': title,
                 'data':  ''
             })
-        if self.cnt_cs_m2:
-            if self.cnt_cs_m2_input == 'Y':
+        if self.cnt_cs:
+            if self.cnt_cs_input == 'Y':
                 title = 'Contains coral'
             else:
                 title = 'Not known to contain coral'
@@ -333,8 +333,8 @@ class Scenario(Analysis):
                 'title': title,
                 'data':  ''
             })
-        if self.cnt_penn_m2:
-            if self.cnt_penn_m2_input == 'Y':
+        if self.cnt_penn:
+            if self.cnt_penn_input == 'Y':
                 title = 'Contains pennatulids (sea pen/sea whip) and sponges'
             else:
                 title = 'Not known to contain pennatulids or sponges'
