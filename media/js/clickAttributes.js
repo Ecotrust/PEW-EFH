@@ -86,10 +86,10 @@ app.clickAttributes = (function() {
             attrs.push({'display': 'Mixed Substrate', 'data': data['mix_sub_m2'].toLocaleString() + ' m&sup2;'});
         }
         if ('hrd_sub_m2' in data) {
-            attrs.push({'display': 'Hard Substrate', 'data': data['hrd_sgr_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Hard Substrate', 'data': data['hrd_sub_m2'].toLocaleString() + ' m&sup2;'});
         }
         if ('rck_sub_m2' in data) {
-            attrs.push({'display': 'Inferred Rock Substrate', 'data': data['rck_sgr_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Inferred Rock Substrate', 'data': data['rck_sub_m2'].toLocaleString() + ' m&sup2;'});
         }
         if ('cnt_cs' in data) {
             attrs.push({'display': 'Coral (excluding pennatulids) and sponge presence', 'data': data['cnt_cs'].toLocaleString()});

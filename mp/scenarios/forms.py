@@ -74,7 +74,7 @@ class ScenarioForm(FeatureForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'slidervalue',
-                'pre_text': 'Depth (in fathoms)'
+                'pre_text': 'Depth'
             }
         )
     )
@@ -84,7 +84,8 @@ class ScenarioForm(FeatureForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'slidervalue',
-                'pre_text': 'to'
+                'pre_text': 'to',
+                'post_text': 'fathoms'
             }
         )
     )
@@ -100,43 +101,47 @@ class ScenarioForm(FeatureForm):
     hsall1_m2 = forms.BooleanField(
         label="Predicted Class 1 Suitable Habitat Area",
         required=False,
-        help_text="Square meters of predicted class 1 habitat suitable for at least one species",
+        help_text="Square kilometers of predicted class 1 habitat suitable for at least one species",
         widget=CheckboxInput(
             attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'Coral and Sponges Predicted Habitat Suitability'}
         )
     )
     hsall1_m2_min = forms.FloatField(
         required=False,
-        initial=1000000,
+        initial=1,
         widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 1 Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={
+                'class': 'slidervalue',
+                'range': 'max',
+                'pre_text': 'Predicted Class 1 Habitat (km<sup>2</sup>)'
+            },
             min=0,
-            max=85747600,
-            step=1000
+            max=86,
+            step=0.001
         )
     )
     hsall2_m2 = forms.BooleanField(
         label="Predicted Class 2 Suitable Habitat Area",
         required=False,
-        help_text="Square meters of predicted class 2 habitat suitable for at least one species",
+        help_text="Square kilometers of predicted class 2 habitat suitable for at least one species",
         widget=CheckboxInput(
             attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'Coral and Sponges Predicted Habitat Suitability'}
         )
     )
     hsall2_m2_min = forms.FloatField(
         required=False,
-        initial=1000000,
+        initial=1,
         widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 2 Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 2 Habitat (km<sup>2</sup>)'},
             min=0,
-            max=85747600,
-            step=1000
+            max=86,
+            step=0.001
         )
     )
     hsall3_m2 = forms.BooleanField(
         label="Predicted Class 3 Suitable Habitat Area",
         required=False,
-        help_text="Square meters of predicted class 3 habitat suitable for at least one species",
+        help_text="Square kilometers of predicted class 3 habitat suitable for at least one species",
         widget=CheckboxInput(
             attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'Coral and Sponges Predicted Habitat Suitability'}
         )
@@ -145,100 +150,104 @@ class ScenarioForm(FeatureForm):
         required=False,
         initial=1000000,
         widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 3 Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 3 Habitat (km<sup>2</sup>)'},
             min=0,
-            max=85747600,
-            step=1000
+            max=86,
+            step=0.001
         )
     )
     hsall4_m2 = forms.BooleanField(
         label="Predicted Class 4 Suitable Habitat Area",
         required=False,
-        help_text="Square meters of predicted class 4 habitat suitable for at least one species",
+        help_text="Square kilometers of predicted class 4 habitat suitable for at least one species",
         widget=CheckboxInput(
             attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'Coral and Sponges Predicted Habitat Suitability'}
         )
     )
     hsall4_m2_min = forms.FloatField(
         required=False,
-        initial=1000000,
+        initial=1,
         widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 4 Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 4 Habitat (km<sup>2</sup>)'},
             min=0,
-            max=85747600,
-            step=1000
+            max=86,
+            step=0.001
         )
     )
     hpc_est_m2 = forms.BooleanField(
         label="Estuary Habitat Area",
         required=False,
-        help_text="Square meters of estuary habitat",
+        help_text="Square kilometers of estuary habitat",
         widget=CheckboxInput(
             attrs={'class': 'parameters hidden_checkbox', 'layer_id': 419, 'layer_title': 'Habitat areas of particular concern - estuary'}
         )
     )
     hpc_est_m2_min = forms.FloatField(
         required=False,
-        initial=1000000,
+        initial=1,
         widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Estuary Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Estuary Habitat (km<sup>2</sup>)'},
             min=0,
-            max=85747600,
-            step=1000
+            max=86,
+            step=0.001
         )
     )
     hpc_klp_m2 = forms.BooleanField(
         label="Kelp Habitat Area",
         required=False,
-        help_text="Square meters of kelp habitat",
+        help_text="Square kilometers of kelp habitat",
         widget=CheckboxInput(
             attrs={'class': 'parameters hidden_checkbox', 'layer_id': 420, 'layer_title': 'Habitat areas of particular concern - canopy kelp'}
         )
     )
     hpc_klp_m2_min = forms.FloatField(
         required=False,
-        initial=1000000,
+        initial=1,
         widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Kelp Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Kelp Habitat (km<sup>2</sup>)'},
             min=0,
-            max=13792480,
-            step=1000
+            max=13.8,
+            step=0.001
         )
     )
     hpc_rck_m2 = forms.BooleanField(
         label="Rocky Reef Habitat Area",
         required=False,
-        help_text="Square meters of rocky reef habitat",
+        help_text="Square kilometers of rocky reef habitat",
         widget=CheckboxInput(
             attrs={'class': 'parameters hidden_checkbox', 'layer_id': 421, 'layer_title': 'Habitat areas of particular concern - rocky reef'}
         )
     )
     hpc_rck_m2_min = forms.FloatField(
         required=False,
-        initial=1000000,
+        initial=1,
         widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Rocky Reef Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Rocky Reef Habitat (km<sup>2</sup>)'},
             min=0,
-            max=85747600,
-            step=1000
+            max=86,
+            step=0.001
         )
     )
     hpc_sgr_m2 = forms.BooleanField(
         label="Seagrass Habitat Area",
         required=False,
-        help_text="Square meters of seagrass habitat",
+        help_text="Square kilometers of seagrass habitat",
         widget=CheckboxInput(
             attrs={'class': 'parameters hidden_checkbox', 'layer_id': 422, 'layer_title': 'Habitat areas of particular concern - seagrass'}
         )
     )
     hpc_sgr_m2_min = forms.FloatField(
         required=False,
-        initial=1000000,
+        initial=1,
         widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Seagrass Habitat', 'post_text': 'm<sup>2</sup>'},
+            attrs={
+                'class': 'slidervalue',
+                'range': 'max',
+                'pre_text': 'Seagrass Habitat (km<sup>2</sup>)'
+            },
             min=0,
-            max=65849998,
-            step=1000
+            max=66,
+            step=0.001
         )
     )
 
@@ -425,6 +434,7 @@ class ScenarioForm(FeatureForm):
             ('hpc_rck_m2', 'hpc_rck_m2_min', None),
             ('hpc_sgr_m2', 'hpc_sgr_m2_min', None)
         )
+
         return self._get_fields(names)
 
     def get_steps(self):
