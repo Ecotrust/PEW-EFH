@@ -58,5 +58,5 @@ EOT
 
 echo "------"
 echo "SUCCESS. sql file created; load into database on VM/Prod server with"
-echo "psql -U postgres -d marco -f $FINAL"
+echo "psql -U postgres -d efh -f $FINAL"
 echo "------"
