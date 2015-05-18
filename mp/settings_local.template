@@ -8,16 +8,13 @@
 
 # At the very least, ensure that production setups have their own SECRET_KEY
 # that is kept hidden from public repositories.
-SECRET_KEY = '3j9~fjio+adjf93jda()#Jfk3ljf-ea9#$@#90dsfj9@0aj3()*fj3iow2f'
-
-# The following Google key is for localhost:
-# GOOGLE_API_KEY = 'ABQIAAAAu2dobIiH7nisivwmaz2gDhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSLaQmJjJuOq03hTEjc-cNV8eegYg' 
+SECRET_KEY = 'makeThisSmart'
 
 # You'll want to specify any database connection info here:
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'marco',
+        'NAME': 'efh',
         'USER': 'postgres',
      }
 }
@@ -38,11 +35,12 @@ DATABASES = {
 # This should be set to 1 (for localhost), 2 (for dev server), or 3 (for production)
 # SITE_ID = 1
 
-MEDIA_ROOT = '/home/vagrant/marine-planner/media/'
+MEDIA_ROOT = '/home/vagrant/marine-planner/media/'  # For Vagrant deployment
+# MEDIA_ROOT = '/usr/local/apps/PEW-EFH/mediaroot/'  # For Stage/Prod deployment
 MEDIA_URL = '/media/'
 SOCKET_URL = ''
 SOCIAL_AUTH_GOOGLE_PLUS_KEY = ''
 SOCIAL_AUTH_GOOGLE_PLUS_SECRET = ''
-ADMIN_MEDIA_PATH = '/home/vagrant/.virtualenvs/marine-planner/lib/python2.7/site-packages/django/contrib/admin/static/admin/'
-
+ADMIN_MEDIA_PATH = '/home/vagrant/.virtualenvs/marine-planner/lib/python2.7/site-packages/django/contrib/admin/static/admin/' # For Vagrant Deployment
+# ADMIN_MEDIA_PATH = '/usr/local/apps/PEW-EFH/pew-env/lib/python2.7/site-packages/django/contrib/admin/static/admin/'  # For Stage/Prod deployment
 

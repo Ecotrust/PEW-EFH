@@ -1,16 +1,22 @@
 #!/bin/bash
 
-PROJECT_NAME="marine-planner"
+PROJECT_NAME="PEW-EFH"
 
-PROJECT_DIR=/home/vagrant/$PROJECT_NAME/mp
-VIRTUALENV_DIR=/home/vagrant/.virtualenvs/$PROJECT_NAME
+BASE_DIR=/usr/local/apps/$PROJECT_NAME
+PROJECT_DIR=$BASE_DIR/mp
+VIRTUALENV_DIR=/$BASE_DIR/pew-env
 APP_DB_NAME="efh"
+APP_DB_USER="postgres"
 
 PYTHON=$VIRTUALENV_DIR/bin/python
 PIP=$VIRTUALENV_DIR/bin/pip
 
+PIP_DOWNLOAD_CACHE=/home/ubuntu/.pip_download_cache
+
+USER="ubuntu"
+
 # see https://docs.google.com/a/pointnineseven.com/document/d/1MbPbDp-Om1iIRb6bqhaKELqyU6x6E2KZ3Wm04tYAxak/edit#
-cat << EOF | su - postgres -c psql
+cat << EOF | su - $APP_DB_USER -c psql 
 CREATE DATABASE $APP_DB_NAME;
 \connect $APP_DB_NAME
 CREATE EXTENSION postgis;
@@ -52,22 +58,22 @@ EOF
 apt-get install python-gdal
 
 # Virtualenv setup for project
-su - vagrant -c "/usr/local/bin/virtualenv --system-site-packages $VIRTUALENV_DIR && \
+bash -c "/usr/bin/virtualenv --system-site-packages $VIRTUALENV_DIR && \
     echo $PROJECT_DIR > $VIRTUALENV_DIR/.project && \
-    PIP_DOWNLOAD_CACHE=/home/vagrant/.pip_download_cache $PIP install pillow && \
-    PIP_DOWNLOAD_CACHE=/home/vagrant/.pip_download_cache $PIP install -r $PROJECT_DIR/../requirements.txt"
+    PIP_DOWNLOAD_CACHE=$PIP_DOWNLOAD_CACHE $PIP install pillow && \
+    PIP_DOWNLOAD_CACHE=$PIP_DOWNLOAD_CACHE $PIP install -r $PROJECT_DIR/../requirements.txt"
 
-echo "workon $PROJECT_NAME" >> /home/vagrant/.bashrc
+echo "workon $PROJECT_NAME" >> /home/$USER/.bashrc
 
 # Run syncdb/migrate/update_index
-su - vagrant -c "$PYTHON $PROJECT_DIR/manage.py syncdb"
-su - vagrant -c "$PYTHON $PROJECT_DIR/manage.py migrate --noinput"
-su - vagrant -c "$PYTHON $PROJECT_DIR/manage.py install_media"
-su - vagrant -c "$PYTHON $PROJECT_DIR/manage.py enable_sharing"
+bash -c "$PYTHON $PROJECT_DIR/manage.py syncdb"
+bash -c "$PYTHON $PROJECT_DIR/manage.py migrate --noinput"
+bash -c "$PYTHON $PROJECT_DIR/manage.py install_media"
+bash -c "$PYTHON $PROJECT_DIR/manage.py enable_sharing"
 
 # Add a couple of aliases to manage.py into .bashrc
-cat << EOF >> /home/vagrant/.bashrc
-export PIP_DOWNLOAD_CACHE=/home/vagrant/.pip_download_cache
+cat << EOF >> /home/$USER/.bashrc
+export PIP_DOWNLOAD_CACHE=$PIP_DOWNLOAD_CACHE
 alias dj="$PYTHON $PROJECT_DIR/manage.py"
 alias djrun="dj runserver 0.0.0.0:8000"
 EOF

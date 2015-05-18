@@ -2,8 +2,8 @@ import sys
 import site
 import os
 
-project = '/usr/local/marine-planner/mp'
-ve = '/usr/local/venv/marine-planner'
+project = '/usr/local/apps/PEW-EFH/mp'
+ve = '/usr/local/apps/PEW-EFH/pew-env'
 vepath = os.path.join(ve, 'lib/python2.7/site-packages')
 
 prev_sys_path = list(sys.path)
