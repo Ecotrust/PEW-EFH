@@ -102,7 +102,7 @@ app.init = function() {
         buffer: 3
     });
 
-    map.addLayers([esriImagery, esriTopo, esriStreets, openStreetMap, nauticalCharts]);
+    map.addLayers([esriTopo, esriImagery, esriStreets, openStreetMap, nauticalCharts]);
 
     // map.addLayers([esriOcean]);
     // esriOcean.setZIndex(100);
