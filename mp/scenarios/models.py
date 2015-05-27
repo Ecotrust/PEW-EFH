@@ -35,6 +35,14 @@ class Scenario(Analysis):
     # max_fthm_max = models.FloatField(null=True, blank=True)
     # max_fthm_input = models.TextField(null=True, blank=True)
 
+    min_meter = models.BooleanField()
+
+    mean_meter = models.BooleanField()
+    mean_meter_min = models.IntegerField(null=True, blank=True)
+    mean_meter_max = models.IntegerField(null=True, blank=True)
+
+    mean_meter = models.BooleanField()
+
     sft_sub_m2 = models.BooleanField()
     # sft_sub_m2_min = models.FloatField(null=True, blank=True)
     # sft_sub_m2_max = models.FloatField(null=True, blank=True)
@@ -623,6 +631,9 @@ class GridCell(models.Model):
     min_fthm = models.IntegerField(null=True, blank=True)
     mean_fthm = models.IntegerField(null=True, blank=True)
     max_fthm = models.IntegerField(null=True, blank=True)
+    min_meter = models.IntegerField(null=True, blank=True)
+    mean_meter = models.IntegerField(null=True, blank=True)
+    max_meter = models.IntegerField(null=True, blank=True)
     sft_sub_m2 = models.IntegerField(null=True, blank=True)
     mix_sub_m2 = models.IntegerField(null=True, blank=True)
     hrd_sub_m2 = models.IntegerField(null=True, blank=True)
@@ -676,3 +687,106 @@ class GridCell(models.Model):
         verbose_name="Grid Cell Geometry"
     )
     objects = models.GeoManager()
+
+
+class SpeciesHabitatOccurence(models.Model):
+    LIFESTAGE_CHOICES = (
+        ('Adults', 'Adults'),
+        ('Juveniles', 'Juveniles'),
+        ('Eggs', 'Eggs'),
+        ('Larvae', 'Larvae')
+    )
+    SEX_CHOICES = (
+        ('Both', 'Both'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Unknown', 'Unknown')
+    )
+    ASSOCIATION_CHOICES = (
+        ('Strong', 'Strong'),
+        ('Medium', 'Medium'),
+        ('Weak', 'Weak'),
+        ('Unknown', 'Unknown'),
+        ('null', None)
+    )
+    SEASON_CHOICES = (
+        ('Unknown', 'Unknown'),
+        ('All Year', 'All Year'),
+        ('Winter', 'Winter'),
+        ('Spring', 'Spring'),
+        ('Summer', 'Summer'),
+        ('Autumn', 'Autumn')
+    )
+    LEVEL_1_HABITAT_CHOICES = (
+        ('Estuarine', 'Estuarine'),
+        ('Nearshore', 'Nearshore'),
+        ('Shelf', 'Shelf'),
+        ('Slope/Rise', 'Slope/Rise')
+    )
+    LEVEL_2_HABITAT_CHOICES = (
+        ('Benthos', 'Benthos'),
+        ('Unknown', 'Unknown'),
+        ('Submarine Canyon', 'Submarine Canyon'),
+        ('Intertidal Benthos', 'Intertidal Benthos'),
+        ('Basin', 'Basin')
+    )
+    LEVEL_3_HABITAT_CHOICES = (
+        ('Hard Bottom', 'Hard Bottom'),
+        ('Unconsolidated', 'Unconsolidated'),
+        ('Mixed Bottom', 'Mixed Bottom'),
+        ('Unknown', 'Unknown'),
+        ('Vegetated Bottom', 'Vegetated Bottom')
+    )
+    LEVEL_4_HABITAT_CHOICES = (
+        ('Algal Beds/Macro', 'Algal Beds/Macro'),
+        ('Bedrock', 'Bedrock'),
+        ('Cobble', 'Cobble'),
+        ('Gravel', 'Gravel'),
+        ('Gravel/Cobble', 'Gravel/Cobble'),
+        ('Mixed mud/sand', 'Mixed mud/sand'),
+        ('Mud', 'Mud'),
+        ('Mud/Boulders', 'Mud/Boulders'),
+        ('Mud/Cobble', 'Mud/Cobble'),
+        ('Mud/gravel', 'Mud/gravel'),
+        ('Mud/Rock', 'Mud/Rock'),
+        ('Rooted Vascular', 'Rooted Vascular'),
+        ('Sand', 'Sand'),
+        ('Sand/Boulders', 'Sand/Boulders'),
+        ('Sand/Rock', 'Sand/Rock'),
+        ('Silt', 'Silt'),
+        ('Soft Bottom/Boulder', 'Soft Bottom/Boulder'),
+        ('Soft Bottom/rock', 'Soft Bottom/rock'),
+        ('Unknown', 'Unknown')
+    )
+    ACTIVITY_CHOICES = (
+        ('All', 'All'),
+        ('Feeding', 'Feeding'),
+        ('Growth to Maturity', 'Growth to Maturity'),
+        ('Unknown', 'Unknown')
+    )
+    object_id = models.IntegerField(pk=True)
+    species_common = models.CharField(max_length=255, blank=False, null=False)
+    species_sci = models.CharField(max_length=255, blank=False, null=False)
+    lifestage = models.CharField(max_length=30, blank=False, null=False, choices=LIFESTAGE_CHOICES)
+    sex = models.CharField(max_length=50, blank=False, null=False, choices=SEX_CHOICES)
+    habitat_association = models.CharField(max_length=30, null=True, choices=ASSOCIATION_CHOICES)
+    season = models.CharField(max_length=20, blank=False, null=False, choices=SEASON_CHOICES)
+    level_1_habitat = models.CharField(max_length=30, blank=False, null=False, choices=LEVEL_1_HABITAT_CHOICES)
+    level_2_habitat = models.CharField(max_length=30, blank=False, null=False, choices=LEVEL_2_HABITAT_CHOICES)
+    level_3_habitat = models.CharField(max_length=30, blank=False, null=False, choices=LEVEL_3_HABITAT_CHOICES)
+    level_4_habitat = models.CharField(max_length=30, blank=False, null=False, choices=LEVEL_4_HABITAT_CHOICES)
+    xwalk_sgh = models.CharField(max_length=10, blank=False, null=False)
+    sgh_lookup_code = models.CharField(max_length=30, blank=False, null=False)
+    activity = models.CharField(max_length=30, blank=False, null=False, choices=ACTIVITY_CHOICES)
+    activity_association = models.CharField(max_length=30, null=True, choices=ASSOCIATION_CHOICES)
+    perferred_min_depth = models.IntegerField(blank=True, null=True, default=None)
+    perferred_max_depth = models.IntegerField(blank=True, null=True, default=None)
+    absolute_min_depth = models.IntegerField(blank=True, null=True, default=None)
+    absolute_max_depth = models.IntegerField(blank=True, null=True, default=None)
+
+
+class PlanningUnitHabitatLookup(models.Model):
+    object_id = models.IntegerField(pk=True)
+    pug = models.ForeignKey('scenarios.GridCell', blank=False, null=False)
+    sgh_id = models.IntegerField(blank=False, null=False)
+    sgh_lookup_code = models.CharField(max_length=30, blank=False, null=False)
