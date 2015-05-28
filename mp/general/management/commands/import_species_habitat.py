@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 import csv
-from scenarios.models import SpeciesHabitatOccurence
+from scenarios.models import SpeciesHabitatOccurence, Species
 
 
 class Command(BaseCommand):
@@ -29,9 +29,7 @@ class Command(BaseCommand):
             'Amin_depth': {'name': 'absolute_min_depth', 'type': 'int'},
             'Amax_depth': {'name': 'absolute_max_depth', 'type': 'int'}
         }
-        # try:
-        # import ipdb
-        # ipdb.set_trace()
+
         SpeciesHabitatOccurence.objects.all().delete()
         import_count = 0
         try:
@@ -54,9 +52,7 @@ class Command(BaseCommand):
                     elif map_val['type'] == 'str':
                         hab_dict[map_val['name']] = val
                 SpeciesHabitatOccurence.objects.create(**hab_dict)
+                Species.objects.get_or_create(common_name=hab_dict['species_common'].lower(), scientific_name=hab_dict['species_sci'].lower())
                 import_count += 1
-
-        # except:
-            # raise CommandError('Problem adding SRID: %s' % srid)
 
         self.stdout.write('Successfully added %s Species Habitat Occurrence records' % import_count)

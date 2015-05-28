@@ -233,20 +233,16 @@ def share_design(request):
 def run_filter_query(filters):
     # TODO: This would be nicer if it generically knew how to filter fields
     # by name, and what kinds of filters they were. For now, hard code. 
-    query = GridCell.objects.all() 
+    query = GridCell.objects.all()
 
-    # if 'shore_distance' in filters.keys() and filters['shore_distance']:
-    #     query = query.filter(shore_distance__range=(filters['shore_distance_min'], filters['shore_distance_max']))
+    if 'species' in filters.keys() and filters['species']:
+        spcs_occ = SpeciesHabitatOccurence.objects.filter(species_common__lower=filters['species_input'])
+        if 'lifestage' in filters.keys() and filters['lifestage']:
+            spcs_occ = spcs_occ.filter(lifestage=filters['lifestage_input'])
+        lu_codes = [x.sgh_lookup_code for x in spcs_occ]
+        pug_ids = [x.pug.unique_id for x in PlanningUnitHabitatLookup.objects.filter(sgh_lookup_code__in=lu_codes)]
+        query = query.filter(unique_id__in=pug_ids)
 
-    # if 'pier_distance' in filters.keys() and filters['pier_distance']:
-    #     query = query.filter(pier_distance__range=(filters['pier_distance_min'], filters['pier_distance_max']))
-
-    # if 'inlet_distance' in filters.keys() and filters['inlet_distance']:
-    #     query = query.filter(inlet_distance__gte=filters['inlet_distance_min'])
-    
-    # if 'outfall_distance' in filters.keys() and filters['outfall_distance']:
-    #     query = query.filter(outfall_distance__gte=filters['outfall_distance_min'])
-    
     if 'mean_fthm' in filters.keys() and filters['mean_fthm']:
         # query = query.filter(depth_mean__range=(filters['depth_min'], filters['depth_max']))
         query = query.filter(mean_fthm__gte=filters['mean_fthm_min'])

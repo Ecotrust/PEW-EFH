@@ -41,7 +41,4 @@ class Command(BaseCommand):
                 PlanningUnitHabitatLookup.objects.create(**hab_dict)
                 import_count += 1
 
-        # except:
-            # raise CommandError('Problem adding SRID: %s' % srid)
-
         self.stdout.write('Successfully added %s Habitat/Planning-Unit Lookup records' % import_count)

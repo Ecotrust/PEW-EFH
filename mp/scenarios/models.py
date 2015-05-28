@@ -20,6 +20,19 @@ from django.forms.models import model_to_dict
 @register
 class Scenario(Analysis):
 
+    species = models.BooleanField()
+    species_input = models.ForeignKey('scenarios.Species', blank=True, null=True)
+
+    LIFESTAGE_CHOICES = (
+        ('Adults', 'Adults'),
+        ('Juveniles', 'Juveniles'),
+        ('Eggs', 'Eggs'),
+        ('Larvae', 'Larvae')
+    )
+
+    lifestage = models.BooleanField()
+    lifestage_input = models.CharField(max_length=30, blank=True, null=True, choices=LIFESTAGE_CHOICES)
+
     min_fthm = models.BooleanField()
     # min_fthm_min = models.FloatField(null=True, blank=True)
     # min_fthm_max = models.FloatField(null=True, blank=True)
@@ -282,6 +295,21 @@ class Scenario(Analysis):
         attributes = []
 
         # Step 1
+        if self.species:
+            if self.lifestage:
+                if self.species_input is not None and self.lifestage_input is not None:
+                    title = '%s %ss present' % (self.species_input.capitalize(), self.lifestage_input.capitalize())
+                    attributes.append({
+                        'title': title,
+                        'data':  ''
+                    })
+            elif self.species_input is not None:
+                title = '%s present' % self.species_input.capitalize()
+                attributes.append({
+                    'title': title,
+                    'data':  ''
+                })
+
         if self.mean_fthm:
             attributes.append(
                 self.get_min_max_attributes(
@@ -790,3 +818,8 @@ class PlanningUnitHabitatLookup(models.Model):
     pug = models.ForeignKey('scenarios.GridCell', blank=False, null=False)
     sgh_id = models.IntegerField(blank=False, null=False)
     sgh_lookup_code = models.CharField(max_length=30, blank=False, null=False)
+
+
+class Species(models.Model):
+    common_name = models.CharField(max_length=255, blank=False, null=False)
+    scientific_name = models.CharField(max_length=255, blank=False, null=False)

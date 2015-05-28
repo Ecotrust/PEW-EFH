@@ -107,7 +107,9 @@ var madrona = {
 
 function scenarioFormModel(options) {
     var self = this;
-      
+
+    self.species = ko.observalbe(false);
+    self.lifestage = ko.observable(false);      
     self.mean_fthm = ko.observable(false);
     self.hsall1_m2 = ko.observable(false);
     self.hsall2_m2 = ko.observable(false);
@@ -560,6 +562,8 @@ function scenarioModel(options) {
                 ko.applyBindings(model, document.getElementById('scenario-form'));
 
                 var parameters = [
+                    'species',
+                    'lifestage',
                     'mean_fthm',
                     'hsall1_m2',
                     'hsall2_m2',

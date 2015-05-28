@@ -58,6 +58,50 @@ class ScenarioForm(FeatureForm):
         widget=forms.Textarea(attrs={'cols': 30, 'rows': 3}), required=False)
 
     # Step 1
+    species = forms.BooleanField(
+        label="Species",
+        required=False,
+        help_text="Species Presence",
+        widget=CheckboxInput(
+            attrs={
+                'class': 'parameters hidden_checkbox'
+            }
+        )
+    )
+    species_choices = [(x.common_name, x.common_name) for x in Species.objects.all()]
+    species_input = forms.ChoiceField(
+        required=False,
+        widget=forms.Select(
+            attrs={'class': 'parameters'}
+        ),
+        choices=species_choices,
+        initial=species_choices[0][0]
+    )
+
+    lifestage = forms.BooleanField(
+        label="Life Stage",
+        required=False,
+        help_text="Species Life Stage",
+        widget=CheckboxInput(
+            attrs={
+                'class': 'parameters hidden_checkbox'
+            }
+        )
+    )
+    lifestage_input = forms.ChoiceField(
+        required=False,
+        widget=forms.Select(
+            attrs={'class': 'parameters'}
+        ),
+        choices=(
+            ('Adults', 'Adults'),
+            ('Juveniles', 'Juveniles'),
+            ('Eggs', 'Eggs'),
+            ('Larvae', 'Larvae')
+        ),
+        initial='Adults'
+    )
+
     mean_fthm = forms.BooleanField(
         label="Average Depth",
         required=False,
@@ -380,6 +424,16 @@ class ScenarioForm(FeatureForm):
 
     # large_live_coral = forms.BooleanField(label="Large Live Corals", required=False, help_text="Whether a cell contains at least one known live coral greater than 2 meters in width", widget=CheckboxInput(attrs={'class': 'parameters hidden_checkbox'}))
     # large_live_coral_input = forms.ChoiceField(required=False, widget=forms.Select(attrs={'class': 'parameters'}), choices=(('Y', 'Yes'), ('N', 'No')), initial='Y')
+    '''
+    Species Habitat
+    '''
+    def get_step_0_fields(self):
+        names = [
+            ('species', 'species_input', 'lifestage', 'lifestage_input')
+        ]
+
+        return self._get_fields(names)
+
 
     '''
     Depth and Distances
@@ -438,7 +492,7 @@ class ScenarioForm(FeatureForm):
         return self._get_fields(names)
 
     def get_steps(self):
-        return self.get_step_1_fields(), self.get_step_2_fields(), self.get_step_3_fields(), self.get_step_4_fields()
+        return self.get_step_0_fields(), self.get_step_1_fields(), self.get_step_2_fields(), self.get_step_3_fields(), self.get_step_4_fields()
 
     def _get_fields(self, names):
         fields = []
