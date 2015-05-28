@@ -41,7 +41,7 @@ class Scenario(Analysis):
     mean_meter_min = models.IntegerField(null=True, blank=True)
     mean_meter_max = models.IntegerField(null=True, blank=True)
 
-    mean_meter = models.BooleanField()
+    max_meter = models.BooleanField()
 
     sft_sub_m2 = models.BooleanField()
     # sft_sub_m2_min = models.FloatField(null=True, blank=True)
@@ -764,7 +764,7 @@ class SpeciesHabitatOccurence(models.Model):
         ('Growth to Maturity', 'Growth to Maturity'),
         ('Unknown', 'Unknown')
     )
-    object_id = models.IntegerField(pk=True)
+    object_id = models.IntegerField(primary_key=True)
     species_common = models.CharField(max_length=255, blank=False, null=False)
     species_sci = models.CharField(max_length=255, blank=False, null=False)
     lifestage = models.CharField(max_length=30, blank=False, null=False, choices=LIFESTAGE_CHOICES)
@@ -786,7 +786,7 @@ class SpeciesHabitatOccurence(models.Model):
 
 
 class PlanningUnitHabitatLookup(models.Model):
-    object_id = models.IntegerField(pk=True)
+    object_id = models.IntegerField(primary_key=True)
     pug = models.ForeignKey('scenarios.GridCell', blank=False, null=False)
     sgh_id = models.IntegerField(blank=False, null=False)
     sgh_lookup_code = models.CharField(max_length=30, blank=False, null=False)
