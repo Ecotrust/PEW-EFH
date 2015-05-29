@@ -11,8 +11,8 @@ thisdir=`dirname $BASH_SOURCE`
 
 
 # PEW sql lives here: G:/projects/PewEFH2015/Deliverables/Data/SQL/PEW_5nm_PUG.sql
-SHP="/home/vagrant/marine-planner/notes/PEW_Data/Planning_unit_grid/PEW_5nm_PUG.shp"
-FINAL="/home/vagrant/marine-planner/notes/PEW_Data/Planning_unit_grid/PEW_5nm_PUG.sql"
+SHP="/home/vagrant/marine-planner/notes/PEW_Data/Planning_unit_grid/with_meters/PEW_5nm_PUG.shp"
+FINAL="/home/vagrant/marine-planner/notes/PEW_Data/Planning_unit_grid/with_meters/PEW_5nm_PUG.sql"
 
 ################################################################################
 # Probably no need to touch anything below here

@@ -21,7 +21,7 @@ from django.forms.models import model_to_dict
 class Scenario(Analysis):
 
     species = models.BooleanField()
-    species_input = models.ForeignKey('scenarios.Species', blank=True, null=True)
+    species_input = models.CharField(max_length=255, blank=True, null=True)
 
     LIFESTAGE_CHOICES = (
         ('Adults', 'Adults'),
@@ -459,13 +459,13 @@ class Scenario(Analysis):
     def run(self):        
         # placing this import here to avoid circular dependency with views.py
         from views import run_filter_query
-        query = run_filter_query(model_to_dict(self))
+        (query, notes) = run_filter_query(model_to_dict(self))
 
         if len(query) == 0:
             self.satisfied = False;
             # raise Exception("No lease blocks available with the current filters.")       
 
-        dissolved_geom = query.aggregate(Union('geometry'))        
+        dissolved_geom = query.aggregate(Union('geometry'))
         if dissolved_geom['geometry__union']:
             dissolved_geom = dissolved_geom['geometry__union']
         else:
