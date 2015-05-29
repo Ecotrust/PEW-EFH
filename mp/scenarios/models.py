@@ -24,10 +24,10 @@ class Scenario(Analysis):
     species_input = models.CharField(max_length=255, blank=True, null=True)
 
     LIFESTAGE_CHOICES = (
-        ('Adults', 'Adults'),
-        ('Juveniles', 'Juveniles'),
-        ('Eggs', 'Eggs'),
-        ('Larvae', 'Larvae')
+        ('adults', 'Adults'),
+        ('juveniles', 'Juveniles'),
+        ('eggs', 'Eggs'),
+        ('larvae', 'Larvae')
     )
 
     lifestage = models.BooleanField()
@@ -719,10 +719,10 @@ class GridCell(models.Model):
 
 class SpeciesHabitatOccurence(models.Model):
     LIFESTAGE_CHOICES = (
-        ('Adults', 'Adults'),
-        ('Juveniles', 'Juveniles'),
-        ('Eggs', 'Eggs'),
-        ('Larvae', 'Larvae')
+        ('adults', 'Adults'),
+        ('juveniles', 'Juveniles'),
+        ('eggs', 'Eggs'),
+        ('larvae', 'Larvae')
     )
     SEX_CHOICES = (
         ('Both', 'Both'),

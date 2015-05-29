@@ -68,7 +68,7 @@ class ScenarioForm(FeatureForm):
             }
         )
     )
-    species_choices = [(x.common_name, x.common_name) for x in Species.objects.all()]
+    species_choices = [(x.common_name, x.common_name.title()) for x in Species.objects.all()]
     species_input = forms.ChoiceField(
         required=False,
         widget=forms.Select(
@@ -94,10 +94,10 @@ class ScenarioForm(FeatureForm):
             attrs={'class': 'parameters'}
         ),
         choices=(
-            ('Adults', 'Adults'),
-            ('Juveniles', 'Juveniles'),
-            ('Eggs', 'Eggs'),
-            ('Larvae', 'Larvae')
+            ('adults', 'Adults'),
+            ('juveniles', 'Juveniles'),
+            ('eggs', 'Eggs'),
+            ('larvae', 'Larvae')
         ),
         initial='Adults'
     )
@@ -105,7 +105,7 @@ class ScenarioForm(FeatureForm):
     mean_fthm = forms.BooleanField(
         label="Average Depth",
         required=False,
-        help_text="Ocean depth in fathoms",
+        help_text="Mean depth of 5nmx5nm Planning Unit",
         widget=CheckboxInput(
             attrs={
                 'class': 'parameters hidden_checkbox'
@@ -428,9 +428,10 @@ class ScenarioForm(FeatureForm):
     Species Habitat
     '''
     def get_step_0_fields(self):
-        names = [
-            ('species', 'species_input', 'lifestage', 'lifestage_input')
-        ]
+        names = (
+            ('species', None, None, 'species_input'),
+            ('lifestage', None, None, 'lifestage_input')
+        )
 
         return self._get_fields(names)
 
