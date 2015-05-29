@@ -37,7 +37,7 @@ class Command(BaseCommand):
                         pu = GridCell.objects.get(unique_id=int(float(val)))
                         hab_dict[map_val['name']] = pu
                     elif map_val['type'] == 'str':
-                        hab_dict[map_val['name']] = val
+                        hab_dict[map_val['name']] = val.lower()
                 PlanningUnitHabitatLookup.objects.create(**hab_dict)
                 import_count += 1
 

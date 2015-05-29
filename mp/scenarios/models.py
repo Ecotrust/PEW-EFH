@@ -807,8 +807,8 @@ class SpeciesHabitatOccurence(models.Model):
     sgh_lookup_code = models.CharField(max_length=30, blank=False, null=False)
     activity = models.CharField(max_length=30, blank=False, null=False, choices=ACTIVITY_CHOICES)
     activity_association = models.CharField(max_length=30, null=True, choices=ASSOCIATION_CHOICES)
-    perferred_min_depth = models.IntegerField(blank=True, null=True, default=None)
-    perferred_max_depth = models.IntegerField(blank=True, null=True, default=None)
+    preferred_min_depth = models.IntegerField(blank=True, null=True, default=None)
+    preferred_max_depth = models.IntegerField(blank=True, null=True, default=None)
     absolute_min_depth = models.IntegerField(blank=True, null=True, default=None)
     absolute_max_depth = models.IntegerField(blank=True, null=True, default=None)
 

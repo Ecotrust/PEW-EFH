@@ -233,15 +233,40 @@ def share_design(request):
 def run_filter_query(filters):
     # TODO: This would be nicer if it generically knew how to filter fields
     # by name, and what kinds of filters they were. For now, hard code. 
+    notes = []
     query = GridCell.objects.all()
 
     if 'species' in filters.keys() and filters['species']:
-        spcs_occ = SpeciesHabitatOccurence.objects.filter(species_common__lower=filters['species_input'])
+        spcs_occ = SpeciesHabitatOccurence.objects.filter(species_common=filters['species_input'])
         if 'lifestage' in filters.keys() and filters['lifestage']:
             spcs_occ = spcs_occ.filter(lifestage=filters['lifestage_input'])
         lu_codes = [x.sgh_lookup_code for x in spcs_occ]
-        pug_ids = [x.pug.unique_id for x in PlanningUnitHabitatLookup.objects.filter(sgh_lookup_code__in=lu_codes)]
+        pmin = False
+        pmax = False
+        amin = False
+        amax = False
+        for spcs in spcs_occ:
+            if (spcs.preferred_min_depth >= 0) and (not pmin or pmin > spcs.preferred_min_depth):
+                pmin = spcs.preferred_min_depth
+            if (spcs.preferred_max_depth >= 0) and (not pmax or pmax < spcs.preferred_max_depth):
+                pmax = spcs.preferred_max_depth
+            if (spcs.absolute_min_depth >= 0) and (not amin or amin > spcs.absolute_min_depth):
+                amin = spcs.absolute_min_depth
+            if (spcs.absolute_max_depth >= 0) and (not amax or amax < spcs.absolute_max_depth):
+                amax = spcs.absolute_max_depth
+
+        lookup_qs = PlanningUnitHabitatLookup.objects.filter(sgh_lookup_code__in=lu_codes)
+        pug_ids = [x.pug.unique_id for x in lookup_qs]
         query = query.filter(unique_id__in=pug_ids)
+        if pmin and pmax:
+            query = query.filter(max_meter__gte=pmin)
+            query = query.filter(min_meter__lte=pmax)
+        elif amin and amax:
+            notes.append('No known preferred depths, using absolute depths')
+            query = query.filter(max_meter__gte=amin)
+            query = query.filter(min_meter__lte=amax)
+        else:
+            notes.append('No known preferred or absolute depths, using all depths')
 
     if 'mean_fthm' in filters.keys() and filters['mean_fthm']:
         # query = query.filter(depth_mean__range=(filters['depth_min'], filters['depth_max']))
@@ -316,14 +341,14 @@ def run_filter_query(filters):
         hpc_sgr_m2 = float(filters['hpc_sgr_m2_min']) * 1000000.0
         query = query.filter(hpc_sgr_m2__gte=hpc_sgr_m2)
 
-    return query
+    return (query, notes)
 
 '''
 '''
 @cache_page(60 * 60) # 1 hour of caching
 def get_filter_count(request):
     filter_dict = dict(request.GET.iteritems())
-    query = run_filter_query(filter_dict)
+    (query, notes) = run_filter_query(filter_dict)
     return HttpResponse(query.count(), status=200)
 
 
@@ -332,7 +357,8 @@ def get_filter_count(request):
 @cache_page(60 * 60) # 1 hour of caching
 def get_filter_results(request):
     filter_dict = dict(request.GET.iteritems())
-    query = run_filter_query(filter_dict)
+
+    (query, notes) = run_filter_query(filter_dict)
 
     json = []
     count = query.count()

@@ -24,8 +24,8 @@ class Command(BaseCommand):
             'LU_Code': {'name': 'sgh_lookup_code', 'type': 'str'},
             'ACTIVITY': {'name': 'activity', 'type': 'str'},
             'ACTIVITYASSOCIATION': {'name': 'activity_association', 'type': 'str'},
-            'Pmin_depth': {'name': 'perferred_min_depth', 'type': 'int'},
-            'Pmax_depth': {'name': 'perferred_max_depth', 'type': 'int'},
+            'Pmin_depth': {'name': 'preferred_min_depth', 'type': 'int'},
+            'Pmax_depth': {'name': 'preferred_max_depth', 'type': 'int'},
             'Amin_depth': {'name': 'absolute_min_depth', 'type': 'int'},
             'Amax_depth': {'name': 'absolute_max_depth', 'type': 'int'}
         }
@@ -50,7 +50,7 @@ class Command(BaseCommand):
                     elif map_val['type'] == 'int':
                         hab_dict[map_val['name']] = int(float(val))
                     elif map_val['type'] == 'str':
-                        hab_dict[map_val['name']] = val
+                        hab_dict[map_val['name']] = val.lower()
                 SpeciesHabitatOccurence.objects.create(**hab_dict)
                 Species.objects.get_or_create(common_name=hab_dict['species_common'].lower(), scientific_name=hab_dict['species_sci'].lower())
                 import_count += 1
