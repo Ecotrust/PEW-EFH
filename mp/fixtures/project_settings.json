@@ -4,7 +4,7 @@
   "model": "mp_settings.marineplannersettings", 
   "fields": {
     "bitly_username": "", 
-    "default_hash": "#x=-126.68&y=41.37&z=5&logo=false&basemap=ESRI+Physical&tab=data", 
+    "default_hash": "#x=-126.68&y=41.37&z=5&logo=false&basemap=ESRI+Ocean&tab=data", 
     "project_name": "Essential Groundfish Habitat", 
     "table_of_contents": 6, 
     "project_icon": "/media/ico/favicon.ico", 

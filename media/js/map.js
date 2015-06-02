@@ -77,6 +77,13 @@ app.init = function() {
         attribution: "Sources: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and others",
         buffer: 3
     });
+    esriOcean = new OpenLayers.Layer.XYZ("ESRI Ocean", "http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/${z}/${y}/${x}", {
+        sphericalMercator: true,
+        isBaseLayer: true,
+        numZoomLevels: max_zoom,
+        attribution: "Sources: Esri, DeLorme, FAO, USGS, NOAA, EPA | GEBCO, IHO-IOC GEBCO, NGS, Esri, DeLorme, and others",
+        buffer: 3 
+    });
 
     /*var bingHybrid = new OpenLayers.Layer.Bing( {
         name: "Bing Hybrid",
@@ -102,7 +109,7 @@ app.init = function() {
         buffer: 3
     });
 
-    map.addLayers([esriTopo, esriImagery, esriStreets, openStreetMap, nauticalCharts]);
+    map.addLayers([esriOcean, esriTopo, esriImagery, esriStreets, openStreetMap, nauticalCharts]);
 
     // map.addLayers([esriOcean]);
     // esriOcean.setZIndex(100);
