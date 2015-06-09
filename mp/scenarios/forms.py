@@ -68,7 +68,7 @@ class ScenarioForm(FeatureForm):
             }
         )
     )
-    species_choices = [(x.common_name, x.common_name.title()) for x in Species.objects.all()]
+    species_choices = sorted([(x.common_name, x.common_name.title()) for x in Species.objects.all()])
     species_input = forms.ChoiceField(
         required=False,
         widget=forms.Select(

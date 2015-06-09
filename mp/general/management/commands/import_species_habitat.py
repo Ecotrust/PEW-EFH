@@ -31,6 +31,7 @@ class Command(BaseCommand):
         }
 
         SpeciesHabitatOccurence.objects.all().delete()
+        Species.objects.all().delete()
         import_count = 0
         try:
             in_file = args[0]
