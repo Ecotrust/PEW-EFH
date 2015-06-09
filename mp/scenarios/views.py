@@ -227,12 +227,16 @@ def share_design(request):
         groups.append(Group.objects.get(name=group_name))
     design.share_with(groups, append=False)
     return HttpResponse("", status=200)
-    
+
 '''
 '''
+
+
 def run_filter_query(filters):
+    from collections import OrderedDict
+    import ast
     # TODO: This would be nicer if it generically knew how to filter fields
-    # by name, and what kinds of filters they were. For now, hard code. 
+    # by name, and what kinds of filters they were. For now, hard code.
     notes = []
     query = GridCell.objects.all()
 
@@ -241,6 +245,7 @@ def run_filter_query(filters):
         if 'lifestage' in filters.keys() and filters['lifestage']:
             spcs_occ = spcs_occ.filter(lifestage=filters['lifestage_input'])
         lu_codes = [x.sgh_lookup_code for x in spcs_occ]
+        lu_codes = OrderedDict.fromkeys(lu_codes).keys()
         pmin = False
         pmax = False
         amin = False
@@ -256,7 +261,8 @@ def run_filter_query(filters):
                 amax = spcs.absolute_max_depth
 
         lookup_qs = PlanningUnitHabitatLookup.objects.filter(sgh_lookup_code__in=lu_codes)
-        pug_ids = [x.pug.unique_id for x in lookup_qs]
+
+        pug_ids = [pug_id for id_list in lookup_qs for pug_id in ast.literal_eval(id_list.pug_ids)]
         query = query.filter(unique_id__in=pug_ids)
         if pmin and pmax:
             query = query.filter(max_meter__gte=pmin)

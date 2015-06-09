@@ -814,10 +814,8 @@ class SpeciesHabitatOccurence(models.Model):
 
 
 class PlanningUnitHabitatLookup(models.Model):
-    object_id = models.IntegerField(primary_key=True)
-    pug = models.ForeignKey('scenarios.GridCell', blank=False, null=False)
-    sgh_id = models.IntegerField(blank=False, null=False)
-    sgh_lookup_code = models.CharField(max_length=30, blank=False, null=False)
+    sgh_lookup_code = models.CharField(primary_key=True, max_length=30, blank=False, null=False)
+    pug_ids = models.TextField(blank=False, null=False, default="[]", help_text="string list of Planning Unit Grid IDs")
 
 
 class Species(models.Model):

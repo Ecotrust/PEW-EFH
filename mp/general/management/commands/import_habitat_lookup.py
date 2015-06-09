@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         header_map = {
             'OBJECTID': {'name': 'object_id', 'type': 'int'},
-            'PUG_ID': {'name': 'pug', 'type': 'fk'},
+            'PUG_ID': {'name': 'pug', 'type': 'int'},
             'SGH': {'name': 'sgh_id', 'type': 'int'},
             'LU_CODE': {'name': 'sgh_lookup_code', 'type': 'str'}
         }
@@ -25,6 +25,7 @@ class Command(BaseCommand):
         with open(in_file, 'rb') as csvfile:
             reader = csv.reader(csvfile, delimiter=',', quotechar='"')
             headers = reader.next()
+            lu_codes = {}
             for row in reader:
                 hab_dict = {}
                 for idx, val in enumerate(row):
@@ -38,7 +39,12 @@ class Command(BaseCommand):
                         hab_dict[map_val['name']] = pu
                     elif map_val['type'] == 'str':
                         hab_dict[map_val['name']] = val.lower()
-                PlanningUnitHabitatLookup.objects.create(**hab_dict)
-                import_count += 1
+                if not lu_codes.has_key(hab_dict['sgh_lookup_code']):
+                    lu_codes[hab_dict['sgh_lookup_code']] = []
+                if hab_dict['pug'] not in lu_codes[hab_dict['sgh_lookup_code']]:
+                    lu_codes[hab_dict['sgh_lookup_code']].append(hab_dict['pug'])
+        for lu_key in lu_codes.keys():
+            PlanningUnitHabitatLookup.objects.create(sgh_lookup_code=lu_key, pug_ids=str(lu_codes[lu_key]))
+            import_count += 1
 
         self.stdout.write('Successfully added %s Habitat/Planning-Unit Lookup records' % import_count)
