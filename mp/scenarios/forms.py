@@ -192,7 +192,7 @@ class ScenarioForm(FeatureForm):
     )
     hsall3_m2_min = forms.FloatField(
         required=False,
-        initial=1000000,
+        initial=1,
         widget=SliderWidget(
             attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 3 Habitat (km<sup>2</sup>)'},
             min=0,
