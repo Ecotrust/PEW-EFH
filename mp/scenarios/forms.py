@@ -143,7 +143,7 @@ class ScenarioForm(FeatureForm):
         )
     )
     hsall1_m2 = forms.BooleanField(
-        label="Predicted Class 1 Suitable Habitat Area",
+        label="Predicted Class 1 Suitable Coral Habitat Area",
         required=False,
         help_text="Square kilometers of predicted class 1 habitat suitable for at least one species",
         widget=CheckboxInput(
@@ -165,7 +165,7 @@ class ScenarioForm(FeatureForm):
         )
     )
     hsall2_m2 = forms.BooleanField(
-        label="Predicted Class 2 Suitable Habitat Area",
+        label="Predicted Class 2 Suitable Coral Habitat Area",
         required=False,
         help_text="Square kilometers of predicted class 2 habitat suitable for at least one species",
         widget=CheckboxInput(
@@ -183,7 +183,7 @@ class ScenarioForm(FeatureForm):
         )
     )
     hsall3_m2 = forms.BooleanField(
-        label="Predicted Class 3 Suitable Habitat Area",
+        label="Predicted Class 3 Suitable Coral Habitat Area",
         required=False,
         help_text="Square kilometers of predicted class 3 habitat suitable for at least one species",
         widget=CheckboxInput(
@@ -201,7 +201,7 @@ class ScenarioForm(FeatureForm):
         )
     )
     hsall4_m2 = forms.BooleanField(
-        label="Predicted Class 4 Suitable Habitat Area",
+        label="Predicted Class 4 Suitable Coral Habitat Area",
         required=False,
         help_text="Square kilometers of predicted class 4 habitat suitable for at least one species",
         widget=CheckboxInput(
