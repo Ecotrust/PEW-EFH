@@ -262,9 +262,7 @@ app.init = function() {
                     });
                     var title = potential_layer.name,
                         text = attribute_objs;
-                    if ( title === 'Planning Grid' ) {
-                        text = app.clickAttributes.getGridAttributes(gridLayerInfo.data);
-                    } 
+                    text = app.clickAttributes.getGridAttributes(gridLayerInfo.data);
                     clickAttributes[title] = text;
                 }
             }

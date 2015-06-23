@@ -97,6 +97,18 @@ app.clickAttributes = (function() {
         if ('cnt_penn' in data) {
             attrs.push({'display': 'Pennatulid (sea pen/sea whip) presence', 'data': data['cnt_penn'].toLocaleString()});
         }
+
+        if ('Area_m2' in data) {
+            if (data['Area_m2'] !== 0) {
+                attrs.push({'display': 'Area', 'data': data['Area_m2'].toLocaleString() + ' m&sup2;'});
+            } else {
+                attrs.push({'display': 'Area', 'data': '>1 Billion m&sup2;'});
+            }
+        }
+        if ('LoHS' in data) {
+            attrs.push({'display': 'Suitability', 'data': data['LoHS'].toLocaleString()});
+        }
+
         
         // // Depth Range
         // if ('MaxDpth_ft' in data && 'MinDpth_ft' in data) {
