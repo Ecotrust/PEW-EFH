@@ -166,7 +166,7 @@ madrona.onShow(function(){
         <p class="instructions">Select criteria to filter your results</p>        
         <div id="step{{ forloop.counter }}_inputs">
             <ul class="parameters">
-                {% for field, field_min, field_max, field_input in step %}
+                {% for field, field_min, field_max, field_input, field_checkbox in step %}
                 <li>
                     <div class="accordion" id="{{ field.html_name }}_accordion">
                         <div class="accordion-heading" data-bind="click: function() { toggleParameter('{{ field.html_name }}'); }">
@@ -183,13 +183,13 @@ madrona.onShow(function(){
                                 </i>
                             </label>
                         </div>
-                        {% if field_min or field_max or field_input %}
+                        {% if field_min or field_max or field_input or field_checkbox %}
                         <div id="{{ field.html_name }}_widget" class="inputfield accordion-body collapse" data-bind="css: {'in': {{ field.html_name }}()}">
                             <div class="accordion-inner">
                                 <div>   
 
                                     {% if field_min %}
-                                        {{ field_min.field.widget.attrs.pre_text | safe }}    
+                                        {{ field_min.field.widget.attrs.pre_text | safe }}
                                         {{ field_min.as_widget }}
                                         {{ field_min.field.widget.attrs.post_text | safe }}    
                                     {% endif %}{% if field_max %}
@@ -200,6 +200,10 @@ madrona.onShow(function(){
                                         {{ field_input.field.widget.attrs.pre_text | safe  }}
                                         {{ field_input.as_widget }}
                                         {{ field_input.field.widget.attrs.post_text | safe  }}
+                                    {% endif %}{% if field_checkbox %}
+                                        {{ field_checkbox.field.widget.attrs.pre_text | safe }}
+                                        {{ field_checkbox.as_widget }}
+                                        {{ field_checkbox.field.widget.attrs.post_text | safe }}
                                     {% endif %}
 
                                     {% if field.field.widget.attrs.layer_id and field.field.widget.attrs.layer_title %}
@@ -267,6 +271,15 @@ madrona.onShow(function(){
                                                     app.viewModel.scenarios.scenarioFormModel.gridCellsRemaining('...');
                                                 }
                                             });  
+                                        {% elif field_checkbox %}    
+                                            $('[name="{{ field_checkbox.html_name }}"').change( function(change_event) {
+                                                if (app.viewModel.scenarios.scenarioFormModel) {
+                                                    if (!change_event.target.checked) {
+                                                        app.viewModel.scenarios.scenarioFormModel.removeFilter('{{ field_checkbox.html_name }}_' + change_event.target.value.toString());
+                                                    } 
+                                                    app.viewModel.scenarios.scenarioFormModel.updateFiltersAndCount('{{ field.html_name }}');
+                                                }
+                                            });
                                         {% else %}
                                             $('#id_{{ field_input.html_name }}').change( function() {
                                                 if (app.viewModel.scenarios.scenarioFormModel) {

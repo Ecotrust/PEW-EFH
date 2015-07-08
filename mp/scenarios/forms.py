@@ -497,7 +497,7 @@ class ScenarioForm(FeatureForm):
     '''
     def get_step_4_fields(self):
         names = (
-            ('hsall_m2', 'hsall_m2_checkboxes', None),
+            ('hsall_m2', None, None, None, 'hsall_m2_checkboxes'),
             # ('hsall1_m2', 'hsall1_m2_min', None),
             # ('hsall2_m2', 'hsall2_m2_min', None),
             # ('hsall3_m2', 'hsall3_m2_min', None),

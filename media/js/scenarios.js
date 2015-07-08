@@ -112,6 +112,10 @@ function scenarioFormModel(options) {
     self.lifestage = ko.observable(false);      
     self.mean_fthm = ko.observable(false);
     self.hsall_m2 = ko.observable(false);
+    self.hsall_m2_checkboxes_0 = ko.observable(true);
+    self.hsall_m2_checkboxes_1 = ko.observable(true);
+    self.hsall_m2_checkboxes_2 = ko.observable(true);
+    self.hsall_m2_checkboxes_3 = ko.observable(true);
     self.hsall1_m2 = ko.observable(false);
     self.hsall2_m2 = ko.observable(false);
     self.hsall3_m2 = ko.observable(false);
@@ -273,7 +277,6 @@ function scenarioFormModel(options) {
             clearTimeout(self.updateTimeout);
         }          
         self.inputsHaveChanged(true);
-        // console.log('inputs have changed');
         if (self.showingFilteringResults()) {
             self.showButtonSpinner(true);
         }        
