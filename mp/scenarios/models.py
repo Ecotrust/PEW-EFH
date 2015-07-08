@@ -116,6 +116,9 @@ class Scenario(Analysis):
     # hsalcy4_m2_max = models.FloatField(null=True, blank=True)
     # hsalcy4_m2_input = models.TextField(null=True, blank=True)
 
+    hsall_m2 = models.BooleanField(default=False)
+    hsall_m2_min = models.FloatField(null=True, blank=True)
+
     hsall1_m2 = models.BooleanField()
     hsall1_m2_min = models.FloatField(null=True, blank=True)
     hsall1_m2_max = models.FloatField(null=True, blank=True)
@@ -317,6 +320,12 @@ class Scenario(Analysis):
                     self.mean_fthm_min,
                     self.mean_fthm_max,
                     'fathoms'
+                )
+            )
+        if self.hsall_m2:
+            attributes.append(
+                self.get_min_attributes(
+                    'Predicted Presence of Deep Sea Coral Habitat Classes 1-4'
                 )
             )
         if self.hsall1_m2:

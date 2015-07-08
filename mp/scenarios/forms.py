@@ -142,82 +142,99 @@ class ScenarioForm(FeatureForm):
             step=5
         )
     )
-    hsall1_m2 = forms.BooleanField(
-        label="Predicted Class 1 Suitable Coral Habitat Area",
+    hsall_m2 = forms.BooleanField(
+        label="Predicted Coral Suitable Habitat",
         required=False,
-        help_text="Square kilometers of predicted class 1 habitat suitable for at least one species",
+        help_text="grid cells with presence of any class 1-4 suitable habitat for at least one species of coral",
         widget=CheckboxInput(
-            attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'Coral and Sponges Predicted Habitat Suitability'}
+            attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'PHS Taxa of Deep-sea Coal'}
         )
     )
-    hsall1_m2_min = forms.FloatField(
+    hs_classes = (("1", "Class 1"), ("2", "Class 2"), ("3", "Class 3"), ("4", "Class 4"))
+    hsall_m2_checkboxes = forms.MultipleChoiceField(
+        label="Classes to include",
+        choices=hs_classes,
         required=False,
-        initial=1,
-        widget=SliderWidget(
-            attrs={
-                'class': 'slidervalue',
-                'range': 'max',
-                'pre_text': 'Predicted Class 1 Habitat (km<sup>2</sup>)'
-            },
-            min=0,
-            max=86,
-            step=0.001
-        )
+        help_text="include cells that include any suitable habitat meeting the selected classes",
+        widget=CheckboxSelectMultiple(),
+        initial=("1", "2", "3", "4")
     )
-    hsall2_m2 = forms.BooleanField(
-        label="Predicted Class 2 Suitable Coral Habitat Area",
-        required=False,
-        help_text="Square kilometers of predicted class 2 habitat suitable for at least one species",
-        widget=CheckboxInput(
-            attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'Coral and Sponges Predicted Habitat Suitability'}
-        )
-    )
-    hsall2_m2_min = forms.FloatField(
-        required=False,
-        initial=1,
-        widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 2 Habitat (km<sup>2</sup>)'},
-            min=0,
-            max=86,
-            step=0.001
-        )
-    )
-    hsall3_m2 = forms.BooleanField(
-        label="Predicted Class 3 Suitable Coral Habitat Area",
-        required=False,
-        help_text="Square kilometers of predicted class 3 habitat suitable for at least one species",
-        widget=CheckboxInput(
-            attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'Coral and Sponges Predicted Habitat Suitability'}
-        )
-    )
-    hsall3_m2_min = forms.FloatField(
-        required=False,
-        initial=1,
-        widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 3 Habitat (km<sup>2</sup>)'},
-            min=0,
-            max=86,
-            step=0.001
-        )
-    )
-    hsall4_m2 = forms.BooleanField(
-        label="Predicted Class 4 Suitable Coral Habitat Area",
-        required=False,
-        help_text="Square kilometers of predicted class 4 habitat suitable for at least one species",
-        widget=CheckboxInput(
-            attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'Coral and Sponges Predicted Habitat Suitability'}
-        )
-    )
-    hsall4_m2_min = forms.FloatField(
-        required=False,
-        initial=1,
-        widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 4 Habitat (km<sup>2</sup>)'},
-            min=0,
-            max=86,
-            step=0.001
-        )
-    )
+    # hsall1_m2 = forms.BooleanField(
+    #     label="Predicted Class 1 Suitable Coral Habitat Area",
+    #     required=False,
+    #     help_text="Square kilometers of predicted class 1 habitat suitable for at least one species",
+    #     widget=CheckboxInput(
+    #         attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'Coral and Sponges Predicted Habitat Suitability'}
+    #     )
+    # )
+    # hsall1_m2_min = forms.FloatField(
+    #     required=False,
+    #     initial=1,
+    #     widget=SliderWidget(
+    #         attrs={
+    #             'class': 'slidervalue',
+    #             'range': 'max',
+    #             'pre_text': 'Predicted Class 1 Habitat (km<sup>2</sup>)'
+    #         },
+    #         min=0,
+    #         max=86,
+    #         step=0.001
+    #     )
+    # )
+    # hsall2_m2 = forms.BooleanField(
+    #     label="Predicted Class 2 Suitable Coral Habitat Area",
+    #     required=False,
+    #     help_text="Square kilometers of predicted class 2 habitat suitable for at least one species",
+    #     widget=CheckboxInput(
+    #         attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'Coral and Sponges Predicted Habitat Suitability'}
+    #     )
+    # )
+    # hsall2_m2_min = forms.FloatField(
+    #     required=False,
+    #     initial=1,
+    #     widget=SliderWidget(
+    #         attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 2 Habitat (km<sup>2</sup>)'},
+    #         min=0,
+    #         max=86,
+    #         step=0.001
+    #     )
+    # )
+    # hsall3_m2 = forms.BooleanField(
+    #     label="Predicted Class 3 Suitable Coral Habitat Area",
+    #     required=False,
+    #     help_text="Square kilometers of predicted class 3 habitat suitable for at least one species",
+    #     widget=CheckboxInput(
+    #         attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'Coral and Sponges Predicted Habitat Suitability'}
+    #     )
+    # )
+    # hsall3_m2_min = forms.FloatField(
+    #     required=False,
+    #     initial=1,
+    #     widget=SliderWidget(
+    #         attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 3 Habitat (km<sup>2</sup>)'},
+    #         min=0,
+    #         max=86,
+    #         step=0.001
+    #     )
+    # )
+    # hsall4_m2 = forms.BooleanField(
+    #     label="Predicted Class 4 Suitable Coral Habitat Area",
+    #     required=False,
+    #     help_text="Square kilometers of predicted class 4 habitat suitable for at least one species",
+    #     widget=CheckboxInput(
+    #         attrs={'class': 'parameters hidden_checkbox', 'layer_id': 388, 'layer_title': 'Coral and Sponges Predicted Habitat Suitability'}
+    #     )
+    # )
+    # hsall4_m2_min = forms.FloatField(
+    #     required=False,
+    #     initial=1,
+    #     widget=SliderWidget(
+    #         attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Predicted Class 4 Habitat (km<sup>2</sup>)'},
+    #         min=0,
+    #         max=86,
+    #         step=0.001
+    #     )
+    # )
     hpc_est_m2 = forms.BooleanField(
         label="Estuary Habitat Area",
         required=False,
@@ -480,10 +497,11 @@ class ScenarioForm(FeatureForm):
     '''
     def get_step_4_fields(self):
         names = (
-            ('hsall1_m2', 'hsall1_m2_min', None),
-            ('hsall2_m2', 'hsall2_m2_min', None),
-            ('hsall3_m2', 'hsall3_m2_min', None),
-            ('hsall4_m2', 'hsall4_m2_min', None),
+            ('hsall_m2', 'hsall_m2_checkboxes', None),
+            # ('hsall1_m2', 'hsall1_m2_min', None),
+            # ('hsall2_m2', 'hsall2_m2_min', None),
+            # ('hsall3_m2', 'hsall3_m2_min', None),
+            # ('hsall4_m2', 'hsall4_m2_min', None),
             ('hpc_est_m2', 'hpc_est_m2_min', None),
             ('hpc_klp_m2', 'hpc_klp_m2_min', None),
             ('hpc_rck_m2', 'hpc_rck_m2_min', None),

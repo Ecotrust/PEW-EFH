@@ -315,21 +315,68 @@ def run_filter_query(filters):
         else:
             query = query.exclude(rck_sub_m2__gt=0)
 
-    if 'hsall1_m2' in filters.keys() and filters['hsall1_m2']:
-        hsall1_m2 = float(filters['hsall1_m2_min']) * 1000000.0
-        query = query.filter(hsall1_m2__gte=hsall1_m2)
+    if 'hsall_m2' in filters.keys() and 'hsall_m2_checkboxes' in filters.keys():
+        from django.db.models import Q
+        if "hsall_m2_checkboxes_1" in filters.keys():
+            if "hsall_m2_checkboxes_2" in filters.keys():
+                if "hsall_m2_checkboxes_3" in filters.keys():
+                    if "hsall_m2_checkboxes_4" in filters.keys():
+                        query = query.filter(Q(hsall1_m2__gt=0) | Q(hsall2_m2__gt=0) | Q(hsall3_m2__gt=0) | Q(hsall4_m2__gt=0))
+                    else:
+                        query = query.filter(Q(hsall1_m2__gt=0) | Q(hsall2_m2__gt=0) | Q(hsall3_m2__gt=0))
+                else:
+                    if "hsall_m2_checkboxes_4" in filters.keys():
+                        query = query.filter(Q(hsall1_m2__gt=0) | Q(hsall2_m2__gt=0) | Q(hsall4_m2__gt=0))
+                    else:
+                        query = query.filter(Q(hsall1_m2__gt=0) | Q(hsall2_m2__gt=0))
+            else:
+                if "hsall_m2_checkboxes_3" in filters.keys():
+                    if "hsall_m2_checkboxes_4" in filters.keys():
+                        query = query.filter(Q(hsall1_m2__gt=0) | Q(hsall3_m2__gt=0) | Q(hsall4_m2__gt=0))
+                    else:
+                        query = query.filter(Q(hsall1_m2__gt=0) | Q(hsall3_m2__gt=0))
+                else:
+                    if "hsall_m2_checkboxes_4" in filters.keys():
+                        query = query.filter(Q(hsall1_m2__gt=0) | Q(hsall4_m2__gt=0))
+                    else:
+                        query = query.filter(hsall1_m2__gt=0)
+        else:
+            if "hsall_m2_checkboxes_2" in filters.keys():
+                if "hsall_m2_checkboxes_3" in filters.keys():
+                    if "hsall_m2_checkboxes_4" in filters.keys():
+                        query = query.filter(Q(hsall2_m2__gt=0) | Q(hsall3_m2__gt=0) | Q(hsall4_m2__gt=0))
+                    else:
+                        query = query.filter(Q(hsall2_m2__gt=0) | Q(hsall3_m2__gt=0))
+                else:
+                    if "hsall_m2_checkboxes_4" in filters.keys():
+                        query = query.filter(Q(hsall2_m2__gt=0) | Q(hsall4_m2__gt=0))
+                    else:
+                        query = query.filter(hsall2_m2__gt=0)
+            else:
+                if "hsall_m2_checkboxes_3" in filters.keys():
+                    if "hsall_m2_checkboxes_4" in filters.keys():
+                        query = query.filter(Q(hsall3_m2__gt=0) | Q(hsall4_m2__gt=0))
+                    else:
+                        query = query.filter(hsall3_m2__gt=0)
+                else:
+                    if "hsall_m2_checkboxes_4" in filters.keys():
+                        query = query.filter(hsall4_m2__gt=0)
 
-    if 'hsall2_m2' in filters.keys() and filters['hsall2_m2']:
-        hsall2_m2 = float(filters['hsall2_m2_min']) * 1000000.0
-        query = query.filter(hsall2_m2__gte=hsall2_m2)
+    # if 'hsall1_m2' in filters.keys() and filters['hsall1_m2']:
+    #     hsall1_m2 = float(filters['hsall1_m2_min']) * 1000000.0
+    #     query = query.filter(hsall1_m2__gte=hsall1_m2)
 
-    if 'hsall3_m2' in filters.keys() and filters['hsall3_m2']:
-        hsall3_m2 = float(filters['hsall3_m2_min']) * 1000000.0
-        query = query.filter(hsall3_m2__gte=hsall3_m2)
+    # if 'hsall2_m2' in filters.keys() and filters['hsall2_m2']:
+    #     hsall2_m2 = float(filters['hsall2_m2_min']) * 1000000.0
+    #     query = query.filter(hsall2_m2__gte=hsall2_m2)
 
-    if 'hsall4_m2' in filters.keys() and filters['hsall4_m2']:
-        hsall4_m2 = float(filters['hsall4_m2_min']) * 1000000.0
-        query = query.filter(hsall4_m2__gte=hsall4_m2)
+    # if 'hsall3_m2' in filters.keys() and filters['hsall3_m2']:
+    #     hsall3_m2 = float(filters['hsall3_m2_min']) * 1000000.0
+    #     query = query.filter(hsall3_m2__gte=hsall3_m2)
+
+    # if 'hsall4_m2' in filters.keys() and filters['hsall4_m2']:
+    #     hsall4_m2 = float(filters['hsall4_m2_min']) * 1000000.0
+    #     query = query.filter(hsall4_m2__gte=hsall4_m2)
 
     if 'hpc_est_m2' in filters.keys() and filters['hpc_est_m2']:
         hpc_est_m2 = float(filters['hpc_est_m2_min']) * 1000000.0

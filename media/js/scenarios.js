@@ -111,6 +111,7 @@ function scenarioFormModel(options) {
     self.species = ko.observable(false);
     self.lifestage = ko.observable(false);      
     self.mean_fthm = ko.observable(false);
+    self.hsall_m2 = ko.observable(false);
     self.hsall1_m2 = ko.observable(false);
     self.hsall2_m2 = ko.observable(false);
     self.hsall3_m2 = ko.observable(false);
@@ -351,10 +352,11 @@ function scenarioFormModel(options) {
     };
 
     self.updateFilters = function(param) {
-        var min, max, input,
+        var min, max, input, checkboxes,
             param_element_min = $('#id_' + param + '_min')[0],
             param_element_max = $('#id_' + param + '_max')[0],
-            param_element_input = $('#id_' + param + '_input')[0];
+            param_element_input = $('#id_' + param + '_input')[0],
+            param_element_checkboxes = $('#id_' + param + '_checkboxes_0')[0];
 
         if (param_element_min) {
             min = param_element_min.value;
@@ -365,10 +367,21 @@ function scenarioFormModel(options) {
         if (param_element_input) {
             input = param_element_input.value;
         }
-        self.updateFilter(param, min, max, input);
+        if (param_element_checkboxes) {
+            checkboxes = [];
+            var i = 0;
+            while ($('#id_' + param + '_checkboxes_' + i.toString())[0]) {
+                var box = $('#id_' + param + '_checkboxes_' + i.toString())[0];
+                if (box.checked) {
+                    checkboxes.push(box.value);
+                }
+                i++;
+            }
+        }
+        self.updateFilter(param, min, max, input, checkboxes);
     };
 
-    self.updateFilter = function(param, min, max, input) {
+    self.updateFilter = function(param, min, max, input, checkboxes) {
         var key;
         self.filters[param] = true;
         if (min) {
@@ -383,6 +396,14 @@ function scenarioFormModel(options) {
             key = param + '_input';
             self.filters[key] = input;
         }
+        if (checkboxes) {
+            key = param + '_checkboxes';
+            self.filters[key] = true;
+            for(var i = 0; i < checkboxes.length; i++) {
+                key = param + '_checkboxes_' + checkboxes[i];
+                self.filters[key] = true;
+            }
+        }
     };
 
     self.removeFilter = function(key) {
@@ -390,6 +411,19 @@ function scenarioFormModel(options) {
         delete self.filters[key+'_min'];
         delete self.filters[key+'_max'];
         delete self.filters[key+'_input'];
+        if (self.filters.hasOwnProperty(key+'_checkboxes')) {
+            delete self.filters[key+'_checkboxes'];
+            var filter_keys = Object.keys(self.filters);
+            var box_keys = [];
+            for(var counter = 0; counter < filter_keys.length; counter++) {
+                if (filter_keys[counter].indexOf(key+'_checkboxes_') > -1) {
+                    box_keys.push(filter_keys[counter]);
+                }
+            }
+            for(var i = 0; i < box_keys.length; i++) {
+                delete self.filters[box_keys[i]];
+            }
+        }
     };
     
     self.updateDesignScrollBar = function() {
@@ -565,10 +599,11 @@ function scenarioModel(options) {
                     'species',
                     'lifestage',
                     'mean_fthm',
-                    'hsall1_m2',
-                    'hsall2_m2',
-                    'hsall3_m2',
-                    'hsall4_m2',
+                    'hsall_m2',
+                    // 'hsall1_m2',
+                    // 'hsall2_m2',
+                    // 'hsall3_m2',
+                    // 'hsall4_m2',
                     'hpc_est_m2',
                     'hpc_klp_m2',
                     'hpc_rck_m2',
