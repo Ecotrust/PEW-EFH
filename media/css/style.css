@@ -254,9 +254,50 @@ div.olLayerGooglePoweredBy
   display: none !important;
 }
 
+#left-panel {
+  height: 100%;
+  padding-bottom: 10px;
+}
+
+#planner-sidebar {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  min-width: 370px; 
+  max-width: 370px; 
+  height: 100%;
+  top: 12px; 
+  z-index: 750; 
+  margin-left: 12px; 
+  background-color: white; 
+  border-radius: 10px; 
+  opacity: .95; 
+  border: 1px solid #ccc;
+}
+
 .sidebar-nav {
   /*height: 600px;
   padding: 9px 0;*/
+}
+
+.sidebar-footer {
+  position: absolute; 
+  margin-top: -50px;
+  z-index: 760;
+  height: 50px;
+  bottom: 0; 
+  width: 100%;
+}
+
+#bottom-button-span {
+  position: absolute; 
+  bottom: 0; 
+  left: 0; 
+  z-index: 1; 
+  padding-left: 12px; 
+  padding-bottom: 12px; 
+  background-color: #DDD; 
+  border-top: 1px solid #AAA; 
+  width: 100%;
 }
 
 .tab-content {
@@ -605,6 +646,14 @@ a.disabled-link:hover {
 
 #data-accordion .accordion-group {
   border-radius: 0px;
+}
+
+#myTabContent {
+  margin-top: 0;
+  position: absolute; 
+  top: 206px; 
+  bottom: 50px; 
+  height: auto !important;
 }
 
 #myTabContent .accordion-inner {

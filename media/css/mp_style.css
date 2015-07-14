@@ -363,7 +363,7 @@ input + i.icon-remove-sign {
 }
 
 #designs {
-	margin-top: 20px;
+	margin-top: 0px;
 }
 
 #designs .btn-layer .icon-info-sign {
@@ -715,7 +715,10 @@ img + h3 {
 }
 
 #legend-content {
-  height: 94%;
+  margin-left: 20px; 
+  margin-bottom:20px; 
+  outline: none !important; 
+  height: 100%;
 }
 
 #legend-accordion .accordion-toggle {

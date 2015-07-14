@@ -397,328 +397,262 @@
                 
                 
                 <!-- Data Panel (left panel) -->
-                <div class="row-fluid" data-bind="visible: showLayers()">
-                <div class="span4 tabs">
-                    <div class="sidebar-nav" data-bind="css: {'fullscreen-data': isFullScreen()}" style="min-width: 370px; max-width: 370px; height: 625px; top: 12px; z-index: 750; margin-left: 12px; background-color: white; border-radius: 10px; opacity: .95; border: 1px solid #ccc;">
-                        
-                        <!-- Header -->
-                        <div id="data-panel-header">
-                            <div class="row-fluid">
-                                <div class="span12">
-                                    {% if project_home_page %}
-                                    <a href="{{project_home_page}}" style="text-decoration: none" target="_blank">
-                                    {% else %}
-                                    <a style="text-decoration: none; cursor: default;">
-                                    {% endif %}
-                                        {% if project_logo %}
-                                        <img id="project-logo" src="{{project_logo}}"/>
-                                        {% else %}
-                                            {% if project_name %}
-                                            <h2 style="margin-left: 15px; margin-bottom: 0px;" id="project-name-header">{{project_name}}</h2>
-                                            {% else %}
-                                            <h2 style="margin-left: 15px; margin-bottom: 0px;" id="project-name-header">Marine Planner</h2>
-                                            {% endif %}
-                                        {% endif %}
-                                    </a>
-                                    <h3 class="pull-right" data-bind="visible: mapTitle, text: mapTitle"></h3>
-                                    <i id="minimize-icon" class="icon-minus icon-large" data-bind="click: minimizeLeftPanel" style="cursor: pointer; position: absolute; top: 5px; right: 12px;"></i>
-                                </div>
-                                <div data-bind="visible: showBottomButtons()">
-                                    <span style="position: absolute; bottom: 12px; left: 12px; z-index: 1;" class="btn-group">
-                                      <a id="help-button" class="btn" style="outline: none; margin-top: 10px;" href="#help-modal" data-toggle="modal">Tutorial</a>
-                                    </span>
-                                    {% if user.is_staff %}
-                                    <!-- <span style="position: absolute; bottom: 12px; right: 12px; z-index: 1;" class="btn-group">
-                                      <a id="add-layer-button" class="btn" style="outline: none; margin-top: 10px;" data-bind="click: showAddLayerModal">
-                                        <i class="icon-plus"></i>
-                                        Add Layer
+                <div id="left-panel" class="row-fluid" data-bind="visible: showLayers()">
+                  <div class="span4 tabs">
+                      <div id="planner-sidebar" class="sidebar-nav" data-bind="css: {'fullscreen-data': isFullScreen()}">
+                          
+                          <!-- Header -->
+                          <div id="data-panel-header">
+                              <div class="row-fluid">
+                                  <div class="span12">
+                                      {% if project_home_page %}
+                                      <a href="{{project_home_page}}" style="text-decoration: none" target="_blank">
+                                      {% else %}
+                                      <a style="text-decoration: none; cursor: default;">
+                                      {% endif %}
+                                          {% if project_logo %}
+                                          <img id="project-logo" src="{{project_logo}}"/>
+                                          {% else %}
+                                              {% if project_name %}
+                                              <h2 style="margin-left: 15px; margin-bottom: 0px;" id="project-name-header">{{project_name}}</h2>
+                                              {% else %}
+                                              <h2 style="margin-left: 15px; margin-bottom: 0px;" id="project-name-header">Marine Planner</h2>
+                                              {% endif %}
+                                          {% endif %}
                                       </a>
-                                    </span> -->
-                                    {% endif %}
-                                    <!--
-                                    {% if user.is_authenticated %}
-                                    <span style="position: absolute; bottom: 12px; right: 12px; z-index: 1;" class="btn-group">
-                                      <a class="btn dropdown-toggle" style="margin-top: 10px;" data-toggle="dropdown" href="#">
-                                        <i class="icon-user"></i> 
-                                        {{user.username}}
-                                        <span class="caret"></span>
-                                      </a>
-                                      <ul id="username" class="dropdown-menu">
-                                        <li><a href="#profile-modal" data-toggle="modal"><i class="icon-pencil"></i> Profile</a></li>
-                                        <li><a href="#reset-password-modal" data-toggle="modal"><i class="icon-lock"></i> Password</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="{% url 'user_signout' %}"><i class="i"></i>Log Out</a></li>
-                                      </ul>
-                                    </span>
-                                    {% else %}
-                                    <span style="position: absolute; bottom: 12px; right: 12px; z-index: 1;" class="btn-group">
-                                      <a id="#sign-in-button" style="margin-top: 10px;" class="btn" href="#sign-in-modal" data-toggle="modal">Sign In / Register</a> 
-                                    </span>                           
-                                    {% endif %}
-                                    -->
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Search -->
-                        <div class="row-fluid" style="padding: 10px 0px 20px 0px; height: 30px;">
-                            <div class="search-form span12">
-                                <form class="form-search" data-bind="submit: layerSearch" style="margin-left: auto; margin-right: auto; width: 80%; height: 0px">
-                                    <div class="span12" style="float: none;">
-                                        <span style="border-radius: 4px;">
-                                          <input type="search" class="field search-box" data-provide="typeahead" data-bind="value: searchTerm, event: { keyup: keySearch }" name="s" id="s" placeholder="Search" style="border-radius: 4px;">
-                                        </span>
-                                        <input type="submit" class="search" name="submit" id="searchsubmit" value="Search" style="background: url(http://ourfloridareefs.org/wp-content/themes/OurFloridaReefs/images/search.png) no-repeat 0 0; width: 26px; height: 30px; border: none; padding: 0; cursor: pointer; font-size: 0; margin-top: 9px; border-radius: 0px">
-                                        <!-- <input type="text" class="search-box" data-provide="typeahead" data-bind="value: searchTerm, event: { keyup: keySearch }" style="overflow: hidden; text-overflow: ellipsis; width: 80%;" placeholder="Search">
-                                        <a class="btn">
-                                            <i class="icon-remove icon-large"></i> 
-                                        </a> -->
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        
-                        <!-- tab controls -->
-                        <ul id="myTab" class="nav nav-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;">
-                            <li class="active" data-tab="data">
-                                <a href="#data" data-toggle="tab" id="dataTab">Data</a>
-                            </li>
-                            {% if user.is_authenticated %}
-                            <li data-tab="designs" data-bind="visible: enableDrawing()">
-                                <a href="#designs" data-toggle="tab" id="designsTab">Designs</a>
-                            </li>
-                            {% endif %}
-                            <li data-tab="active" >
-                                <a href="#active" data-toggle="tab" id="activeTab">Active</a>
-                            </li>
-                            <li data-tab="legend" >
-                                <a href="#legend" data-toggle="tab" id="legendTab">Legend</a>
-                            </li>
-                            
-                        </ul>
-                        
-                        <!-- tab body -->
-                        <div id="myTabContent" class="tab-content" style="height: 340px; margin-top: 20px;">
-                        
-                            <!-- DATA TAB -->
-                            <div class="tab-pane active in fade" id="data" style="height: 100%">
-                                <div class="row-fluid" style="height: 100%;">
-                                    <div class="span12 accordion-wrapper" style="height: 100%;">
-                                        <!-- data accordion -->
-                                        <div id="data-accordion" style="max-height: 100%;">
-                                            <div class="accordion" data-bind="foreach: themes">
-                                                <div class="accordion-group">
-                                                    <div class="accordion-heading" data-bind="click: setOpenTheme, css: { 'active': isOpenTheme() }">
-                                                        <div>
-                                                            <a class="accordion-toggle"> <!--event: {'hover': showDescription}-->
-                                                                <span data-bind="text: name">Themes</span></a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="accordion-body collapse" data-bind="css: { 'in': isOpenTheme() }">
-                                                        <div class="accordion-inner">
-                                                            <ul  class="unstyled" data-bind="foreach: layers ">
-                                                                <li class="layer" data-bind="css: { nosublayers: subLayers.length === 0 }">
-                                                                    <div class="btn-group btn-group-layer" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
-                                                                        <a class="btn btn-info-sign" data-bind="click: toggleDescription, css: { 'active': infoActive() }">
-                                                                            <i class="icon-info-sign icon-large"></i>
-                                                                        </a>
-
-                                                                        <a class="btn btn-layer" data-bind="css: { 'active': active(), 'not-active': ! active() }, click: toggleActive">
-                                                                            <div style="font-weight: normal">
-                                                                                <span style="padding-left: 5px;" data-bind="text: name"></span>
-                                                                                <span class="caret" style="display:none" data-bind="visible: subLayers.length > 0"></span>
-                                                                                <i class="check icon-large icon-check" data-bind="visible: active() && visible()"></i>
-                                                                                <i class="check icon-large icon-check-empty" data-bind="visible: active() && ! visible()"></i>
-                                                                            </div>
-                                                                        </a>
-                                                                        <!-- ko if: subLayers.length > 0 -->
-                                                                        <!-- ko if: !isCheckBoxLayer() -->
-                                                                        <ul class="dropdown-menu layer-menu" data-bind="event: { mouseleave: closeMenu }">
-                                                                            <li data-bind="foreach: subLayers">
-                                                                                <a data-bind="click: toggleActive">
-                                                                                    <!--<span data-bind="style: {visibility: active() ? 'visible': 'hidden' }">• </span>-->
-                                                                                    <!--<span style="margin-left: -10px" data-bind="style: {visibility: active() ? 'visible': 'hidden' }">
-                                                                                        <i class="icon-ok-circle"></i>
-                                                                                    </span>-->
-                                                                                    <i class="icon-ok" data-bind="style: {visibility: active() ? 'visible': 'hidden' }"></i>
-                                                                                    <span data-bind="text: name"></span>
-                                                                                </a>
-                                                                            </li>
-                                                                        </ul>
-                                                                        <!-- /ko -->
-                                                                        <!-- ko if: isCheckBoxLayer() -->
-                                                                        <ul class="dropdown-menu layer-menu" data-bind="event: { mouseleave: closeMenu }">
-                                                                            <li data-bind="foreach: subLayers">
-                                                                                <a data-bind="click: toggleActive" style="padding-left: 15px;">
-                                                                                    <span style="margin-left: -10px">
-                                                                                        <i class="icon-check" data-bind="style: {display: active() ? 'inline': 'none' }"></i>
-                                                                                        <i style="opacity: .4" class="icon-check-empty" data-bind="style: {display: ! active() ? 'inline': 'none' }"></i>
-                                                                                    </span>
-                                                                                    <span data-bind="text: name"></span>
-                                                                                </a>
-                                                                            </li>
-                                                                        </ul>
-                                                                        <!-- /ko -->
-                                                                        <!-- /ko -->
-                                                                    </div>
-                                                                </li>  
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- /data-accordion -->
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- END DATA TAB -->
-
-                            <!-- DESIGNS TAB -->
-                            {% if user.is_authenticated %}
-                              {% include "scenarios.html" %}
-                            {% endif %}
-                            <!-- END DESIGNS TAB -->
-                            
-                            <!-- ACTIVE TAB -->
-                            <div class="tab-pane fade" id="active" style="background-color: white; height: 100%">
-                                <div class="row-fluid" style="height: 100%">
-                                    <div id="active-content" class="span12" style="height: 100%;">
-                                        <div data-bind="visible: activeLayers().length === 0">
-                                            <div style="margin: 20px;">
-                                                <p>
-                                                    You currently have no activated data layers. 
-                                                </p>
-                                                <p>
-                                                    Data layers that are activated in the Data panel will appear in this Active panel.
-                                                </p>
-                                                <p>
-                                                    Data layers in the Active panel can be adjusted in terms of their transparency and their ordering on the map.
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <ul class="unstyled list" style="margin: 0px 5px 20px;" data-bind="sortable: { data: activeLayers, options: {  } }">
-                                            <li>
-                                                <div class="btn-group">
-                                                    <button class="btn btn-info-sign" data-bind="click: toggleDescription, css: { 'active': infoActive()}, visible: isLayerModel()"><i class="icon-info-sign icon-large"></i></button>
-                                                    <a class="btn btn-layer" data-bind="css: { 'active': visible(), 'design-layer': !isLayerModel() }, click: toggleVisible">
-                                                        <div data-bind="text: name"></div>
-                                                        <span rel="tooltip" data-bind="attr: {title: sharedBy}">
-                                                            <i class="icon-group" data-bind="visible: shared" style="padding-left: 10px"></i>
-                                                        </span>
-                                                        <span ><i class="icon-large check" data-bind="css: { 'icon-check': visible(), 'icon-check-empty': ! visible() }"></i></span>
-                                                    </a>
-                                                    <a class="btn opacity-button" data-bind="click: $parent.showOpacity"><i class="icon-adjust icon-large"></i></a>
-                                                    <button class="btn deactivate-button" data-bind="click: toggleActive">
-                                                        <i class="icon-remove">
-                                                        </i>
-                                                    </button>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- END ACTIVE TAB -->
-                            
-                            <!-- LEGEND TAB -->
-                            <div class="tab-pane fade" id="legend" style="background-color: white; height: 100%">
-                                <div class="row-fluid" style="height: 100%">
-                            
-                                    <div id="legend-content" class="accordion" style="margin: 20px; outline: none !important; height: 100%;">
-                                      <div data-bind="visible: activeLegendLayers().length == 0">
-                                        Activate data layers and their legends will appear here in the Legend tab.
-                                      </div>
-                                      <div data-bind="foreach: activeLegendLayers">
-                                        <div class="accordion-group" style="border: 0px;">
-                                            <div class="accordion-heading" data-bind="click: toggleLegendDetails">
-                                                <a class="accordion-toggle" style="text-decoration: none; padding-left: 0px;">
-                                                    <span class="pagination-centered legend-title" data-bind="html: legendTitle ? legendTitle : name"></span>
-                                                    <p style="margin: 0px -5px 3px; text-align: left;font-size: 12px;" data-bind="visible: legendSubTitle, html: legendSubTitle"></p>
-                                                </a>
-                                            </div>
-                                            <div class="accordion-body collapse in" data-bind="attr: { id: $root.convertToSlug(name)+'-legend-content' }" >
-                                                <div class="accordion-inner" style="border: 0px; padding-top: 0px;">
-                                                    <span data-bind="if: legend">
-                                                        <div data-bind="if: legend['elements']">
-                                                            <div data-bind="foreach: legend['elements']">
-                                                                <div>
-                                                                    <img data-bind="attr: {src: swatch}" />
-                                                                    <span data-bind="text: label" style="font-size: 11px; font-weight: bold;"></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div data-bind="if: legend['colors']">
-                                                            <div data-bind="foreach: legend['colors']"> 
-                                                                <div>
-                                                                    <svg style="width: 150px; height: 15px;">
-                                                                        <rect width="15" height="15" data-bind="style: { fill: color }"></rect>
-                                                                        <text x="25" y="12" style="font-size: 11px; fill: #555;" data-bind="text: label">
-                                                                    </svg>
-                                                                    <!-- <span data-bind="text: label" style="font-size: 11px; margin-left: 5px"></span> -->
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div data-bind="if: !legend['elements'] && !legend['colors']">
-                                                            <div data-bind="css: { 'in': legendVisibility }" style="padding-top: 5px;">
-                                                                <img data-bind="attr: { src: legend }" />
-                                                            </div>
-                                                        </div>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            <!-- END LEGEND TAB -->
-                            
-                        </div>
-                    </div>
-                </div>
-                <!-- /Data Panel -->
-                
-                <div class="span5"></div>
-                
-                <!-- Legends Panel (right panel) 
-                <div data-bind="visible: showLegend(), css: {'fullscreen-legend': isFullScreen() }" class="span3" id="legend">
-                    <div id="legend-wrapper">
-                        <div id="legend-header">
-                            <span class="pull-right">
-                                <a href="#" style="margin-left: 10px; margin-top: -2px; opacity: .6;" class="btn btn-mini close" data-bind="click: toggleLegend"> x </a> 
-                            </span>
-                            <span style="text-transform: uppercase;">
-                                Legends (<span data-bind="text: activeLegendLayers().length"></span>)
-                            </span>
-                        </div>
-                        <div id="legend-content">
-                          <div data-bind="foreach: activeLegendLayers">
-                            <div style="padding-bottom: 10px;">
-                                <span class="pagination-centered legend-title" data-bind="html: legendTitle ? legendTitle : name"></span>
-                                <p style="margin: 0px -5px 3px; text-align: left;font-size: 12px;" data-bind="visible: legendSubTitle, html: legendSubTitle"></p>
-                                <span data-bind="if: legend">
-                                    <div data-bind="if: legend['elements']">
-                                        <div data-bind="foreach: legend['elements']">
-                                            <div>
-                                                <img data-bind="attr: {src: swatch}" />
-                                                <span data-bind="text: label" style="font-size: 11px; font-weight: bold;"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div data-bind="if: !legend['elements']">
-                                        <div data-bind="css: { 'in': legendVisibility }" style="padding-top: 5px;">
-                                            <img data-bind="attr: { src: legend }" />
-                                        </div>
-                                    </div>
-                                </span>
-                            </div>
+                                      <h3 class="pull-right" data-bind="visible: mapTitle, text: mapTitle"></h3>
+                                      <i id="minimize-icon" class="icon-minus icon-large" data-bind="click: minimizeLeftPanel" style="cursor: pointer; position: absolute; top: 5px; right: 12px;"></i>
+                                  </div>
+                              </div>
                           </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- /Legends Panel -->
+                          
+                          <!-- Search -->
+                          <div class="row-fluid" style="padding: 10px 0px 20px 0px; height: 30px;">
+                              <div class="search-form span12">
+                                  <form class="form-search" data-bind="submit: layerSearch" style="margin-left: auto; margin-right: auto; width: 80%; height: 0px">
+                                      <div class="span12" style="float: none;">
+                                          <span style="border-radius: 4px;">
+                                            <input type="search" class="field search-box" data-provide="typeahead" data-bind="value: searchTerm, event: { keyup: keySearch }" name="s" id="s" placeholder="Search" style="border-radius: 4px;">
+                                          </span>
+                                          <input type="submit" class="search" name="submit" id="searchsubmit" value="Search" style="background: url(http://ourfloridareefs.org/wp-content/themes/OurFloridaReefs/images/search.png) no-repeat 0 0; width: 26px; height: 30px; border: none; padding: 0; cursor: pointer; font-size: 0; margin-top: 9px; border-radius: 0px">
+                                          <!-- <input type="text" class="search-box" data-provide="typeahead" data-bind="value: searchTerm, event: { keyup: keySearch }" style="overflow: hidden; text-overflow: ellipsis; width: 80%;" placeholder="Search">
+                                          <a class="btn">
+                                              <i class="icon-remove icon-large"></i> 
+                                          </a> -->
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+                          
+                          <!-- tab controls -->
+                          <ul id="myTab" class="nav nav-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;">
+                              <li class="active" data-tab="data">
+                                  <a href="#data" data-toggle="tab" id="dataTab">Data</a>
+                              </li>
+                              {% if user.is_authenticated %}
+                              <li data-tab="designs" data-bind="visible: enableDrawing()">
+                                  <a href="#designs" data-toggle="tab" id="designsTab">Designs</a>
+                              </li>
+                              {% endif %}
+                              <li data-tab="active" >
+                                  <a href="#active" data-toggle="tab" id="activeTab">Active</a>
+                              </li>
+                              <li data-tab="legend" >
+                                  <a href="#legend" data-toggle="tab" id="legendTab">Legend</a>
+                              </li>
+                              
+                          </ul>
+                          
+                          <!-- tab body -->
+                          <div id="myTabContent" class="tab-content row-fluid">
+                              <!-- DATA TAB -->
+                              <div class="tab-pane active in fade span12" id="data">
+                                  <div >
+                                      <div class="accordion-wrapper">
+                                          <!-- data accordion -->
+                                          <div id="data-accordion">
+                                              <div class="accordion" data-bind="foreach: themes">
+                                                  <div class="accordion-group">
+                                                      <div class="accordion-heading" data-bind="click: setOpenTheme, css: { 'active': isOpenTheme() }">
+                                                          <div>
+                                                              <a class="accordion-toggle"> <!--event: {'hover': showDescription}-->
+                                                                  <span data-bind="text: name">Themes</span></a>
+                                                          </div>
+                                                      </div>
+                                                      <div class="accordion-body collapse" data-bind="css: { 'in': isOpenTheme() }">
+                                                          <div class="accordion-inner">
+                                                              <ul  class="unstyled" data-bind="foreach: layers ">
+                                                                  <li class="layer" data-bind="css: { nosublayers: subLayers.length === 0 }">
+                                                                      <div class="btn-group btn-group-layer" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
+                                                                          <a class="btn btn-info-sign" data-bind="click: toggleDescription, css: { 'active': infoActive() }">
+                                                                              <i class="icon-info-sign icon-large"></i>
+                                                                          </a>
+
+                                                                          <a class="btn btn-layer" data-bind="css: { 'active': active(), 'not-active': ! active() }, click: toggleActive">
+                                                                              <div style="font-weight: normal">
+                                                                                  <span style="padding-left: 5px;" data-bind="text: name"></span>
+                                                                                  <span class="caret" style="display:none" data-bind="visible: subLayers.length > 0"></span>
+                                                                                  <i class="check icon-large icon-check" data-bind="visible: active() && visible()"></i>
+                                                                                  <i class="check icon-large icon-check-empty" data-bind="visible: active() && ! visible()"></i>
+                                                                              </div>
+                                                                          </a>
+                                                                          <!-- ko if: subLayers.length > 0 -->
+                                                                          <!-- ko if: !isCheckBoxLayer() -->
+                                                                          <ul class="dropdown-menu layer-menu" data-bind="event: { mouseleave: closeMenu }">
+                                                                              <li data-bind="foreach: subLayers">
+                                                                                  <a data-bind="click: toggleActive">
+                                                                                      <!--<span data-bind="style: {visibility: active() ? 'visible': 'hidden' }">• </span>-->
+                                                                                      <!--<span style="margin-left: -10px" data-bind="style: {visibility: active() ? 'visible': 'hidden' }">
+                                                                                          <i class="icon-ok-circle"></i>
+                                                                                      </span>-->
+                                                                                      <i class="icon-ok" data-bind="style: {visibility: active() ? 'visible': 'hidden' }"></i>
+                                                                                      <span data-bind="text: name"></span>
+                                                                                  </a>
+                                                                              </li>
+                                                                          </ul>
+                                                                          <!-- /ko -->
+                                                                          <!-- ko if: isCheckBoxLayer() -->
+                                                                          <ul class="dropdown-menu layer-menu" data-bind="event: { mouseleave: closeMenu }">
+                                                                              <li data-bind="foreach: subLayers">
+                                                                                  <a data-bind="click: toggleActive" style="padding-left: 15px;">
+                                                                                      <span style="margin-left: -10px">
+                                                                                          <i class="icon-check" data-bind="style: {display: active() ? 'inline': 'none' }"></i>
+                                                                                          <i style="opacity: .4" class="icon-check-empty" data-bind="style: {display: ! active() ? 'inline': 'none' }"></i>
+                                                                                      </span>
+                                                                                      <span data-bind="text: name"></span>
+                                                                                  </a>
+                                                                              </li>
+                                                                          </ul>
+                                                                          <!-- /ko -->
+                                                                          <!-- /ko -->
+                                                                      </div>
+                                                                  </li>  
+                                                              </ul>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <!-- /data-accordion -->
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- END DATA TAB -->
+
+                              <!-- DESIGNS TAB -->
+                              {% if user.is_authenticated %}
+                                {% include "scenarios.html" %}
+                              {% endif %}
+                              <!-- END DESIGNS TAB -->
+                              
+                              <!-- ACTIVE TAB -->
+                              <div class="tab-pane fade" id="active" style="background-color: white; height: 100%">
+                                  <div class="row-fluid" style="height: 100%">
+                                      <div id="active-content" class="span12" style="height: 100%;">
+                                          <div data-bind="visible: activeLayers().length === 0">
+                                              <div style="margin: 20px;">
+                                                  <p>
+                                                      You currently have no activated data layers. 
+                                                  </p>
+                                                  <p>
+                                                      Data layers that are activated in the Data panel will appear in this Active panel.
+                                                  </p>
+                                                  <p>
+                                                      Data layers in the Active panel can be adjusted in terms of their transparency and their ordering on the map.
+                                                  </p>
+                                              </div>
+                                          </div>
+                                          <ul class="unstyled list" style="margin: 0px 5px 20px;" data-bind="sortable: { data: activeLayers, options: {  } }">
+                                              <li>
+                                                  <div class="btn-group">
+                                                      <button class="btn btn-info-sign" data-bind="click: toggleDescription, css: { 'active': infoActive()}, visible: isLayerModel()"><i class="icon-info-sign icon-large"></i></button>
+                                                      <a class="btn btn-layer" data-bind="css: { 'active': visible(), 'design-layer': !isLayerModel() }, click: toggleVisible">
+                                                          <div data-bind="text: name"></div>
+                                                          <span rel="tooltip" data-bind="attr: {title: sharedBy}">
+                                                              <i class="icon-group" data-bind="visible: shared" style="padding-left: 10px"></i>
+                                                          </span>
+                                                          <span ><i class="icon-large check" data-bind="css: { 'icon-check': visible(), 'icon-check-empty': ! visible() }"></i></span>
+                                                      </a>
+                                                      <a class="btn opacity-button" data-bind="click: $parent.showOpacity"><i class="icon-adjust icon-large"></i></a>
+                                                      <button class="btn deactivate-button" data-bind="click: toggleActive">
+                                                          <i class="icon-remove">
+                                                          </i>
+                                                      </button>
+                                                  </div>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- END ACTIVE TAB -->
+                              
+                              <!-- LEGEND TAB -->
+                              <div class="tab-pane fade" id="legend" style="background-color: white; height: 100%">
+                                  <div class="row-fluid" style="height: 100%">
+                              
+                                      <div id="legend-content" class="accordion">
+                                        <div data-bind="visible: activeLegendLayers().length == 0">
+                                          Activate data layers and their legends will appear here in the Legend tab.
+                                        </div>
+                                        <div data-bind="foreach: activeLegendLayers">
+                                          <div class="accordion-group" style="border: 0px;">
+                                              <div class="accordion-heading" data-bind="click: toggleLegendDetails">
+                                                  <a class="accordion-toggle" style="text-decoration: none; padding-left: 0px;">
+                                                      <span class="pagination-centered legend-title" data-bind="html: legendTitle ? legendTitle : name"></span>
+                                                      <p style="margin: 0px -5px 3px; text-align: left;font-size: 12px;" data-bind="visible: legendSubTitle, html: legendSubTitle"></p>
+                                                  </a>
+                                              </div>
+                                              <div class="accordion-body collapse in" data-bind="attr: { id: $root.convertToSlug(name)+'-legend-content' }" >
+                                                  <div class="accordion-inner" style="border: 0px; padding-top: 0px;">
+                                                      <span data-bind="if: legend">
+                                                          <div data-bind="if: legend['elements']">
+                                                              <div data-bind="foreach: legend['elements']">
+                                                                  <div>
+                                                                      <img data-bind="attr: {src: swatch}" />
+                                                                      <span data-bind="text: label" style="font-size: 11px; font-weight: bold;"></span>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                          <div data-bind="if: legend['colors']">
+                                                              <div data-bind="foreach: legend['colors']"> 
+                                                                  <div>
+                                                                      <svg style="width: 150px; height: 15px;">
+                                                                          <rect width="15" height="15" data-bind="style: { fill: color }"></rect>
+                                                                          <text x="25" y="12" style="font-size: 11px; fill: #555;" data-bind="text: label">
+                                                                      </svg>
+                                                                      <!-- <span data-bind="text: label" style="font-size: 11px; margin-left: 5px"></span> -->
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                          <div data-bind="if: !legend['elements'] && !legend['colors']">
+                                                              <div data-bind="css: { 'in': legendVisibility }" style="padding-top: 5px;">
+                                                                  <img data-bind="attr: { src: legend }" />
+                                                              </div>
+                                                          </div>
+                                                      </span>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      
+                                  </div>
+                              </div>
+                              <!-- END LEGEND TAB -->
+                              
+                          </div>
+                          <div data-bind="visible: showBottomButtons()" class="sidebar-footer">
+                              <span id="bottom-button-span" class="btn-group">
+                                <a id="help-button" class="btn" style="outline: none; margin-top: 10px;" href="#help-modal" data-toggle="modal">Tutorial</a>
+                              </span>
+                          </div>
+                      </div>
+      
+                  </div>
+                  <!-- /Data Panel -->
+                  
+                  <div class="span5"></div>
+
                 </div>
             </div>
             <span class="timestamp" data-bind="visible: mapTitle"><span data-bind="text: new Date().toString('M/d/yyyy HH:mm')"></span></span>

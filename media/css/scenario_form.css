@@ -113,7 +113,7 @@
 #wind-design-form .jspContainer {
     /*width: 97% !important;*/
     width: 370px !important;
-    height: 308px !important;
+    /*height: 308px !important;*/
     padding-right: 10px;
 }
 #wind-design-form .jspPane {

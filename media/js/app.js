@@ -13,8 +13,8 @@ app.onResize = function(percent) {
         //$("#map-wrapper").height(height);
         $(".tabs").height(height);
         //$("#legend-wrapper").height(height - 20);
-        $("#data-accordion").height(height - (($.browser.msie && $.browser.version < 9)? 130: 96));
-        //$("#designs-accordion").height(height - 20 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $("#data-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $("#designs-accordion").height(height - 20 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         //$("#active").height(height + 20 - (($.browser.msie && $.browser.version < 9)? 130: 96));
     }
     app.map.render('map');
