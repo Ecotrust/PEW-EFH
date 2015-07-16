@@ -48,6 +48,16 @@ app.clickAttributes = (function() {
     var getGridAttributes = function (data) {
         attrs = [];
                 
+        if ('NAME' in data) {
+            attrs.push({'display': 'Name', 'data': data['NAME'].toLocaleString()});
+        }
+        // if ('ID' in data) {
+        //     attrs.push({'display': 'Id', 'data': data['ID'].toLocaleString()});
+        // }
+        // if ('GRIDCODE' in data) {
+        //     attrs.push({'display': 'Gridcode', 'data': data['GRIDCODE'].toLocaleString()});
+        // }
+
         // Area of mapped Dense Acropora cervicornis patches in m²
         if ('mean_fthm' in data) {
             attrs.push({'display': 'Mean depth', 'data': data['mean_fthm'].toLocaleString() + ' fathoms'});
@@ -122,6 +132,16 @@ app.clickAttributes = (function() {
         // A number assigned to each cell that is unique to the dataset. (no duplicates)
         if ('UniqueID' in data) {
             attrs.push({'display': 'UniqueID (for testing)', 'data': data['UniqueID']});
+        }
+
+        if ('COM_allow' in data) {
+            var com_allow = ((data['COM_allow'] == 'no') ? 'Prohibited' : 'Allowed') ;
+            attrs.push({'display': 'Commercial Fishing', 'data': com_allow});
+        }
+
+        if ('CPFV_allow' in data) {
+            var cpfv_allow = ((data['CPFV_allow'] == 'no') ? 'Prohibited' : 'Allowed') ;
+            attrs.push({'display': 'Charter Fishing', 'data': cpfv_allow});
         }
 
         return attrs;
