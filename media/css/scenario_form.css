@@ -3,6 +3,8 @@
 #designs .form-container {
   margin-top: -5px;
   margin-right: -5px;
+  max-height: 100%;
+  position: absolute;
 }
 #scenario-form h4, #drawing-form h4 {
     margin-left: 15px;
@@ -217,7 +219,8 @@ form ul {
     padding-left: 20px;
 }
 #scenario-form {
-    margin-top: -10px;
+    margin-top: 0px;
+    padding-top: 5px;
 }
 #scenario-form li {
     list-style:none;
