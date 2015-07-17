@@ -325,8 +325,8 @@ class Scenario(Analysis):
             )
         if self.hsall_m2 and self.hsall_m2_checkboxes:
             attributes.append({
-                'title': 'Predicted Presence of Deep Sea Coral Habitat Classes, 1-4',
-                'data': self.hsall_m2_checkboxes #use eval to work this out later.
+                'title': 'Predicted Presence of Deep Sea Coral Habitat Classes',
+                'data': ', '.join(eval(self.hsall_m2_checkboxes))
             })
         if self.hsall1_m2:
             attributes.append(
