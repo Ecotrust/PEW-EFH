@@ -1,9 +1,9 @@
 
-var madrona = { 
+var madrona = {
     onShow: function(callback) { callback(); },
     setupForm: function($form) {
         //var submitted = false;
-    
+
         $form.find('.btn-submit').hide();
 
         $form.find('label').each(function (i, label) {
@@ -11,7 +11,7 @@ var madrona = {
                 $(label).addClass('checkbox');
             }
         });
-        
+
         $form.closest('.panel').on('click', '.cancel_button', function(e) {
             app.viewModel.scenarios.reset({cancel: true});
         });
@@ -19,22 +19,22 @@ var madrona = {
         $form.closest('.panel').on('click', '.submit_button', function(e) {
             e.preventDefault();
             var name = $('#id_name').val();
-            if ($.trim(name) === "") {  
+            if ($.trim(name) === "") {
                 $('#invalid-name-message').show();
                 return false;
-            } 
+            }
             //submitted = true;
             submitForm($form);
-        }); 
-        
+        });
+
         //no longer needed...? (if it was going here it meant there was a problem)
         /*
         $form.submit( function() {
             var name = $('#id_name').val();
-            if ($.trim(name) === "") {  
+            if ($.trim(name) === "") {
                 $('#invalid-name-message').show();
                 return false;
-            } 
+            }
             if (!submitted) {
                 submitForm($form);
             }
@@ -46,24 +46,30 @@ var madrona = {
                 $bar = $form.closest('.tab-pane').find('.bar'),
                 data = {},
                 barTimer;
-                
+
             //progress bar
             barTimer = setInterval(function () {
                 var width = parseInt($bar.css('width').replace('px', ''), 10) + 5,
                     barWidth = parseInt($bar.parent().css('width').replace('px',''), 10);
-                
+
                 if (width < barWidth) {
-                    $bar.css('width', width + "px");    
+                    $bar.css('width', width + "px");
                 } else {
                     clearInterval(barTimer);
                 }
             }, 500);
-            
-            
+
+            app.checkboxes = {};
             $form.find('input,select,textarea').each( function(index, input) {
                 var $input = $(input);
                 if ($input.attr('type') === 'checkbox') {
-                    if ($input.attr('checked')) {
+                    if ($input.attr('name').indexOf('checkboxes') >= 0) {
+                      if ($input.attr('name') in app.checkboxes) {
+                        app.checkboxes[$input.attr('name')].push($input.attr('value'));
+                      } else {
+                        app.checkboxes[$input.attr('name')] = [$input.attr('value')];
+                      }
+                    } else if ($input.attr('checked')) {
                         data[$input.attr('name')] = 'True';
                     } else {
                         data[$input.attr('name')] = 'False';
@@ -72,19 +78,21 @@ var madrona = {
                     data[$input.attr('name')] = $input.val();
                 }
             });
-
-
+            var checkboxList = Object.keys(app.checkboxes);
+            for (var i = 0; i < checkboxList.length; i++) {
+              data[checkboxList[i]] = JSON.stringify(app.checkboxes[checkboxList[i]]);
+            }
 
             app.viewModel.scenarios.scenarioForm(false);
             app.viewModel.scenarios.loadingMessage("Creating Design");
-            
+
             $.ajax( {
                 url: url,
                 data: data,
                 type: 'POST',
                 dataType: 'json',
                 success: function(result) {
-                    app.viewModel.scenarios.addScenarioToMap(null, {uid: result['X-Madrona-Show']});                    
+                    app.viewModel.scenarios.addScenarioToMap(null, {uid: result['X-Madrona-Show']});
                     app.viewModel.scenarios.loadingMessage(false);
                     clearInterval(barTimer);
                 },
@@ -100,7 +108,7 @@ var madrona = {
                 }
             });
         };
-        
+
     }
 }; // end madrona init
 
@@ -109,7 +117,7 @@ function scenarioFormModel(options) {
     var self = this;
 
     self.species = ko.observable(false);
-    self.lifestage = ko.observable(false);      
+    self.lifestage = ko.observable(false);
     self.mean_fthm = ko.observable(false);
     self.hsall_m2 = ko.observable(false);
     self.hsall_m2_checkboxes_0 = ko.observable(true);
@@ -128,11 +136,11 @@ function scenarioFormModel(options) {
     self.sft_sub_m2 = ko.observable(false);
     self.mix_sub_m2 = ko.observable(false);
     self.hrd_sub_m2 = ko.observable(false);
-    
+
     self.rck_sub_m2 = ko.observable(false);
     self.cnt_cs = ko.observable(false);
     self.cnt_penn = ko.observable(false);
-    
+
     self.lastChange = (new Date()).getTime();
 
     var defaultStyle = new OpenLayers.Style({
@@ -146,26 +154,26 @@ function scenarioFormModel(options) {
     var styleMap = new OpenLayers.StyleMap( {
         'default': defaultStyle
     });
-    
+
     self.updatedFilterResultsLayer = new OpenLayers.Layer.Vector('Current Filter Results', {
         projection: new OpenLayers.Projection('EPSG:3857'),
         displayInLayerSwitcher: false,
         styleMap: styleMap
-    }); 
+    });
     app.map.addLayer(self.updatedFilterResultsLayer);
-    
+
     /** Toggle an input div. */
     self.toggleParameter = function(param) {
         var param_bool = self[param];
         var param_element = $('#id_' + param);
         var param_widget = $('#' + param + '_widget');
-        
+
         if (param_bool()) {
             param_bool(false);
             param_element.removeAttr('checked');
             param_widget.css('display', 'none');
             self.removeFilter(param);
-        } else {           
+        } else {
             if (param_widget) {
                 var input = param_widget.find('input');
                 var range = input.attr('range');
@@ -175,14 +183,14 @@ function scenarioFormModel(options) {
             }
             param_bool(true);
             param_element.attr('checked', 'checked');
-            param_widget.css('display', 'block'); 
+            param_widget.css('display', 'block');
             self.updateFilters(param);
         }
-        
+
         self.updateDesignScrollBar();
         self.updateFilterCount(param);
-    };    
-    
+    };
+
     self.filters = {};
 
     // Toggle Data Layers and Layer Info
@@ -199,7 +207,7 @@ function scenarioFormModel(options) {
         }
         return false;
     };
-    
+
     self.isLayerInfoActive = function(layerID) {
         var layer = app.viewModel.getLayerById(layerID);
         if (layer) {
@@ -253,7 +261,7 @@ function scenarioFormModel(options) {
         } else {
             self.showingFilteringResults(true);
             self.updatedFilterResultsLayer.setVisibility(true);
-            if (self.inputsHaveChanged()) {                
+            if (self.inputsHaveChanged()) {
                 self.inputsHaveChanged(false);
                 self.getUpdatedFilterResults();
             }
@@ -275,16 +283,16 @@ function scenarioFormModel(options) {
     self.updateFilterCount = function(param) {
         if (self.updateTimeout) {
             clearTimeout(self.updateTimeout);
-        }          
+        }
         self.inputsHaveChanged(true);
         if (self.showingFilteringResults()) {
             self.showButtonSpinner(true);
-        }        
+        }
         self.gridCellsRemaining('...');
         self.updatedFilterResultsLayer.removeAllFeatures();
 
         self.updateFilterResults();
-        
+
     };
 
     self.updateFilterResults = function() {
@@ -292,7 +300,7 @@ function scenarioFormModel(options) {
             self.getUpdatedFilterResults();
         } else {
             self.getUpdatedFilterCount();
-        }  
+        }
     };
 
     // TODO: CHANGE TO A GET
@@ -300,14 +308,14 @@ function scenarioFormModel(options) {
         (function() {
             var request = $.ajax({
                 url: '/scenario/get_filter_count',
-                type: 'GET', 
+                type: 'GET',
                 data: self.filters,
                 dataType: 'json',
                 success: function(data) {
                     if (self.currentCountRequest() === request) {
                         self.gridCellsRemaining(data);
                     }
-                }, 
+                },
                 error: function(error) {
                     console.log('error in getUpdatedFilterCount: ' + error);
                 }
@@ -315,13 +323,13 @@ function scenarioFormModel(options) {
             self.currentCountRequest(request);
             var request = request;
         })();
-    };  
+    };
 
     // TODO: CHANGE TO A GET
-    self.getUpdatedFilterResults = function() {  
+    self.getUpdatedFilterResults = function() {
         self.updatedFilterResultsLayer.setVisibility(false);
         self.showButtonSpinner(true);
-        
+
         (function() {
             var request = $.ajax({
                 url: '/scenario/get_filter_results',
@@ -335,14 +343,14 @@ function scenarioFormModel(options) {
                         self.updatedFilterResultsLayer.removeAllFeatures();
                         if (featureCount) {
                             var format = new OpenLayers.Format.WKT()
-                                feature = format.read(wkt); 
+                                feature = format.read(wkt);
                             self.updatedFilterResultsLayer.addFeatures([feature]);
                         }
                         self.updatedFilterResultsLayer.setVisibility(true);
                         self.gridCellsRemaining(featureCount);
-                        self.showButtonSpinner(false);                               
-                    }      
-                }, 
+                        self.showButtonSpinner(false);
+                    }
+                },
                 error: function(result) {
                     self.showButtonSpinner(false);
                     self.showingFilteringResults(false);
@@ -390,7 +398,7 @@ function scenarioFormModel(options) {
         if (min) {
             key = param + '_min';
             self.filters[key] = min;
-        } 
+        }
         if (max) {
             key = param + '_max';
             self.filters[key] = max;
@@ -428,7 +436,7 @@ function scenarioFormModel(options) {
             }
         }
     };
-    
+
     self.updateDesignScrollBar = function() {
         var designsWizardScrollpane = $('#wind-design-form').data('jsp');
         if (designsWizardScrollpane === undefined) {
@@ -437,7 +445,7 @@ function scenarioFormModel(options) {
             setTimeout(function() {designsWizardScrollpane.reinitialise();},100);
         }
     };
-    
+
     return self;
 } // end scenarioFormModel
 
@@ -470,7 +478,7 @@ function scenarioModel(options) {
     self.sharedGroupsList = [];
     if (options.sharingGroups && options.sharingGroups.length) {
         self.selectedGroups(options.sharingGroups);
-    } 
+    }
     self.sharedWith = ko.observable();
     self.updateSharedWith = function() {
         if (self.selectedGroups().length) {
@@ -488,10 +496,10 @@ function scenarioModel(options) {
     self.temporarilySelectedGroups = ko.observableArray();
 
     self.isLayerModel = ko.observable(false);
-    
+
     self.attributes = [];
     self.scenarioAttributes = options.attributes ? options.attributes.attributes : [];
-    
+
     self.showingLayerAttribution = ko.observable(true);
     self.toggleLayerAttribution = function() {
         var layerID = '#' + app.viewModel.convertToSlug(self.name);
@@ -505,7 +513,7 @@ function scenarioModel(options) {
         //update scrollbar
         app.viewModel.updateAggregatedAttributesOverlayScrollbar();
     };
-    
+
     //self.overview = self.description || 'no description was provided';
     self.constructInfoText = function() {
         var attrs = self.scenarioAttributes,
@@ -517,21 +525,21 @@ function scenarioModel(options) {
             // } else {
                 output += attrs[i].title + ': ' + attrs[i].data + '\n';
             // }
-        }  
+        }
         return output;
     };
     self.overview = self.constructInfoText();
-        
+
     self.scenarioReportValues = options.attributes ? options.attributes.report_values : [];
 
     self.features = options.features;
-    
+
     self.active = ko.observable(false);
     self.visible = ko.observable(false);
     self.defaultOpacity = options.opacity || 0.8;
     self.opacity = ko.observable(self.defaultOpacity);
     self.type = 'Vector';
-    
+
     self.opacity.subscribe( function(newOpacity) {
         if ( self.layer ) {
             self.layer.styleMap.styles['default'].defaultStyle.strokeOpacity = newOpacity;
@@ -541,15 +549,15 @@ function scenarioModel(options) {
             //debugger;
         }
     });
-    
+
     self.toggleActive = function(self, event) {
         var scenario = this;
-        
+
         // start saving restore state again and remove restore state message from map view
         app.saveStateMode = true;
         app.viewModel.error(null);
         //app.viewModel.unloadedDesigns = [];
-        
+
         //app.viewModel.activeLayer(layer);
         if (scenario.active()) { // if layer is active, then deactivate
             scenario.deactivateLayer();
@@ -558,33 +566,33 @@ function scenarioModel(options) {
             //app.viewModel.scenarios.addScenarioToMap(scenario);
         }
     };
-    
+
     self.activateLayer = function() {
         var scenario = this;
-        app.viewModel.scenarios.addScenarioToMap(scenario);        
+        app.viewModel.scenarios.addScenarioToMap(scenario);
     };
-    
+
     self.deactivateLayer = function() {
         var scenario = this;
-        
+
         scenario.active(false);
         scenario.visible(false);
-                
+
         scenario.opacity(scenario.defaultOpacity);
         app.setLayerVisibility(scenario, false);
         app.viewModel.activeLayers.remove(scenario);
-        
+
         app.viewModel.removeFromAggregatedAttributes(scenario.name);
-            
+
         // //remove the key/value pair from aggregatedAttributes
         // delete app.viewModel.aggregatedAttributes()[scenario.name];
         // //if there are no more attributes left to display, then remove the overlay altogether
         // if ($.isEmptyObject(app.viewModel.aggregatedAttributes())) {
         //     app.viewModel.aggregatedAttributes(false);
         // }
-        
+
     };
-    
+
     self.editScenario = function() {
         var scenario = this;
         return $.ajax({
@@ -595,7 +603,7 @@ function scenarioModel(options) {
                 $('#scenario-form').html(data);
                 app.viewModel.scenarios.scenarioFormModel = new scenarioFormModel();
                 var model = app.viewModel.scenarios.scenarioFormModel;
-                
+
                 ko.applyBindings(model, document.getElementById('scenario-form'));
 
                 var parameters = [
@@ -621,7 +629,7 @@ function scenarioModel(options) {
 
                 for (var i = 0; i < parameters.length; i++) {
                     var id = '#id_' + parameters[i];
-                    
+
                     if ($(id).is(':checked')) {
                         model.toggleParameter(parameters[i]);
                     }
@@ -637,7 +645,7 @@ function scenarioModel(options) {
 
     self.createCopyScenario = function() {
         var scenario = this;
-    
+
         //create a copy of this shape to be owned by the user
         $.ajax({
             url: '/scenario/copy_design/' + scenario.uid + '/',
@@ -652,13 +660,13 @@ function scenarioModel(options) {
             }
         });
     };
-        
+
     self.deleteScenario = function() {
         var scenario = this;
-        
-        //first deactivate the layer 
+
+        //first deactivate the layer
         scenario.deactivateLayer();
-        
+
         //remove from activeLayers
         app.viewModel.activeLayers.remove(scenario);
         //remove from app.map
@@ -669,7 +677,7 @@ function scenarioModel(options) {
         app.viewModel.scenarios.scenarioList.remove(scenario);
         //update scrollbar
         app.viewModel.scenarios.updateDesignsScrollBar();
-        
+
         //remove from server-side db (this should provide error message to the user on fail)
         $.ajax({
             url: '/scenario/delete_design/' + scenario.uid + '/',
@@ -679,19 +687,19 @@ function scenarioModel(options) {
             }
         });
     };
-    
-    self.visible = ko.observable(false);  
-    
+
+    self.visible = ko.observable(false);
+
     // bound to click handler for layer visibility switching in Active panel
     self.toggleVisible = function() {
         var scenario = this;
-        
+
         if (scenario.visible()) { //make invisible
             scenario.visible(false);
             app.setLayerVisibility(scenario, false);
-            
+
             app.viewModel.removeFromAggregatedAttributes(scenario.name);
-            
+
         } else { //make visible
             scenario.visible(true);
             app.setLayerVisibility(scenario, true);
@@ -705,7 +713,7 @@ function scenarioModel(options) {
             self.infoActive(false);
         }
     });
-    
+
     // display descriptive text below the map
     self.toggleDescription = function(scenario) {
         if ( ! scenario.infoActive() ) {
@@ -714,7 +722,7 @@ function scenarioModel(options) {
             self.hideDescription(scenario);
         }
     };
-    
+
     self.showDescription = function(scenario) {
         app.viewModel.showOverview(false);
         app.viewModel.activeInfoSublayer(false);
@@ -726,51 +734,51 @@ function scenarioModel(options) {
         // app.viewModel.hideMapAttribution();
         app.viewModel.closeAttribution();
     };
-    
+
     self.hideDescription = function(scenario) {
         app.viewModel.showOverview(false);
         app.viewModel.activeInfoSublayer(false);
         app.viewModel.showMapAttribution();
     };
-    
+
     return self;
 } // end scenarioModel
 
 
 function scenariosModel(options) {
     var self = this;
-    
-    self.scenarioList = ko.observableArray();    
+
+    self.scenarioList = ko.observableArray();
     self.scenarioForm = ko.observable(false);
-    
+
     self.drawingList = ko.observableArray();
     self.drawingForm = ko.observable(false);
-                
-    self.reportsVisible = ko.observable(false);    
-    
+
+    self.reportsVisible = ko.observable(false);
+
     self.leaseblockLayer = ko.observable(false);
 
     self.leaseblockLayer.subscribe( function() {
         app.viewModel.updateAttributeLayers();
     });
-    
+
     self.scenarioLeaseBlocksLayerName = 'Selected OCS Blocks';
-        
+
     // loading message for showing spinner
     // false for normal operation
     self.loadingMessage = ko.observable(false);
     self.errorMessage = ko.observable(false);
-    
+
     self.sharingGroups = ko.observableArray();
     self.hasSharingGroups = ko.observable(false);
-    
+
     self.sharingLayer = ko.observable();
     self.showSharingModal = function(scenario) {
         self.sharingLayer(scenario);
         self.sharingLayer().temporarilySelectedGroups(self.sharingLayer().selectedGroups().slice(0));
         $('#share-modal').modal('show');
     };
-    
+
     self.groupMembers = function(groupName) {
         var memberList = "";
         for (var i=0; i<self.sharingGroups().length; i++) {
@@ -784,7 +792,7 @@ function scenariosModel(options) {
         }
         return memberList;
     };
-        
+
     self.toggleGroup = function(obj) {
         var groupName = obj.group_name,
             indexOf = self.sharingLayer().temporarilySelectedGroups.indexOf(groupName);
@@ -794,14 +802,14 @@ function scenariosModel(options) {
             self.sharingLayer().temporarilySelectedGroups.splice(indexOf, 1);
         }
     };
-    
+
     self.initSharingModal = function() {
         for (var i=0; i<self.sharingGroups().length; i++) {
             var groupID = '#' + self.sharingGroups()[i].group_slug;
             $(groupID).collapse( { toggle: false } );
         }
     };
-    
+
     //TODO:  Fix the problem in which the first group toggled open will not toggle open again, once it's closed
     self.lastMembersClickTime = 0;
     self.toggleGroupMembers = function(obj, e) {
@@ -817,7 +825,7 @@ function scenariosModel(options) {
                 } else {
                     $(groupID).fadeIn('slow', function() {});
                 }
-                $(groupID).collapse('show'); 
+                $(groupID).collapse('show');
             } else { //toggle off and remove group from list
                 if ( $.browser.msie ) {
                     $(groupID).fadeOut(0, function() {});
@@ -830,7 +838,7 @@ function scenariosModel(options) {
             setTimeout(function() { self.updateSharingScrollBar(groupID); }, 300);
         }
     };
-    
+
     self.groupIsSelected = function(groupName) {
         if (self.sharingLayer()) {
             var indexOf = self.sharingLayer().temporarilySelectedGroups.indexOf(groupName);
@@ -838,7 +846,7 @@ function scenariosModel(options) {
         }
         return false;
     };
-    
+
     self.zoomToScenario = function(scenario) {
         if (scenario.layer) {
             var layer = scenario.layer;
@@ -849,12 +857,12 @@ function scenariosModel(options) {
             if (scenario.uid.indexOf('drawing') !== -1) {
                 app.map.zoomOut();
                 app.map.zoomOut();
-            } 
+            }
         } else {
             self.addScenarioToMap(scenario, {zoomTo: true});
         }
     };
-    
+
     self.updateSharingScrollBar = function(groupID) {
         var sharingScrollpane = $('#sharing-groups').data('jsp');
         if (sharingScrollpane === undefined) {
@@ -870,20 +878,20 @@ function scenariosModel(options) {
             if (actualPosition > 140) {
                 //console.log('scroll to ' + (groupPosition-120));
                 sharingScrollpane.scrollToY(groupPosition-120);
-            } 
-            
+            }
+
         }
     };
-    
-    
+
+
     // scenariosLoaded will be set to true after they have been loaded
     self.scenariosLoaded = false;
-    
+
     self.isScenariosOpen = ko.observable(false);
     self.toggleScenariosOpen = function(force) {
         // ensure designs tab is activated
         $('#designsTab').tab('show');
-        
+
         if (force === 'open') {
             self.isScenariosOpen(true);
         } else if (force === 'close') {
@@ -896,12 +904,12 @@ function scenariosModel(options) {
             }
         }
         self.updateDesignsScrollBar();
-    };       
+    };
     self.isCollectionsOpen = ko.observable(false);
     self.toggleCollectionsOpen = function(force) {
         // ensure designs tab is activated
         $('#designsTab').tab('show');
-        
+
         if (force === 'open') {
             self.isCollectionsOpen(true);
         } else if (force === 'close') {
@@ -914,12 +922,12 @@ function scenariosModel(options) {
             }
         }
         self.updateDesignsScrollBar();
-    };           
+    };
     self.isDrawingsOpen = ko.observable(false);
     self.toggleDrawingsOpen = function(force) {
         // ensure designs tab is activated
         $('#designsTab').tab('show');
-        
+
         if (force === 'open') {
             self.isDrawingsOpen(true);
         } else if (force === 'close') {
@@ -932,8 +940,8 @@ function scenariosModel(options) {
             }
         }
         self.updateDesignsScrollBar();
-    };      
-    
+    };
+
     self.updateDesignsScrollBar = function() {
         var designsScrollpane = $('#designs-accordion').data('jsp');
         if (designsScrollpane === undefined) {
@@ -941,32 +949,32 @@ function scenariosModel(options) {
         } else {
             designsScrollpane.reinitialise();
         }
-    }; 
-    
+    };
+
     //restores state of Designs tab to the initial list of designs
     self.reset = function (obj) {
         self.loadingMessage(false);
         self.errorMessage(false);
-        
+
         //clean up scenario form
         if (self.scenarioForm() || self.scenarioFormModel) {
             app.map.removeLayer(self.scenarioFormModel.updatedFilterResultsLayer);
             self.removeScenarioForm();
         }
-        
+
         //clean up drawing form
         if (self.drawingForm() || self.drawingFormModel) {
             self.removeDrawingForm(obj);
         }
-        
+
         //remove the key/value pair from aggregatedAttributes
         app.viewModel.removeFromAggregatedAttributes(self.leaseblockLayer().name);
         app.viewModel.updateAttributeLayers();
-        
+
         self.updateDesignsScrollBar();
     };
-        
-    self.removeDrawingForm = function(obj) {    
+
+    self.removeDrawingForm = function(obj) {
         self.drawingFormModel.cleanUp();
         self.drawingForm(false);
         var drawingForm = document.getElementById('drawing-form');
@@ -979,8 +987,8 @@ function scenariosModel(options) {
         }
         delete self.drawingFormModel;
     };
-    
-    self.removeScenarioForm = function() {        
+
+    self.removeScenarioForm = function() {
         self.scenarioForm(false);
         var scenarioForm = document.getElementById('scenario-form');
         $(scenarioForm).empty();
@@ -988,10 +996,10 @@ function scenariosModel(options) {
         delete self.scenarioFormModel;
         //hide remaining leaseblocks
         if ( self.leaseblockLayer() && app.map.getLayersByName(self.leaseblockLayer().name).length ) {
-            app.map.removeLayer(self.leaseblockLayer()); 
+            app.map.removeLayer(self.leaseblockLayer());
         }
     };
-    
+
     self.createWindScenario = function() {
         //hide designs tab by sliding left
         return $.ajax({
@@ -1006,11 +1014,11 @@ function scenariosModel(options) {
                     self.loadLeaseblockLayer();
                 }
             },
-            error: function (result) { 
-                //debugger; 
+            error: function (result) {
+                //debugger;
             }
         });
-    };    
+    };
 
     self.createPolygonDesign = function() {
         return $.ajax({
@@ -1022,16 +1030,16 @@ function scenariosModel(options) {
                 ko.applyBindings(app.viewModel.scenarios.drawingFormModel, document.getElementById('drawing-form'));
                 //self.polygonFormModel.updateDesignScrollBar();
             },
-            error: function (result) { 
-                //debugger; 
+            error: function (result) {
+                //debugger;
             }
         });
-    }; 
+    };
 
     self.createLineDesign = function() {};
 
-    self.createPointDesign = function() {};    
-    
+    self.createPointDesign = function() {};
+
     //
     self.addScenarioToMap = function(scenario, options) {
         var scenarioId,
@@ -1040,7 +1048,7 @@ function scenariosModel(options) {
             fillColor = "#00A29B",
             strokeColor = "#00827B",
             zoomTo = (options && options.zoomTo) || false;
-        
+
         if ( scenario ) {
             scenarioId = scenario.uid;
             scenario.active(true);
@@ -1048,7 +1056,7 @@ function scenariosModel(options) {
         } else {
             scenarioId = options.uid;
         }
-        
+
         var isDrawingModel = false,
             isScenarioModel = false;
         if (scenarioId.indexOf('drawing') !== -1) {
@@ -1056,18 +1064,18 @@ function scenariosModel(options) {
         } else {
             isScenarioModel = true;
         }
-        
+
         //perhaps much of this is not necessary once a scenario has been added to app.map.layers initially...?
         //(add check for scenario.layer, reset the style and move on?)
         $.ajax( {
-            url: '/features/generic-links/links/geojson/' + scenarioId + '/', 
+            url: '/features/generic-links/links/geojson/' + scenarioId + '/',
             type: 'GET',
             dataType: 'json',
             success: function(feature) {
                 if ( scenario ) {
                     opacity = scenario.opacity();
                     stroke = scenario.opacity();
-                } 
+                }
                 if ( isDrawingModel ) {
                     fillColor = "#C9BE62";
                     strokeColor = "#A99E42";
@@ -1081,12 +1089,12 @@ function scenariosModel(options) {
                                 wkt = data.geometry_orig,
                                 feature = format.read(wkt);
                             scenario.geometry_orig = feature;
-                        }, 
+                        },
                         error: function(result) {
                             debugger;
                         }
                     });
-                } 
+                }
                 var layer = new OpenLayers.Layer.Vector(
                     scenarioId,
                     {
@@ -1097,14 +1105,14 @@ function scenariosModel(options) {
                             fillOpacity: opacity,
                             strokeColor: strokeColor,
                             strokeOpacity: stroke
-                        }),     
+                        }),
                         //style: OpenLayers.Feature.Vector.style['default'],
                         scenarioModel: scenario
                     }
                 );
-                
+
                 layer.addFeatures(new OpenLayers.Format.GeoJSON().read(feature));
-                
+
                 if ( scenario ) {
                     //reasigning opacity here, as opacity wasn't 'catching' on state load for scenarios
                     scenario.opacity(opacity);
@@ -1116,7 +1124,7 @@ function scenariosModel(options) {
                         scenario = new drawingModel({
                             id: properties.uid,
                             uid: properties.uid,
-                            name: properties.name, 
+                            name: properties.name,
                             description: properties.description,
                             features: layer.features
                         });
@@ -1126,7 +1134,7 @@ function scenariosModel(options) {
                         scenario = new scenarioModel({
                             id: properties.uid,
                             uid: properties.uid,
-                            name: properties.name, 
+                            name: properties.name,
                             description: properties.description,
                             features: layer.features
                         });
@@ -1137,24 +1145,24 @@ function scenariosModel(options) {
                     scenario.layer.scenarioModel = scenario;
                     scenario.active(true);
                     scenario.visible(true);
-                    
+
                     //get attributes
                     $.ajax( {
-                        url: '/drawing/get_attributes/' + scenarioId + '/', 
+                        url: '/drawing/get_attributes/' + scenarioId + '/',
                         type: 'GET',
                         dataType: 'json',
                         success: function(result) {
-                            scenario.scenarioAttributes = result.attributes;                            
+                            scenario.scenarioAttributes = result.attributes;
                         },
                         error: function (result) {
                             //debugger;
                         }
-                    
+
                     });
-                    
+
                     //in case of edit, removes previously stored scenario
                     //self.scenarioList.remove(function(item) { return item.uid === scenario.uid } );
-                    
+
                     if ( isDrawingModel ) {
                         var previousDrawing = ko.utils.arrayFirst(self.drawingList(), function(oldDrawing) {
                             return oldDrawing.uid === scenario.uid;
@@ -1176,11 +1184,11 @@ function scenariosModel(options) {
                         }
                         self.scenarioList.sort(self.alphabetizeByName);
                     }
-                    
+
                     //self.scenarioForm(false);
                     self.reset();
                 }
-                
+
                 //app.addVectorAttribution(layer);
                 //in case of edit, removes previously displayed scenario
                 for (var i=0; i<app.map.layers.length; i++) {
@@ -1189,15 +1197,15 @@ function scenariosModel(options) {
                         i--;
                     }
                 }
-                app.map.addLayer(scenario.layer); 
-                //add scenario to Active tab    
+                app.map.addLayer(scenario.layer);
+                //add scenario to Active tab
                 app.viewModel.activeLayers.remove(function(item) { return item.uid === scenario.uid; } );
                 app.viewModel.activeLayers.unshift(scenario);
-                
+
                 if (zoomTo) {
                     self.zoomToScenario(scenario);
                 }
-                
+
             },
             error: function(result) {
                 //debugger;
@@ -1205,7 +1213,7 @@ function scenariosModel(options) {
             }
         });
     }; // end addScenarioToMap
-    
+
     self.alphabetizeByName = function(a, b) {
         var name1 = a.name.toLowerCase(),
             name2 = b.name.toLowerCase();
@@ -1216,25 +1224,25 @@ function scenariosModel(options) {
         }
         return 0;
     };
-    
+
     // activate any lingering designs not shown during loadCompressedState
     self.showUnloadedDesigns = function() {
         var designs = app.viewModel.unloadedDesigns;
-        
+
         if (designs && designs.length) {
-            //the following delay might help solve what appears to be a race condition 
+            //the following delay might help solve what appears to be a race condition
             //that prevents the design in the layer list from displaying the checked box icon after loadin
             setTimeout( function() {
                 for (var x=0; x < designs.length; x=x+1) {
                     var id = designs[x].id,
                         opacity = designs[x].opacity,
                         isVisible = designs[x].isVisible;
-                        
+
                     if (app.viewModel.layerIndex[id]) {
                         app.viewModel.layerIndex[id].opacity(opacity);
                         app.viewModel.layerIndex[id].activateLayer();
                         for (var i=0; i < app.viewModel.unloadedDesigns.length; i=i+1) {
-                            if(app.viewModel.unloadedDesigns[i].id === id) { 
+                            if(app.viewModel.unloadedDesigns[i].id === id) {
                                 app.viewModel.unloadedDesigns.splice(i,1);
                                 i = i-1;
                             }
@@ -1244,7 +1252,7 @@ function scenariosModel(options) {
             }, 400);
         }
     };
-    
+
     self.loadScenariosFromServer = function() {
         $.ajax({
             url: '/scenario/get_scenarios',
@@ -1260,7 +1268,7 @@ function scenariosModel(options) {
             }
         });
     };
-    
+
     //populates scenarioList
     self.loadScenarios = function (scenarios) {
         self.scenarioList.removeAll();
@@ -1281,7 +1289,7 @@ function scenariosModel(options) {
         });
         self.scenarioList.sort(self.alphabetizeByName);
     };
-        
+
     self.loadDrawingsFromServer = function() {
         $.ajax({
             url: '/drawing/get_drawings',
@@ -1317,7 +1325,7 @@ function scenariosModel(options) {
         });
         self.drawingList.sort(self.alphabetizeByName);
     };
-    
+
     self.loadLeaseblockLayer = function() {
         //console.log('loading lease block layer');
         var leaseBlockLayer = new OpenLayers.Layer.Vector(
@@ -1331,7 +1339,7 @@ function scenariosModel(options) {
                     url: '/media/data_manager/geojson/ofr_planning_grid.json',
                     format: new OpenLayers.Format.GeoJSON()
                 }),
-                //styleMap: new OpenLayers.StyleMap( { 
+                //styleMap: new OpenLayers.StyleMap( {
                 //    "default": new OpenLayers.Style( { display: "none" } )
                 //})
                 layerModel: new layerModel({
@@ -1340,25 +1348,25 @@ function scenariosModel(options) {
             }
         );
         self.leaseblockLayer(leaseBlockLayer);
-        
+
         self.leaseblockLayer().events.register("loadend", self.leaseblockLayer(), function() {
             if (self.scenarioFormModel && ! self.scenarioFormModel.IE) {
                 self.scenarioFormModel.showLeaseblockSpinner(false);
             }
         });
-    };      
-    
-    self.leaseblockList = [];    
-    
+    };
+
+    self.leaseblockList = [];
+
     //populates leaseblockList
     self.loadLeaseblocks = function (ocsblocks) {
         self.leaseblockList = ocsblocks;
-    };  
-    
+    };
+
     self.cancelShare = function() {
         self.sharingLayer().temporarilySelectedGroups.removeAll();
     };
-    
+
     //SHARING DESIGNS
     self.submitShare = function() {
         self.sharingLayer().selectedGroups(self.sharingLayer().temporarilySelectedGroups().slice(0));
@@ -1382,7 +1390,7 @@ function scenariosModel(options) {
 
             // load the drawing
             self.loadDrawingsFromServer();
-            
+
             $.ajax({
                 url: '/scenario/get_sharing_groups',
                 type: 'GET',
@@ -1399,7 +1407,7 @@ function scenariosModel(options) {
             });
         }
     }
-    
+
     return self;
 } // end scenariosModel
 
@@ -1407,5 +1415,5 @@ function scenariosModel(options) {
 app.viewModel.scenarios = new scenariosModel();
 
 $('#designsTab').on('show', function (e) {
-    app.viewModel.scenarios.loadDesigns();    
+    app.viewModel.scenarios.loadDesigns();
 });
