@@ -20,7 +20,7 @@ def sdc_analysis(request, sdc_id):
     if not viewable:
         return response
     return display_sdc_analysis(request, sdc_obj)
-    
+
 '''
 '''
 def copy_design(request, uid):
@@ -28,16 +28,16 @@ def copy_design(request, uid):
         design_obj = get_feature_by_uid(uid)
     except Feature.DoesNotExist:
         raise Http404
-       
+
     #check permissions
     viewable, response = design_obj.is_viewable(request.user)
     if not viewable:
         return response
-        
+
     design_obj.pk = None
     design_obj.user = request.user
     design_obj.save()
-    
+
     json = []
     json.append({
         'id': design_obj.id,
@@ -46,9 +46,9 @@ def copy_design(request, uid):
         'description': design_obj.description,
         'attributes': design_obj.serialize_attributes
     })
-    
+
     return HttpResponse(dumps(json), status=200)
-    
+
 '''
 '''
 def delete_design(request, uid):
@@ -56,23 +56,23 @@ def delete_design(request, uid):
         design_obj = get_feature_by_uid(uid)
     except Feature.DoesNotExist:
         raise Http404
-    
+
     #check permissions
     viewable, response = design_obj.is_viewable(request.user)
     if not viewable:
         return response
-        
+
     design_obj.delete()
     #design_obj.active = False
     #design_obj.save(rerun=False)
-    
+
     return HttpResponse("", status=200)
 
 '''
 '''
 def get_scenarios(request):
     json = []
-    
+
     scenarios = Scenario.objects.filter(user=request.user, active=True).order_by('date_created')
     for scenario in scenarios:
         sharing_groups = [group.name for group in scenario.sharing_groups.all()]
@@ -84,7 +84,7 @@ def get_scenarios(request):
             'attributes': scenario.serialize_attributes,
             'sharing_groups': sharing_groups
         })
-        
+
     shared_scenarios = Scenario.objects.shared_with_user(request.user)
     for scenario in shared_scenarios:
         if scenario.active and scenario not in scenarios:
@@ -100,11 +100,11 @@ def get_scenarios(request):
                 'shared_by_username': username,
                 'shared_by_name': actual_name
             })
-        
+
     return HttpResponse(dumps(json))
 
 '''
-'''    
+'''
 def get_selections(request):
     json = []
     selections = LeaseBlockSelection.objects.filter(user=request.user).order_by('date_created')
@@ -118,7 +118,7 @@ def get_selections(request):
             'attributes': selection.serialize_attributes,
             'sharing_groups': sharing_groups
         })
-        
+
     shared_selections = LeaseBlockSelection.objects.shared_with_user(request.user)
     for selection in shared_selections:
         if selection not in selections:
@@ -134,11 +134,11 @@ def get_selections(request):
                 'shared_by_username': username,
                 'shared_by_name': actual_name
             })
-        
-    return HttpResponse(dumps(json))    
-    
+
+    return HttpResponse(dumps(json))
+
 '''
-'''    
+'''
 def get_leaseblock_features(request):
     from madrona.common.jsonutils import get_properties_json, get_feature_json, srid_to_urn, srid_to_proj
     srid = settings.GEOJSON_SRID
@@ -154,7 +154,7 @@ def get_leaseblock_features(request):
         feature_jsons.append(get_feature_json(geom, json.dumps('')))#json.dumps(props)))
         #feature_jsons.append(leaseblock.geometry.transform(srid, clone=True).json)
         '''
-        geojson = """{ 
+        geojson = """{
           "type": "Feature",
           "geometry": %s,
           "properties": {}
@@ -162,32 +162,32 @@ def get_leaseblock_features(request):
         '''
         #json.append({'type': "Feature", 'geometry': leaseblock.geometry.geojson, 'properties': {}})
     #return HttpResponse(dumps(json[0]))
-    geojson = """{ 
+    geojson = """{
       "type": "FeatureCollection",
       "crs": { "type": "name", "properties": {"name": "%s"}},
-      "features": [ 
-      %s 
+      "features": [
+      %s
       ]
     }""" % (srid_to_urn(srid), ', \n'.join(feature_jsons),)
     return HttpResponse(geojson)
-    
+
 '''
-'''    
+'''
 def get_attributes(request, uid):
     try:
         scenario_obj = get_feature_by_uid(uid)
     except Scenario.DoesNotExist:
         raise Http404
-    
+
     #check permissions
     viewable, response = scenario_obj.is_viewable(request.user)
     if not viewable:
         return response
-    
+
     return HttpResponse(dumps(scenario_obj.serialize_attributes))
-    
+
 '''
-'''    
+'''
 def get_sharing_groups(request):
     from madrona.features import user_sharing_groups
     from functools import cmp_to_key
@@ -209,9 +209,9 @@ def get_sharing_groups(request):
             'members': sorted_members
         })
     return HttpResponse(dumps(json))
-    
+
 '''
-'''    
+'''
 def share_design(request):
     from django.contrib.auth.models import Group
     group_names = request.POST.getlist('groups[]')
@@ -316,6 +316,20 @@ def run_filter_query(filters):
             query = query.exclude(rck_sub_m2__gt=0)
 
     if 'hsall_m2' in filters.keys() and 'hsall_m2_checkboxes' in filters.keys():
+
+        if type(filters['hsall_m2_checkboxes']) is list:
+            # save and filter submissions are handled differently since
+            # not all of these fields exist on the model.
+            # This step maps out the model data during a save to work like filtering.
+            if '1' in filters['hsall_m2_checkboxes'] and 'hsall_m2_checkboxes_1' not in filters.keys():
+                filters['hsall_m2_checkboxes_1'] = 'true';
+            if '2' in filters['hsall_m2_checkboxes'] and 'hsall_m2_checkboxes_2' not in filters.keys():
+                filters['hsall_m2_checkboxes_2'] = 'true';
+            if '3' in filters['hsall_m2_checkboxes'] and 'hsall_m2_checkboxes_3' not in filters.keys():
+                filters['hsall_m2_checkboxes_3'] = 'true';
+            if '4' in filters['hsall_m2_checkboxes'] and 'hsall_m2_checkboxes_4' not in filters.keys():
+                filters['hsall_m2_checkboxes_4'] = 'true';
+
         from django.db.models import Q
         if "hsall_m2_checkboxes_1" in filters.keys():
             if "hsall_m2_checkboxes_2" in filters.keys():
@@ -421,7 +435,7 @@ def get_filter_results(request):
             'wkt': None
         }]
     else:
-        dissolved_geom = query.aggregate(Union('geometry'))        
+        dissolved_geom = query.aggregate(Union('geometry'))
         if dissolved_geom['geometry__union']:
             dissolved_geom = dissolved_geom['geometry__union']
         else:
@@ -434,7 +448,7 @@ def get_filter_results(request):
         #     self.geometry_dissolved = dissolved_geom
         # else:
         #     self.geometry_dissolved = MultiPolygon(dissolved_geom, srid=dissolved_geom.srid)
-    
+
     # return # of grid cells and dissolved geometry in geojson
     return HttpResponse(dumps(json))
 
@@ -456,4 +470,3 @@ def get_leaseblocks(request):
             'coral_size': grid_cell.coral_size
         })
     return HttpResponse(dumps(json))
-
