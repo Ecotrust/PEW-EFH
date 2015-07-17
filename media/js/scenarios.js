@@ -63,14 +63,16 @@ var madrona = {
             $form.find('input,select,textarea').each( function(index, input) {
                 var $input = $(input);
                 if ($input.attr('type') === 'checkbox') {
-                    if ($input.attr('name').indexOf('checkboxes') >= 0) {
-                      if ($input.attr('name') in app.checkboxes) {
-                        app.checkboxes[$input.attr('name')].push($input.attr('value'));
+                    if ($input.attr('checked')) {
+                      if ($input.attr('name').indexOf('checkboxes') >= 0) {
+                        if ($input.attr('name') in app.checkboxes) {
+                          app.checkboxes[$input.attr('name')].push($input.attr('value'));
+                        } else {
+                          app.checkboxes[$input.attr('name')] = [$input.attr('value')];
+                        }
                       } else {
-                        app.checkboxes[$input.attr('name')] = [$input.attr('value')];
-                      }
-                    } else if ($input.attr('checked')) {
                         data[$input.attr('name')] = 'True';
+                      }
                     } else {
                         data[$input.attr('name')] = 'False';
                     }
@@ -80,7 +82,7 @@ var madrona = {
             });
             var checkboxList = Object.keys(app.checkboxes);
             for (var i = 0; i < checkboxList.length; i++) {
-              data[checkboxList[i]] = JSON.stringify(app.checkboxes[checkboxList[i]]);
+              data[checkboxList[i]] = app.checkboxes[checkboxList[i]];
             }
 
             app.viewModel.scenarios.scenarioForm(false);
@@ -88,6 +90,7 @@ var madrona = {
 
             $.ajax( {
                 url: url,
+                traditional: true,
                 data: data,
                 type: 'POST',
                 dataType: 'json',
