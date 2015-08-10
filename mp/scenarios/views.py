@@ -7,6 +7,7 @@ from madrona.features import get_feature_by_uid
 from general.utils import meters_to_feet
 from models import *
 from simplejson import dumps
+from django.contrib.auth.models import Group
 from django.contrib.gis.db.models.aggregates import Union
 
 
@@ -73,6 +74,12 @@ def delete_design(request, uid):
 def get_scenarios(request):
     json = []
 
+    public_groups = Group.objects.filter(name='Share with Public')
+    if len(public_groups) != 1:
+        public_group = False
+    else:
+        public_group = public_groups[0]
+
     scenarios = Scenario.objects.filter(user=request.user, active=True).order_by('date_created')
     for scenario in scenarios:
         sharing_groups = [group.name for group in scenario.sharing_groups.all()]
@@ -90,6 +97,7 @@ def get_scenarios(request):
         if scenario.active and scenario not in scenarios:
             username = scenario.user.username
             actual_name = scenario.user.first_name + ' ' + scenario.user.last_name
+            public = public_group and public_group in scenario.sharing_groups.all()
             json.append({
                 'id': scenario.id,
                 'uid': scenario.uid,
@@ -98,8 +106,29 @@ def get_scenarios(request):
                 'attributes': scenario.serialize_attributes,
                 'shared': True,
                 'shared_by_username': username,
-                'shared_by_name': actual_name
+                'shared_by_name': actual_name,
+                'public': public
             })
+
+    for group in request.user.groups.all():
+        group_shared_scenarios = Scenario.objects.filter(sharing_groups=group)
+        for scenario in group_shared_scenarios:
+            if scenario.active and scenario not in scenarios and scenario not in shared_scenarios:
+                shared_scenarios.add(scenario)
+                username = scenario.user.username
+                actual_name = scenario.user.first_name + ' ' + scenario.user.last_name
+                public = public_group in scenario.sharing_groups.all()
+                json.append({
+                    'id': scenario.id,
+                    'uid': scenario.uid,
+                    'name': scenario.name,
+                    'description': scenario.description,
+                    'attributes': scenario.serialize_attributes,
+                    'shared': True,
+                    'shared_by_username': username,
+                    'shared_by_name': actual_name,
+                    'public': public
+                })
 
     return HttpResponse(dumps(json))
 

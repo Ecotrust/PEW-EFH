@@ -15,7 +15,22 @@ from general.utils import miles_to_meters, feet_to_meters, meters_to_feet, mph_t
 from django.contrib.gis.geos import MultiPolygon
 from django.contrib.gis.db.models.aggregates import Union
 from django.forms.models import model_to_dict
+from django.contrib.auth.models import User, Group
 
+# Make sure all users are added to the public group
+class MPUser(User):
+    class Meta:
+        proxy = True
+
+    def save(self, *args, **kwargs):
+        public_groups = Group.objects.filter(name="Share with Public")
+        if len(public_groups) != 1:
+            public_group = False
+        else:
+            public_group = public_groups[0]
+        if public_group and not public_group in self.groups.all():
+            self.groups.add(public_group)
+        super(MPUser, self).save(*args, **kwargs)
 
 @register
 class Scenario(Analysis):
