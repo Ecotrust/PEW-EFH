@@ -16,21 +16,20 @@ from django.contrib.gis.geos import MultiPolygon
 from django.contrib.gis.db.models.aggregates import Union
 from django.forms.models import model_to_dict
 from django.contrib.auth.models import User, Group
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 
 # Make sure all users are added to the public group
-class MPUser(User):
-    class Meta:
-        proxy = True
-
-    def save(self, *args, **kwargs):
-        public_groups = Group.objects.filter(name="Share with Public")
-        if len(public_groups) != 1:
-            public_group = False
-        else:
-            public_group = public_groups[0]
-        if public_group and not public_group in self.groups.all():
-            self.groups.add(public_group)
-        super(MPUser, self).save(*args, **kwargs)
+@receiver(pre_save, sender=User, dispatch_uid='assign_public')
+def userSaveCallback(sender, **kwargs):
+    public_groups = Group.objects.filter(name="Share with Public")
+    user = kwargs['instance']
+    if len(public_groups) != 1:
+        public_group = False
+    else:
+        public_group = public_groups[0]
+    if public_group and not public_group in user.groups.all():
+        user.groups.add(public_group)
 
 @register
 class Scenario(Analysis):
