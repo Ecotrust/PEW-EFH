@@ -17,19 +17,34 @@ from django.contrib.gis.db.models.aggregates import Union
 from django.forms.models import model_to_dict
 from django.contrib.auth.models import User, Group
 from django.dispatch import receiver
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save
 
 # Make sure all users are added to the public group
-@receiver(pre_save, sender=User, dispatch_uid='assign_public')
+@receiver(post_save, sender=User, dispatch_uid='update_groups')
 def userSaveCallback(sender, **kwargs):
+    new_changes = False
     public_groups = Group.objects.filter(name="Share with Public")
     user = kwargs['instance']
     if len(public_groups) != 1:
         public_group = False
     else:
         public_group = public_groups[0]
-    if public_group and not public_group in user.groups.all():
-        user.groups.add(public_group)
+    staff_groups = Group.objects.filter(name="Share with Staff")
+    if len(staff_groups) != 1:
+        staff_group = false
+    else:
+        staff_group = staff_groups[0]
+    try:
+        if public_group and not public_group in user.groups.all():
+            user.groups.add(public_group)
+            new_changes = True
+        if user.is_staff and staff_group and not staff_group in user.groups.all():
+            user.groups.add(staff_group)
+            new_changes = True
+    except ValueError:
+        pass
+    if new_changes:
+        user.save()
 
 @register
 class Scenario(Analysis):
