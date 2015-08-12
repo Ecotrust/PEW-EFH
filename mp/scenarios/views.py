@@ -80,41 +80,51 @@ def get_scenarios(request):
     else:
         public_group = public_groups[0]
 
-    scenarios = Scenario.objects.filter(user=request.user, active=True).order_by('date_created')
-    for scenario in scenarios:
-        sharing_groups = [group.name for group in scenario.sharing_groups.all()]
-        json.append({
-            'id': scenario.id,
-            'uid': scenario.uid,
-            'name': scenario.name,
-            'description': scenario.description,
-            'attributes': scenario.serialize_attributes,
-            'sharing_groups': sharing_groups
-        })
-
-    shared_scenarios = Scenario.objects.shared_with_user(request.user)
-    for scenario in shared_scenarios:
-        if scenario.active and scenario not in scenarios:
-            username = scenario.user.username
-            actual_name = scenario.user.first_name + ' ' + scenario.user.last_name
-            public = public_group and public_group in scenario.sharing_groups.all()
+    if request.user.is_authenticated():
+        scenarios = Scenario.objects.filter(user=request.user, active=True).order_by('date_created')
+        for scenario in scenarios:
+            sharing_groups = [group.name for group in scenario.sharing_groups.all()]
             json.append({
                 'id': scenario.id,
                 'uid': scenario.uid,
                 'name': scenario.name,
                 'description': scenario.description,
                 'attributes': scenario.serialize_attributes,
-                'shared': True,
-                'shared_by_username': username,
-                'shared_by_name': actual_name,
-                'public': public
+                'sharing_groups': sharing_groups
             })
 
-    for group in request.user.groups.all():
+        shared_scenarios = Scenario.objects.shared_with_user(request.user)
+        for scenario in shared_scenarios:
+            if scenario.active and scenario not in scenarios:
+                username = scenario.user.username
+                actual_name = scenario.user.first_name + ' ' + scenario.user.last_name
+                public = public_group and public_group in scenario.sharing_groups.all()
+                json.append({
+                    'id': scenario.id,
+                    'uid': scenario.uid,
+                    'name': scenario.name,
+                    'description': scenario.description,
+                    'attributes': scenario.serialize_attributes,
+                    'shared': True,
+                    'shared_by_username': username,
+                    'shared_by_name': actual_name,
+                    'public': public
+                })
+
+        groups = list(request.user.groups.all())
+        if not public_group in user.groups.all():
+            groups = groups + [public_group]
+        shared_scenarios_list = list(shared_scenarios)
+    else:
+        groups = [public_group]
+        scenarios = []
+        shared_scenarios_list = []
+
+    for group in groups:
         group_shared_scenarios = Scenario.objects.filter(sharing_groups=group)
         for scenario in group_shared_scenarios:
-            if scenario.active and scenario not in scenarios and scenario not in shared_scenarios:
-                shared_scenarios.add(scenario)
+            if scenario.active and scenario not in scenarios and scenario not in shared_scenarios_list:
+                shared_scenarios_list.append(scenario)
                 username = scenario.user.username
                 actual_name = scenario.user.first_name + ' ' + scenario.user.last_name
                 public = public_group in scenario.sharing_groups.all()
