@@ -56,7 +56,7 @@ def get_drawings(request):
                 })
 
         groups = list(request.user.groups.all())
-        if public_group and not public_group in user.groups.all():
+        if public_group and not public_group in request.user.groups.all():
             groups = groups + [public_group]
         shared_drawings_list = list(shared_drawings)
     else:
