@@ -120,6 +120,18 @@ class Scenario(Analysis):
     # ra_cs_max = models.FloatField(null=True, blank=True)
     # ra_cs_input = models.TextField(null=True, blank=True)
 
+    cs_obs = models.BooleanField()
+    cs_obs_input = models.TextField(null=True, blank=True)
+
+    cs_spm = models.BooleanField()
+    cs_spm_input = models.TextField(null=True, blank=True)
+
+    cs3500_obs = models.BooleanField()
+    cs3500_obs_input = models.TextField(null=True, blank=True)
+
+    cs3500_spm = models.BooleanField()
+    cs3500_spm_input = models.TextField(null=True, blank=True)
+
     ra_penn = models.BooleanField()
     # ra_penn_min = models.FloatField(null=True, blank=True)
     # ra_penn_max = models.FloatField(null=True, blank=True)
@@ -184,6 +196,8 @@ class Scenario(Analysis):
     # hsanti3_m2_max = models.FloatField(null=True, blank=True)
     # hsanti3_m2_input = models.TextField(null=True, blank=True)
 
+    hsanti4_m2 = models.BooleanField()
+
     hscalc1_m2 = models.BooleanField()
     # hscalc1_m2_min = models.FloatField(null=True, blank=True)
     # hscalc1_m2_max = models.FloatField(null=True, blank=True)
@@ -238,6 +252,8 @@ class Scenario(Analysis):
     # hssclr3_m2_min = models.FloatField(null=True, blank=True)
     # hssclr3_m2_max = models.FloatField(null=True, blank=True)
     # hssclr3_m2_input = models.TextField(null=True, blank=True)
+
+    hssclr4_m2 = models.BooleanField()
 
     hssclx1_m2 = models.BooleanField()
     # hssclx1_m2_min = models.FloatField(null=True, blank=True)
@@ -481,6 +497,15 @@ class Scenario(Analysis):
                 'title': title,
                 'data':  ''
             })
+        # if self.cs_obs:
+        #     if self.cs_obs_input == 'Y':
+        #         title = 'Contains observed corals and/or sponges'
+        #     else:
+        #         title = 'No corals and/or sponges observed'
+        #     attributes.append({
+        #         'title': title,
+        #         'data':  ''
+        #     })
 
         attributes.append({'title': 'Number of Grid Cells',
                            'data': '{:,}'.format(self.grid_cells.count(',')+1)})
@@ -719,6 +744,7 @@ class GridCell(models.Model):
     hsanti1_m2 = models.IntegerField(null=True, blank=True)
     hsanti2_m2 = models.IntegerField(null=True, blank=True)
     hsanti3_m2 = models.IntegerField(null=True, blank=True)
+    hsanti4_m2 = models.IntegerField(null=True, blank=True)
     hscalc1_m2 = models.IntegerField(null=True, blank=True)
     hscalc2_m2 = models.IntegerField(null=True, blank=True)
     hscalc3_m2 = models.IntegerField(null=True, blank=True)
@@ -730,6 +756,7 @@ class GridCell(models.Model):
     hssclr1_m2 = models.IntegerField(null=True, blank=True)
     hssclr2_m2 = models.IntegerField(null=True, blank=True)
     hssclr3_m2 = models.IntegerField(null=True, blank=True)
+    hssclr4_m2 = models.IntegerField(null=True, blank=True)
     hssclx1_m2 = models.IntegerField(null=True, blank=True)
     hssclx2_m2 = models.IntegerField(null=True, blank=True)
     hssclx3_m2 = models.IntegerField(null=True, blank=True)
@@ -738,6 +765,10 @@ class GridCell(models.Model):
     hpc_klp_m2 = models.IntegerField(null=True, blank=True)
     hpc_rck_m2 = models.IntegerField(null=True, blank=True)
     hpc_sgr_m2 = models.IntegerField(null=True, blank=True)
+    cs_obs = models.IntegerField(null=True, blank=True)
+    cs_spm = models.IntegerField(null=True, blank=True)
+    cs3500_obs = models.IntegerField(null=True, blank=True)
+    cs3500_spm = models.IntegerField(null=True, blank=True)
 
     unique_id = models.IntegerField(null=True, blank=True)
 
