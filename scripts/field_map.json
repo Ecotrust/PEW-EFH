@@ -43,5 +43,11 @@
   "hpc_klp_m2": "hpc_klp_m2",
   "hpc_rck_m2": "hpc_rck_m2",
   "hpc_sgr_m2": "hpc_sgr_m2",
+  "cs_obs": "cs_obs",
+  "cs_spm": "cs_spm",
+  "cs3500_obs": "cs3500_obs",
+  "cs3500_spm": "cs3500_spm",
+  "hsanti4_m2": "hsanti4_m2",
+  "hssclr4_m2": "hssclr4_m2",
   "pug_id": "unique_id"
 }
