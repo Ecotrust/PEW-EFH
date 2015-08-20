@@ -134,6 +134,30 @@ def get_summary_reports(grid_cells, attributes):
     data = str(penn_ra)
     attributes.append({'title': title, 'data': data})
 
+    # Coral and Sponge Number of Observations
+    title = 'Coral/sponge observations'
+    cs_obs_sites = get_sum(grid_cells, 'cs_obs')
+    data = str(cs_obs_sites)
+    attributes.append({'title': title, 'data': data})
+
+    # Coral and Sponge Observed Count
+    title = 'Coral/sponge specimens counted'
+    cs_spm_count = get_sum(grid_cells, 'cs_spm')
+    data = str(cs_spm_count)
+    attributes.append({'title': title, 'data': data})
+
+    # Coral and Sponge Number of Observations Deeper than 3500m
+    title = 'Coral/sponge observations > 3500m'
+    cs3500_obs_sites = get_sum(grid_cells, 'cs3500_obs')
+    data = str(cs3500_obs_sites)
+    attributes.append({'title': title, 'data': data})
+
+    # Coral and Sponge ObservedCount Deeper than 3500m
+    title = 'Coral/sponge specimens counted > 3500m'
+    cs3500_spm_count = get_sum(grid_cells, 'cs3500_spm')
+    data = str(cs3500_spm_count)
+    attributes.append({'title': title, 'data': data})
+
     # Class 1 Suitable Habitat (All)
     title = 'Class 1 Suitable Habitat (All)'
     hsall1_m2 = get_sum(grid_cells, 'hsall1_m2')
