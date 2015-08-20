@@ -343,6 +343,13 @@ class Scenario(Analysis):
         """
         attributes = []
 
+        #generic
+        if self.description:
+            attributes.append({
+                'title': 'Description',
+                'data': self.description
+            })
+
         # Step 1
         if self.species:
             if self.lifestage:
