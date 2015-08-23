@@ -43,14 +43,23 @@ app.clickAttributes = (function() {
 		}
 		return attrs;
 	};
-	
+
     // Called from utfGridClickHandling in map.js (for Planning Grid click handling)
     var getGridAttributes = function (data) {
         attrs = [];
-                
+
         if ('NAME' in data) {
             attrs.push({'display': 'Name', 'data': data['NAME'].toLocaleString()});
         }
+
+				if ('AREA_NAME' in data) {
+            attrs.push({'display': 'Name', 'data': data['AREA_NAME'].toLocaleString()});
+        }
+
+				if ('Name' in data) {
+            attrs.push({'display': 'Name', 'data': data['Name'].toLocaleString()});
+        }
+
         // if ('ID' in data) {
         //     attrs.push({'display': 'Id', 'data': data['ID'].toLocaleString()});
         // }
@@ -115,11 +124,16 @@ app.clickAttributes = (function() {
                 attrs.push({'display': 'Area', 'data': '>1 Billion m&sup2;'});
             }
         }
+
+				if ('GRIDCODE' in data) {
+					attrs.push({'display':'Class', 'data': data['GRIDCODE']})
+				}
+
         if ('LoHS' in data) {
             attrs.push({'display': 'Suitability', 'data': data['LoHS'].toLocaleString()});
         }
 
-        
+
         // // Depth Range
         // if ('MaxDpth_ft' in data && 'MinDpth_ft' in data) {
         //     attrs.push({'display': 'Depth Range', 'data': data['MinDpth_ft'] + ' to ' + data['MaxDpth_ft'] + ' feet'});
@@ -143,6 +157,36 @@ app.clickAttributes = (function() {
             var cpfv_allow = ((data['CPFV_allow'] == 'no') ? 'Prohibited' : 'Allowed') ;
             attrs.push({'display': 'Charter Fishing', 'data': cpfv_allow});
         }
+
+				if ('PROHIBIT' in data) {
+						attrs.push({'display':'Prohibits', 'data': data['PROHIBIT']});
+				}
+
+				if ('STATE' in data) {
+						attrs.push({'display':'State', 'data': data['STATE']});
+				}
+
+				if ('rationale' in data) {
+						var rationale = data['rationale'];
+						if (rationale == 'Reopen') {
+							rationale = 'Reopening';
+						}
+						attrs.push({'display':'Type', 'data': rationale});
+				}
+
+				if ('EFH_prop' in data) {
+						attrs.push({'display': 'Description', 'data': data['EFH_prop']});
+				}
+
+				if ('SC_NAME' in data) {
+						attrs.push({'display': 'Type', 'data': data['SC_NAME']});
+				}
+
+				if ('DESCRIPTIO' in data && data['DESCRIPTIO'] != '') {
+						attrs.push({'display': 'Notes', 'data': data['DESCRIPTIO']});
+				}
+
+
 
         return attrs;
     };
