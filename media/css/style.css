@@ -50,11 +50,11 @@
   position: absolute;
   top: 180px;
   right: 0;
-  z-index: 950; 
+  z-index: 950;
   width: 250px;
   font-size: 16px;
   color: white;
-  
+
 }
 #attribute-data > div {
   padding: 10px;
@@ -71,12 +71,12 @@
   /*top: 25%;
   top: 180px;
   left: 10px;*/
-  z-index: 950; 
+  z-index: 950;
   min-width: 190px;
   width: 280px;
   max-height: 250px;
   font-size: 14px;
-  color: white;  
+  color: white;
   border-radius: 4px;
 }
 
@@ -144,7 +144,7 @@
 }
 
 #aggregated-attribute-content .mCSB_container {
-  padding-left: 10px; 
+  padding-left: 10px;
   margin-right: 5px;
   overflow: hidden;
 }
@@ -262,15 +262,15 @@ div.olLayerGooglePoweredBy
 #planner-sidebar {
   overflow-x: hidden;
   overflow-y: hidden;
-  min-width: 370px; 
-  max-width: 370px; 
+  min-width: 370px;
+  max-width: 370px;
   height: 100%;
-  top: 12px; 
-  z-index: 750; 
-  margin-left: 12px; 
-  background-color: white; 
-  border-radius: 10px; 
-  opacity: .95; 
+  top: 12px;
+  z-index: 750;
+  margin-left: 12px;
+  background-color: white;
+  border-radius: 10px;
+  opacity: .95;
   border: 1px solid #ccc;
 }
 
@@ -280,23 +280,23 @@ div.olLayerGooglePoweredBy
 }
 
 .sidebar-footer {
-  position: absolute; 
+  position: absolute;
   margin-top: -50px;
   z-index: 760;
   height: 50px;
-  bottom: 0; 
+  bottom: 0;
   width: 100%;
 }
 
 #bottom-button-span {
-  position: absolute; 
-  bottom: 0; 
-  left: 0; 
-  z-index: 1; 
-  padding-left: 12px; 
-  padding-bottom: 12px; 
-  background-color: #DDD; 
-  border-top: 1px solid #AAA; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  padding-left: 12px;
+  padding-bottom: 12px;
+  background-color: #DDD;
+  border-top: 1px solid #AAA;
   width: 100%;
 }
 
@@ -342,11 +342,11 @@ div.olLayerGooglePoweredBy
   margin-bottom: 0px;
 }
 
-.olImageLoadError { 
+.olImageLoadError {
     /* when OL encounters a 404, don't display the pink image */
     display: none !important;
     visibility: hidden !important;
-    background-color: transparent; 
+    background-color: transparent;
 }
 
 // hide some stuff when using sortable
@@ -407,7 +407,7 @@ a.disabled-link:hover {
 #overview-overlay {
   position: absolute;
   /*border-radius: 4px; can't tell if I want this or not...*/
-  z-index: 950; 
+  z-index: 950;
   /*bottom: 0;
   min-width: 100%;
   max-height: 60%;
@@ -479,7 +479,7 @@ a.disabled-link:hover {
 }
 
 #overview-overlay-content .mCustomScrollBox {
-  /*padding-bottom: 5px;  
+  /*padding-bottom: 5px;
   height: 105% !important;*/
 }
 
@@ -490,7 +490,7 @@ a.disabled-link:hover {
 }
 
 #overview-overlay-text .mCSB_container {
-  padding: 5px 10px 15px;  
+  padding: 5px 10px 15px;
   margin-right: 25px;
   /*background-color: rgba(60, 110, 160, 0.25098);*/
 }
@@ -528,13 +528,13 @@ a.disabled-link:hover {
 }
 
 #overview-dropdown-button .caret {
-  border-top: 4px solid white; 
+  border-top: 4px solid white;
 }
 
 #fullscreen-error-overlay {
   position: absolute;
   top: 0;
-  z-index: 950; 
+  z-index: 950;
   width: 70%;
   margin-left: 15%;
   font-size: 16px;
@@ -544,7 +544,7 @@ a.disabled-link:hover {
 #error-overlay {
   position: absolute;
   top: 12px;
-  z-index: 950; 
+  z-index: 950;
   width: 50%;
   font-size: 16px;
   color: white;
@@ -598,7 +598,7 @@ a.disabled-link:hover {
 }
 
 #designs-accordion  ul.unstyled {
-  margin-bottom: 0px; 
+  margin-bottom: 0px;
   padding: 0px;
 }
 
@@ -618,8 +618,12 @@ a.disabled-link:hover {
 }
 
 #designs-accordion .accordion-toggle {
-  width: 280px; 
+  width: 280px;
   display: inline-block;
+}
+
+#drawing-accordion {
+  margin-bottom: 120px;
 }
 
 .create-new-button {
@@ -650,9 +654,9 @@ a.disabled-link:hover {
 
 #myTabContent {
   margin-top: 0;
-  position: absolute; 
-  top: 206px; 
-  bottom: 50px; 
+  position: absolute;
+  top: 206px;
+  bottom: 50px;
   height: auto !important;
 }
 
@@ -693,7 +697,7 @@ a.disabled-link:hover {
 }
 
 .modal-body .sharing-header {
-  text-align: left; 
+  text-align: left;
   margin-left: 20px;
 }
 
@@ -701,5 +705,5 @@ a.disabled-link:hover {
   cursor: default;
 }
 .group-members-popover:hover {
-  text-decoration: none; 
+  text-decoration: none;
 }

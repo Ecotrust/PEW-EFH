@@ -18,7 +18,7 @@
           </div>
         </div>
     </div>
-    
+
     <div class="form-container" data-bind="visible: ! (loadingMessage() || errorMessage())">
         <div id="designs-data" data-bind="visible: !scenarioForm() && !drawingForm()">
             <!-- <div class="row-fluid">
@@ -32,20 +32,20 @@
                             <li id="create-new-drawing"><a data-bind="click: createPolygonDesign" style="padding-left: 15px">Drawing</a></li>
                             {% comment %} <li id="create-new-selection"><a data-bind="click: createSelectionDesign" style="padding-left: 15px">Lease Block Collection</a></li> {% endcomment %}
                             {% load in_group %}
-                            <li><a data-bind="click: createWindScenario" style="padding-left: 15px">Wind Energy Siting</a></li>                            
+                            <li><a data-bind="click: createWindScenario" style="padding-left: 15px">Wind Energy Siting</a></li>
                         </ul>
                     </div>
-                    
+
                 </div>
             </div> -->
-            
+
             <div id="design-list" class="row-fluid">
                 <div style="
                     padding-right: 2px;
                     height: 388px;">
                 <div id="designs-accordion" class="designs">
-                    <div class="accordion" style="">                    
-                        
+                    <div class="accordion" style="">
+
                         <!-- GRID FILTERING -->
                         {% if user.is_staff %}
                         <div>
@@ -60,22 +60,22 @@
                                 </div>
                                 <div class="accordion-body collapse" data-bind="css: { 'in': isScenariosOpen() }">
                                     <div class="accordion-inner">
-                                    
+
                                         <div data-bind="visible: !scenarioList().length" style="font-weight: normal">
                                             <div style="padding: 10px;">
                                                 <p>
-                                                    You currently have no Grid Filter Designs. 
+                                                    You currently have no Grid Filter Designs.
                                                 </p>
                                                 <p>
                                                     Click the plus sign (<i class="icon-plus icon-large" style="color: #064669"></i>) above to create a Grid Filter Designs.
                                                 </p>
                                                 <p>
-                                                    Note:  You may, at any time, edit, share, or remove any of the sitings that you have created.  
+                                                    Note:  You may, at any time, edit, share, or remove any of the sitings that you have created.
                                                     Any sitings shared with you can be copied so that they too can be edited, shared, or removed.
                                                 </p>
                                             </div>
-                                        </div> 
-                                        
+                                        </div>
+
                                         <ul class="unstyled list" data-bind="foreach: scenarioList ">
                                             <li class="layer">
                                                 <div class="btn-group btn-group-layer">
@@ -107,7 +107,7 @@
                                                     </ul>
                                                     <!-- style="height: 20px; padding: 4px 12px; border-left-width: 0px" -->
                                                 </div>
-                                            </li>  
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -115,10 +115,10 @@
                         </div>
                         {% endif %}
                         <!-- end grid filtering -->
-                        
+
                         <!-- DRAWINGS -->
                         <div>
-                            <div class="accordion-group" style="margin-bottom: 110px;">
+                            <div id="drawing-accordion" class="accordion-group">
                                 <div class="collections-header">
                                     <div id="drawings-header" class="accordion-heading" data-bind="click: toggleDrawingsOpen, css: { 'active': isDrawingsOpen() }">
                                         <div>
@@ -134,22 +134,22 @@
                                 </div>
                                 <div class="accordion-body collapse" data-bind="css: { 'in': isDrawingsOpen() }">
                                     <div class="accordion-inner">
-                                    
+
                                         <div data-bind="visible: !drawingList().length" style="font-weight: normal">
                                             <div style="padding: 10px;">
                                                 <p>
-                                                    You currently have no Drawings. 
+                                                    You currently have no Drawings.
                                                 </p>
                                                 <p>
                                                     Click the plus sign (<i class="icon-plus icon-large" style="color: #064669"></i>) above to create a Drawing.
                                                 </p>
                                                 <p>
-                                                    Note:  You may, at any time, edit, share, or remove any of the drawings that you have created.  
+                                                    Note:  You may, at any time, edit, share, or remove any of the drawings that you have created.
                                                     Any drawings shared with you can be copied so that they too can be edited, shared, or removed.
                                                 </p>
                                             </div>
                                         </div>
-                                    
+
                                         <ul class="unstyled list" data-bind="foreach: drawingList ">
                                             <li class="layer">
                                                 <div class="btn-group btn-group-layer">
@@ -179,30 +179,30 @@
                                                         <li><a data-bind="visible: shared, click: createCopyDrawing">Create Copy</a></li>
                                                     </ul>
                                                 </div>
-                                            </li>  
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- end drawings -->
-                        
+
                     </div>
                 </div>
                 </div>
-            </div>   
-        </div>    
-         
-        <div style="height: 100%" data-bind="visible: scenarioForm">   
-            <div id="scenario-form" class="panel-container"></div>   
+            </div>
         </div>
-        
-        <div style="height: 100%" data-bind="visible: drawingForm">   
-            <div id="drawing-form" class="panel-container"></div> 
+
+        <div style="height: 100%" data-bind="visible: scenarioForm">
+            <div id="scenario-form" class="panel-container"></div>
         </div>
-        
+
+        <div style="height: 100%" data-bind="visible: drawingForm">
+            <div id="drawing-form" class="panel-container"></div>
+        </div>
+
         {% comment %}
-        <div style="height: 100%" data-bind="visible: reportsVisible">   
+        <div style="height: 100%" data-bind="visible: reportsVisible">
             <div id="reports" class="panel-container" data-bind="with: reports">
                 <div class="form-container">
                     <div>
@@ -228,7 +228,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div id="reports-intro" data-bind="visible: !showingReport()">
                         <p>Comparison Reports can be used to visually compare your Lease Block Selections across various measurable values.</p>
                     </div>
@@ -239,11 +239,11 @@
                         <p>Comparison Reports will provide a comparison of all of your visible Lease Block Selections.</p>
                         <p id="comparison-report-flash-instructions">
                             <span data-bind="visible: $parent.selectionList().length==0">
-                                You do not currently have any Lease Block Selections to compare.  
+                                You do not currently have any Lease Block Selections to compare.
                                 Create Lease Block Selections through the Create New button on the Designs panel.
                             </span>
                             <span data-bind="visible: $parent.selectionList().length!=0">
-                                You currently have no Lease Block Selections displayed on the map.  
+                                You currently have no Lease Block Selections displayed on the map.
                                 <b>Activate one or more Lease Block Selections before choosing a report.</b>
                             </span>
                         </p>
@@ -251,7 +251,7 @@
                     <div id="reports-container" data-bind="visible: showingReport() && !noActiveCollections()" style="max-width: 400px; height: 400px; margin: 0 auto; margin-left: -10px;">
                     </div>
                 </div>
-            </div>   
+            </div>
         </div>
         {% endcomment %}
     </div>

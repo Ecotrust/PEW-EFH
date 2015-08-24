@@ -14,7 +14,7 @@ app.onResize = function(percent) {
         $(".tabs").height(height);
         //$("#legend-wrapper").height(height - 20);
         $("#data-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
-        $("#designs-accordion").height(height - 20 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $("#designs-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         //$("#active").height(height + 20 - (($.browser.msie && $.browser.version < 9)? 130: 96));
     }
     app.map.render('map');
@@ -71,8 +71,8 @@ app.viewModel.loadLayersFromServer().done(function() {
     app.loadStateFromHash(app.hash);
   } else if (app.MPSettings.default_hash) {
     app.loadStateFromDefaultHash(app.MPSettings.default_hash);
-  } 
-  
+  }
+
   // autocomplete for filter
   $('.search-box').typeahead({
     source: app.typeAheadSource
@@ -108,7 +108,7 @@ app.initializeMapLocation = function() {
 };
 app.initializeMapLocation();
 
-setTimeout(function() {  
+setTimeout(function() {
     app.map.mousedrag = false;
 }, 800);
 
@@ -147,7 +147,7 @@ $(document).ready(function() {
   if(app.MPSettings && app.MPSettings.enable_drawing === "True") {
     app.viewModel.enableDrawing(true);
   }
-  
+
 
   //fixes a problem in which the data accordion scrollbar was reinitialized before the app switched back to the data tab
   //causing the data tab to appear empty

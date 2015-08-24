@@ -1302,6 +1302,7 @@ function scenariosModel(options) {
                 self.loadDrawings(drawings);
                 self.drawingsLoaded = true;
                 self.showUnloadedDesigns();
+                app.viewModel.scenarios.updateDesignsScrollBar();
             },
             error: function (result) {
                 //debugger;
