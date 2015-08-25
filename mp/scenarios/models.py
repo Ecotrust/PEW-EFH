@@ -384,68 +384,66 @@ class Scenario(Analysis):
             attributes.append(
                 self.get_min_attributes(
                     'Predicted Class 1 Deep Sea Coral Habitat',
-                    float(format_precision(self.hsall1_m2_min / 1000000, 2)),
-                    'km<sup>2</sup>'
+                    float(format_precision(self.hsall1_m2_min / 2590000, 2)),
+                    'mi<sup>2</sup>'
                 )
             )
+            # float(format_precision(self.hsall1_m2_min / 1000000, 2)),
+            # 'km<sup>2</sup>'
         if self.hsall2_m2:
             attributes.append(
                 self.get_min_attributes(
                     'Predicted Class 2 Deep Sea Coral Habitat',
-                    float(format_precision(self.hsall2_m2_min / 1000000, 2)),
-                    'km<sup>2</sup>'
+                    float(format_precision(self.hsall2_m2_min / 2590000, 2)),
+                    'mi<sup>2</sup>'
                 )
             )
         if self.hsall3_m2:
             attributes.append(
                 self.get_min_attributes(
                     'Predicted Class 3 Deep Sea Coral Habitat',
-                    float(format_precision(self.hsall3_m2_min / 1000000, 2)),
-                    'km<sup>2</sup>'
+                    float(format_precision(self.hsall3_m2_min / 2590000, 2)),
+                    'mi<sup>2</sup>'
                 )
             )
         if self.hsall4_m2:
             attributes.append(
                 self.get_min_attributes(
                     'Predicted Class 4 Deep Sea Coral Habitat',
-                    float(format_precision(self.hsall4_m2_min / 1000000, 2)),
-                    'km<sup>2</sup>'
+                    float(format_precision(self.hsall4_m2_min / 2590000, 2)),
+                    'mi<sup>2</sup>'
                 )
             )
         if self.hpc_est_m2:
-            hpc_est_km2_min = float(format_precision(self.hpc_est_m2_min / 1000000, 2))
             attributes.append(
                 self.get_min_attributes(
                     'Estuary Habitat',
-                    hpc_est_km2_min,
-                    'km<sup>2</sup>'
+                    float(format_precision(self.hpc_est_m2_min / 2590000, 2)),
+                    'mi<sup>2</sup>'
                 )
             )
         if self.hpc_klp_m2:
-            hpc_klp_km2_min = float(format_precision(self.hpc_klp_m2_min / 1000000, 2))
             attributes.append(
                 self.get_min_attributes(
                     'Kelp Habitat',
-                    hpc_klp_km2_min,
-                    'km<sup>2</sup>'
+                    float(format_precision(self.hpc_klp_m2_min / 2590000, 2)),
+                    'mi<sup>2</sup>'
                 )
             )
         if self.hpc_rck_m2:
-            hpc_rck_km2_min = float(format_precision(self.hpc_rck_m2_min / 1000000, 2))
             attributes.append(
                 self.get_min_attributes(
                     'Rocky Reef Habitat',
-                    hpc_rck_km2_min,
-                    'km<sup>2</sup>'
+                    float(format_precision(self.hpc_rck_m2_min / 2590000, 2)),
+                    'mi<sup>2</sup>'
                 )
             )
         if self.hpc_sgr_m2:
-            hpc_sgr_km2_min = float(format_precision(self.hpc_sgr_m2_min / 1000000, 2))
             attributes.append(
                 self.get_min_attributes(
                     'Seagrass Habitat',
-                    hpc_sgr_km2_min,
-                    'km<sup>2</sup>'
+                    float(format_precision(self.hpc_sgr_m2_min / 2590000, 2)),
+                    'mi<sup>2</sup>'
                 )
             )
 
