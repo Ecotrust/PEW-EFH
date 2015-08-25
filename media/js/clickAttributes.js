@@ -44,6 +44,12 @@ app.clickAttributes = (function() {
 		return attrs;
 	};
 
+	  var toSquareMiles = function(sqmeters) {
+			sqmiles = Math.round(parseFloat(sqmeters)/2590000.0);
+			return sqmiles.toLocaleString() + ' mi&sup2;'
+
+		};
+
     // Called from utfGridClickHandling in map.js (for Planning Grid click handling)
     var getGridAttributes = function (data) {
         attrs = [];
@@ -73,42 +79,42 @@ app.clickAttributes = (function() {
         }
         // Whether a cell intersects witha designated anchorage
         if ('hsall1_m2' in data) {
-            attrs.push({'display': 'Predicted habitat suitability (class 1) for all 6 relevant taxa of deep-sea coral', 'data': data['hsall1_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Predicted habitat suitability (class 1) for all 6 relevant taxa of deep-sea coral', 'data': toSquareMiles(data['hsall1_m2'])});
         }
         if ('hsall2_m2' in data) {
-            attrs.push({'display': 'Predicted habitat suitability (class 2) for all 6 relevant taxa of deep-sea coral', 'data': data['hsall2_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Predicted habitat suitability (class 2) for all 6 relevant taxa of deep-sea coral', 'data': toSquareMiles(data['hsall2_m2'])});
         }
         if ('hsall3_m2' in data) {
-            attrs.push({'display': 'Predicted habitat suitability (class 3) for all 6 relevant taxa of deep-sea coral', 'data': data['hsall3_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Predicted habitat suitability (class 3) for all 6 relevant taxa of deep-sea coral', 'data': toSquareMiles(data['hsall3_m2'])});
         }
         if ('hsall4_m2' in data) {
-            attrs.push({'display': 'Predicted habitat suitability (class 4) for all 6 relevant taxa of deep-sea coral', 'data': data['hsall4_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Predicted habitat suitability (class 4) for all 6 relevant taxa of deep-sea coral', 'data': toSquareMiles(data['hsall4_m2'])});
         }
 
         if ('hpc_est_m2' in data) {
-            attrs.push({'display': 'Estuary habitat of particular concern', 'data': data['hpc_est_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Estuary habitat of particular concern', 'data': toSquareMiles(data['hpc_est_m2'])});
         }
         if ('hpc_klp_m2' in data) {
-            attrs.push({'display': 'Kelp habitat of particular concern', 'data': data['hpc_klp_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Kelp habitat of particular concern', 'data': toSquareMiles(data['hpc_klp_m2'])});
         }
         if ('hpc_rck_m2' in data) {
-            attrs.push({'display': 'Rocky reef habitat of particular concern', 'data': data['hpc_rck_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Rocky reef habitat of particular concern', 'data': toSquareMiles(data['hpc_rck_m2'])});
         }
         if ('hpc_sgr_m2' in data) {
-            attrs.push({'display': 'Seagrass habitat of particular concern', 'data': data['hpc_sgr_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Seagrass habitat of particular concern', 'data': toSquareMiles(data['hpc_sgr_m2'])});
         }
 
         if ('sft_sub_m2' in data) {
-            attrs.push({'display': 'Soft Substrate', 'data': data['sft_sub_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Soft Substrate', 'data': toSquareMiles(data['sft_sub_m2'])});
         }
         if ('mix_sub_m2' in data) {
-            attrs.push({'display': 'Mixed Substrate', 'data': data['mix_sub_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Mixed Substrate', 'data': toSquareMiles(data['mix_sub_m2'])});
         }
         if ('hrd_sub_m2' in data) {
-            attrs.push({'display': 'Hard Substrate', 'data': data['hrd_sub_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Hard Substrate', 'data': toSquareMiles(data['hrd_sub_m2'])});
         }
         if ('rck_sub_m2' in data) {
-            attrs.push({'display': 'Inferred Rock Substrate', 'data': data['rck_sub_m2'].toLocaleString() + ' m&sup2;'});
+            attrs.push({'display': 'Inferred Rock Substrate', 'data': toSquareMiles(data['rck_sub_m2'])});
         }
         if ('cnt_cs' in data) {
             attrs.push({'display': 'Coral (excluding pennatulids) and sponge presence', 'data': data['cnt_cs'].toLocaleString()});
@@ -118,11 +124,7 @@ app.clickAttributes = (function() {
         }
 
         if ('Area_m2' in data) {
-            if (data['Area_m2'] !== 0) {
-                attrs.push({'display': 'Area', 'data': data['Area_m2'].toLocaleString() + ' m&sup2;'});
-            } else {
-                attrs.push({'display': 'Area', 'data': '>1 Billion m&sup2;'});
-            }
+            attrs.push({'display': 'Area', 'data': toSquareMiles(data['Area_m2'])});
         }
 
 				if ('GRIDCODE' in data) {
