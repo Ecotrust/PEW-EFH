@@ -33,6 +33,11 @@
     margin-bottom: 14px;
     padding: 0px;
 }
+
+#planning-grid-layer-toggle {
+  float: right;
+}
+
 #wind-design-form i {
     display: inline-block;
 }
