@@ -52,11 +52,11 @@ EMAIL_SUBJECT_PREFIX = 'PEW EFH Marine Planner'
 ADMINS = (
     ('Ryan Hodges', 'rhodges@ecotrust.org')
 )
+HELP_EMAIL = "efhsupport@ecotrust.org"
 
 
 
 # FEEDBACK_RECIPIENT = "Marine Planning Team <mp-team@marineplanner.org>"
-# HELP_EMAIL = "mp-team@marineplanner.org"
 # DEFAULT_FROM_EMAIL = "Marine Planning Team <mp-team@marineplanner.org>"
 
 # url for socket.io printing
