@@ -14,8 +14,8 @@ DATABASES = {
     }
 }
 
-FEEDBACK_RECIPIENT = ["help@pointnineseven.com"] # default value, actual emails are assigned in settings_local.py
-FEEDBACK_SUBJECT = "Our Florida Reefs Marine Planner Feedback"
+FEEDBACK_RECIPIENT = ["madrona@ecotrust.org"] # default value, actual emails are assigned in settings_local.py
+FEEDBACK_SUBJECT = "PEW Essential Fish Habitat Marine Planner Feedback"
 
 
 LOG_FILE = os.path.realpath(os.path.join(os.path.dirname(__file__),
@@ -43,16 +43,14 @@ GEOMETRY_DB_SRID = 3857
 GEOMETRY_CLIENT_SRID = 3857  # for latlon
 GEOJSON_SRID = 3857
 
-APP_NAME = "OFR Marine Planner"
-SERVER_ADMIN = 'seth@pointnineseven.com'
-DEFAULT_FROM_EMAIL = 'OFR Marine Planner <developers@pointnineseven.com>'
+APP_NAME = "PEW EFH Marine Planner"
+SERVER_ADMIN = 'rhodges@ecotrust.org'
+DEFAULT_FROM_EMAIL = 'EFH Marine Planner Support <madrona@ecotrust.org>'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 MANAGERS = ADMINS
-EMAIL_SUBJECT_PREFIX = 'OFR Marine Planner'
+EMAIL_SUBJECT_PREFIX = 'PEW EFH Marine Planner'
 ADMINS = (
-    ('Dan Crowther', 'dan@pointnineseven.com'),
-    ('Scott Fletcher', 'scott@pointnineseven.com'),
-    ('Seth Hill', 'seth@pointnineseven.com'),
+    ('Ryan Hodges', 'rhodges@ecotrust.org')
 )
 
 
@@ -62,7 +60,7 @@ ADMINS = (
 # DEFAULT_FROM_EMAIL = "Marine Planning Team <mp-team@marineplanner.org>"
 
 # url for socket.io printing
-SOCKET_URL = 'http://ofr.marineplanner.io:8080'
+SOCKET_URL = 'http://52.26.64.192:8080'
 # SOCKET_URL = False
 
 # Change the following line to True,
