@@ -69,8 +69,10 @@ SOCKET_URL = 'http://ofr.marineplanner.io:8080'
 # to display the 'under maintenance' template
 UNDER_MAINTENANCE_TEMPLATE = False
 
-TEMPLATE_DIRS = (os.path.realpath(os.path.join(os.path.dirname(__file__),
-                 'templates').replace('\\', '/')), )
+TEMPLATE_DIRS = (
+    os.path.realpath(os.path.join(os.path.dirname(__file__), 'templates').replace('\\', '/')),
+    os.path.realpath(os.path.join(os.path.dirname(__file__), 'mp_profile/templates').replace('\\', '/')),
+)
 
 
 AUTHENTICATION_BACKENDS = (
@@ -168,4 +170,3 @@ import logging
 logging.getLogger('django.db.backends').setLevel(logging.ERROR)
 
 from settings_local import *
-
