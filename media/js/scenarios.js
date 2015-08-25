@@ -1016,6 +1016,7 @@ function scenariosModel(options) {
                 if ( ! self.leaseblockLayer() && app.viewModel.modernBrowser() ) {
                     self.loadLeaseblockLayer();
                 }
+                window.dispatchEvent(new Event('resize'));
             },
             error: function (result) {
                 //debugger;
@@ -1031,7 +1032,7 @@ function scenariosModel(options) {
                 $('#drawing-form').html(data);
                 app.viewModel.scenarios.drawingFormModel = new polygonFormModel();
                 ko.applyBindings(app.viewModel.scenarios.drawingFormModel, document.getElementById('drawing-form'));
-                //self.polygonFormModel.updateDesignScrollBar();
+                window.dispatchEvent(new Event('resize'));
             },
             error: function (result) {
                 //debugger;
