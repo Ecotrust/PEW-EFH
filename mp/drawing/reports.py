@@ -72,7 +72,7 @@ def get_summary_reports(grid_cells, attributes):
 
     # Total Area
     total_area = sum([gc.geometry.area for gc in grid_cells])
-    attributes.append({'title': 'Total Area', 'data': str(format_precision(float(total_area) / 1000000, 0)) + ' sq km'})
+    attributes.append({'title': 'Total Area', 'data': str(format_precision(float(total_area) / 2590000.0, 0)) + ' sq mi'})
 
     # Depth Range
     min_depth = get_min(grid_cells, 'min_fthm')
@@ -89,25 +89,25 @@ def get_summary_reports(grid_cells, attributes):
     # Soft Substrate (Area)
     title = 'Soft Substrate'
     soft_sub_area = get_sum(grid_cells, 'sft_sub_m2')
-    data = str(format_precision(float(soft_sub_area) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(soft_sub_area) /  2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Mixed Substrate (Area)
     title = 'Mixed Substrate'
     mixed_sub_area = get_sum(grid_cells, 'mix_sub_m2')
-    data = str(format_precision(float(mixed_sub_area) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(mixed_sub_area) /  2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Hard Substrate (Area)
     title = 'Hard Substrate'
     hard_sub_area = get_sum(grid_cells, 'hrd_sub_m2')
-    data = str(format_precision(float(hard_sub_area) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hard_sub_area) /  2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Inferred Rocky Substrate (Area)
     title = 'Inferred Rocky Substrate'
     rock_sub_area = get_sum(grid_cells, 'rck_sub_m2')
-    data = str(format_precision(float(rock_sub_area) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(rock_sub_area) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Coral and Sponge Presence
@@ -161,179 +161,179 @@ def get_summary_reports(grid_cells, attributes):
     # Class 1 Suitable Habitat (All)
     title = 'Class 1 Suitable Habitat (All)'
     hsall1_m2 = get_sum(grid_cells, 'hsall1_m2')
-    data = str(format_precision(float(hsall1_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hsall1_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 2 Suitable Habitat (All)
     title = 'Class 2 Suitable Habitat (All)'
     hsall2_m2 = get_sum(grid_cells, 'hsall2_m2')
-    data = str(format_precision(float(hsall2_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hsall2_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 3 Suitable Habitat (All)
     title = 'Class 3 Suitable Habitat (All)'
     hsall3_m2 = get_sum(grid_cells, 'hsall3_m2')
-    data = str(format_precision(float(hsall3_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hsall3_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 4 Suitable Habitat (All)
     title = 'Class 4 Suitable Habitat (All)'
     hsall4_m2 = get_sum(grid_cells, 'hsall4_m2')
-    data = str(format_precision(float(hsall4_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hsall4_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 1 Suitable Habitat (Alcyoniina)
     title = 'Class 1 Suitable Habitat (Alcyoniina)'
     hsalcy1_m2 = get_sum(grid_cells, 'hsalcy1_m2')
-    data = str(format_precision(float(hsalcy1_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hsalcy1_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 2 Suitable Habitat (Alcyoniina)
     title = 'Class 2 Suitable Habitat (Alcyoniina)'
     hsalcy2_m2 = get_sum(grid_cells, 'hsalcy2_m2')
-    data = str(format_precision(float(hsalcy2_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hsalcy2_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 3 Suitable Habitat (Alcyoniina)
     title = 'Class 3 Suitable Habitat (Alcyoniina)'
     hsalcy3_m2 = get_sum(grid_cells, 'hsalcy3_m2')
-    data = str(format_precision(float(hsalcy3_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hsalcy3_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 4 Suitable Habitat (Alcyoniina)
     title = 'Class 4 Suitable Habitat (Alcyoniina)'
     hsalcy4_m2 = get_sum(grid_cells, 'hsalcy4_m2')
-    data = str(format_precision(float(hsalcy4_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hsalcy4_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 1 Suitable Habitat (Antipatharia)
     title = 'Class 1 Suitable Habitat (Antipatharia)'
     hsanti1_m2 = get_sum(grid_cells, 'hsanti1_m2')
-    data = str(format_precision(float(hsanti1_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hsanti1_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 2 Suitable Habitat (Antipatharia)
     title = 'Class 2 Suitable Habitat (Antipatharia)'
     hsanti2_m2 = get_sum(grid_cells, 'hsanti2_m2')
-    data = str(format_precision(float(hsanti2_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hsanti2_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 3 Suitable Habitat (Antipatharia)
     title = 'Class 3 Suitable Habitat (Antipatharia)'
     hsanti3_m2 = get_sum(grid_cells, 'hsanti3_m2')
-    data = str(format_precision(float(hsanti3_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hsanti3_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 1 Suitable Habitat (Calcaxonia)
     title = 'Class 1 Suitable Habitat (Calcaxonia)'
     hscalc1_m2 = get_sum(grid_cells, 'hscalc1_m2')
-    data = str(format_precision(float(hscalc1_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hscalc1_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 2 Suitable Habitat (Calcaxonia)
     title = 'Class 2 Suitable Habitat (Calcaxonia)'
     hscalc2_m2 = get_sum(grid_cells, 'hscalc2_m2')
-    data = str(format_precision(float(hscalc2_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hscalc2_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 3 Suitable Habitat (Calcaxonia)
     title = 'Class 3 Suitable Habitat (Calcaxonia)'
     hscalc3_m2 = get_sum(grid_cells, 'hscalc3_m2')
-    data = str(format_precision(float(hscalc3_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hscalc3_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 4 Suitable Habitat (Calcaxonia)
     title = 'Class 4 Suitable Habitat (Calcaxonia)'
     hscalc4_m2 = get_sum(grid_cells, 'hscalc4_m2')
-    data = str(format_precision(float(hscalc4_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hscalc4_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 1 Suitable Habitat (Haloxonia)
     title = 'Class 1 Suitable Habitat (Haloxonia)'
     hshola1_m2 = get_sum(grid_cells, 'hshola1_m2')
-    data = str(format_precision(float(hshola1_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hshola1_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 2 Suitable Habitat (Haloxonia)
     title = 'Class 2 Suitable Habitat (Haloxonia)'
     hshola2_m2 = get_sum(grid_cells, 'hshola2_m2')
-    data = str(format_precision(float(hshola2_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hshola2_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 3 Suitable Habitat (Haloxonia)
     title = 'Class 3 Suitable Habitat (Haloxonia)'
     hshola3_m2 = get_sum(grid_cells, 'hshola3_m2')
-    data = str(format_precision(float(hshola3_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hshola3_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 4 Suitable Habitat (Haloxonia)
     title = 'Class 4 Suitable Habitat (Haloxonia)'
     hshola4_m2 = get_sum(grid_cells, 'hshola4_m2')
-    data = str(format_precision(float(hshola4_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hshola4_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 1 Suitable Habitat (Scleractinia)
     title = 'Class 1 Suitable Habitat (Scleractinia)'
     hssclr1_m2 = get_sum(grid_cells, 'hssclr1_m2')
-    data = str(format_precision(float(hssclr1_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hssclr1_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 2 Suitable Habitat (Scleractinia)
     title = 'Class 2 Suitable Habitat (Scleractinia)'
     hssclr2_m2 = get_sum(grid_cells, 'hssclr2_m2')
-    data = str(format_precision(float(hssclr2_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hssclr2_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 3 Suitable Habitat (Scleractinia)
     title = 'Class 3 Suitable Habitat (Scleractinia)'
     hssclr3_m2 = get_sum(grid_cells, 'hssclr3_m2')
-    data = str(format_precision(float(hssclr3_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hssclr3_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 1 Suitable Habitat (Scleraxonia)
     title = 'Class 1 Suitable Habitat (Scleraxonia)'
     hssclx1_m2 = get_sum(grid_cells, 'hssclx1_m2')
-    data = str(format_precision(float(hssclx1_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hssclx1_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 2 Suitable Habitat (Scleraxonia)
     title = 'Class 2 Suitable Habitat (Scleraxonia)'
     hssclx2_m2 = get_sum(grid_cells, 'hssclx2_m2')
-    data = str(format_precision(float(hssclx2_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hssclx2_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 3 Suitable Habitat (Scleraxonia)
     title = 'Class 3 Suitable Habitat (Scleraxonia)'
     hssclx3_m2 = get_sum(grid_cells, 'hssclx3_m2')
-    data = str(format_precision(float(hssclx3_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hssclx3_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Class 4 Suitable Habitat (Scleraxonia)
     title = 'Class 4 Suitable Habitat (Scleraxonia)'
     hssclx4_m2 = get_sum(grid_cells, 'hssclx4_m2')
-    data = str(format_precision(float(hssclx4_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hssclx4_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Estuary Habitat
     title = 'Estuary Habitat (Area)'
     hpc_est_m2 = get_sum(grid_cells, 'hpc_est_m2')
-    data = str(format_precision(float(hpc_est_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hpc_est_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Kelp Habitat
     title = 'Kelp Habitat (Area)'
     hpc_klp_m2 = get_sum(grid_cells, 'hpc_klp_m2')
-    data = str(format_precision(float(hpc_klp_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hpc_klp_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Rocky Reef Habitat
     title = 'Rocky Reef Habitat (Area)'
     hpc_rck_m2 = get_sum(grid_cells, 'hpc_rck_m2')
-    data = str(format_precision(float(hpc_rck_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hpc_rck_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
 
     # Seagrass Habitat
     title = 'Seagrass (Area)'
     hpc_sgr_m2 = get_sum(grid_cells, 'hpc_sgr_m2')
-    data = str(format_precision(float(hpc_sgr_m2) / 1000000.0, 0)) + ' sq km'
+    data = str(format_precision(float(hpc_sgr_m2) / 2590000.0, 0)) + ' sq mi'
     attributes.append({'title': title, 'data': data})
