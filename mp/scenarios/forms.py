@@ -238,7 +238,7 @@ class ScenarioForm(FeatureForm):
     hpc_est_m2 = forms.BooleanField(
         label="Estuary Habitat Area",
         required=False,
-        help_text="Square kilometers of estuary habitat",
+        help_text="Square miles of estuary habitat",
         widget=CheckboxInput(
             attrs={'class': 'parameters hidden_checkbox', 'layer_id': 419, 'layer_title': 'Habitat areas of particular concern - estuary'}
         )
@@ -247,16 +247,16 @@ class ScenarioForm(FeatureForm):
         required=False,
         initial=1,
         widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Estuary Habitat (km<sup>2</sup>)'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Estuary Habitat (mi<sup>2</sup>)'},
             min=0,
-            max=86,
-            step=0.001
+            max=34,
+            step=0.1
         )
     )
     hpc_klp_m2 = forms.BooleanField(
         label="Kelp Habitat Area",
         required=False,
-        help_text="Square kilometers of kelp habitat",
+        help_text="Square miles of kelp habitat",
         widget=CheckboxInput(
             attrs={'class': 'parameters hidden_checkbox', 'layer_id': 420, 'layer_title': 'Habitat areas of particular concern - canopy kelp'}
         )
@@ -265,16 +265,16 @@ class ScenarioForm(FeatureForm):
         required=False,
         initial=1,
         widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Kelp Habitat (km<sup>2</sup>)'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Kelp Habitat (mi<sup>2</sup>)'},
             min=0,
-            max=13.8,
-            step=0.001
+            max=5.4,
+            step=0.1
         )
     )
     hpc_rck_m2 = forms.BooleanField(
         label="Rocky Reef Habitat Area",
         required=False,
-        help_text="Square kilometers of rocky reef habitat",
+        help_text="Square miles of rocky reef habitat",
         widget=CheckboxInput(
             attrs={'class': 'parameters hidden_checkbox', 'layer_id': 421, 'layer_title': 'Habitat areas of particular concern - rocky reef'}
         )
@@ -283,16 +283,16 @@ class ScenarioForm(FeatureForm):
         required=False,
         initial=1,
         widget=SliderWidget(
-            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Rocky Reef Habitat (km<sup>2</sup>)'},
+            attrs={'class': 'slidervalue', 'range': 'max', 'pre_text': 'Rocky Reef Habitat (mi<sup>2</sup>)'},
             min=0,
-            max=86,
-            step=0.001
+            max=34,
+            step=0.1
         )
     )
     hpc_sgr_m2 = forms.BooleanField(
         label="Seagrass Habitat Area",
         required=False,
-        help_text="Square kilometers of seagrass habitat",
+        help_text="Square miles of seagrass habitat",
         widget=CheckboxInput(
             attrs={'class': 'parameters hidden_checkbox', 'layer_id': 422, 'layer_title': 'Habitat areas of particular concern - seagrass'}
         )
@@ -304,11 +304,10 @@ class ScenarioForm(FeatureForm):
             attrs={
                 'class': 'slidervalue',
                 'range': 'max',
-                'pre_text': 'Seagrass Habitat (km<sup>2</sup>)'
-            },
+                'pre_text': 'Seagrass Habitat (mi<sup>2</sup>)'},
             min=0,
-            max=66,
-            step=0.001
+            max=26,
+            step=0.1
         )
     )
 

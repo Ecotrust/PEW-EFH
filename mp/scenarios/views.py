@@ -432,19 +432,19 @@ def run_filter_query(filters):
     #     query = query.filter(hsall4_m2__gte=hsall4_m2)
 
     if 'hpc_est_m2' in filters.keys() and filters['hpc_est_m2']:
-        hpc_est_m2 = float(filters['hpc_est_m2_min']) * 1000000.0
+        hpc_est_m2 = float(filters['hpc_est_m2_min']) * 2590000.0
         query = query.filter(hpc_est_m2__gte=hpc_est_m2)
 
     if 'hpc_klp_m2' in filters.keys() and filters['hpc_klp_m2']:
-        hpc_klp_m2 = float(filters['hpc_klp_m2_min']) * 1000000.0
+        hpc_klp_m2 = float(filters['hpc_klp_m2_min']) * 2590000.0
         query = query.filter(hpc_klp_m2__gte=hpc_klp_m2)
 
     if 'hpc_rck_m2' in filters.keys() and filters['hpc_rck_m2']:
-        hpc_rck_m2 = float(filters['hpc_rck_m2_min']) * 1000000.0
+        hpc_rck_m2 = float(filters['hpc_rck_m2_min']) * 2590000.0
         query = query.filter(hpc_rck_m2__gte=hpc_rck_m2)
 
     if 'hpc_sgr_m2' in filters.keys() and filters['hpc_sgr_m2']:
-        hpc_sgr_m2 = float(filters['hpc_sgr_m2_min']) * 1000000.0
+        hpc_sgr_m2 = float(filters['hpc_sgr_m2_min']) * 2590000.0
         query = query.filter(hpc_sgr_m2__gte=hpc_sgr_m2)
 
     return (query, notes)
