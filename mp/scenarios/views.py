@@ -354,8 +354,7 @@ def run_filter_query(filters):
         else:
             query = query.exclude(rck_sub_m2__gt=0)
 
-    if 'hsall_m2' in filters.keys() and 'hsall_m2_checkboxes' in filters.keys():
-
+    if 'hsall_m2' in filters.keys() and filters['hsall_m2'] and 'hsall_m2_checkboxes' in filters.keys():
         if type(filters['hsall_m2_checkboxes']) is list:
             # save and filter submissions are handled differently since
             # not all of these fields exist on the model.

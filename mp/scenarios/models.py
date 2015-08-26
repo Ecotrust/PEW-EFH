@@ -384,7 +384,7 @@ class Scenario(Analysis):
             attributes.append(
                 self.get_min_attributes(
                     'Predicted Class 1 Deep Sea Coral Habitat',
-                    float(format_precision(self.hsall1_m2_min / 2590000, 2)),
+                    float(format_precision(self.hsall1_m2_min / 2590000.0, 2)),
                     'mi<sup>2</sup>'
                 )
             )
@@ -394,7 +394,7 @@ class Scenario(Analysis):
             attributes.append(
                 self.get_min_attributes(
                     'Predicted Class 2 Deep Sea Coral Habitat',
-                    float(format_precision(self.hsall2_m2_min / 2590000, 2)),
+                    float(format_precision(self.hsall2_m2_min / 2590000.0, 2)),
                     'mi<sup>2</sup>'
                 )
             )
@@ -402,7 +402,7 @@ class Scenario(Analysis):
             attributes.append(
                 self.get_min_attributes(
                     'Predicted Class 3 Deep Sea Coral Habitat',
-                    float(format_precision(self.hsall3_m2_min / 2590000, 2)),
+                    float(format_precision(self.hsall3_m2_min / 2590000.0, 2)),
                     'mi<sup>2</sup>'
                 )
             )
@@ -410,15 +410,21 @@ class Scenario(Analysis):
             attributes.append(
                 self.get_min_attributes(
                     'Predicted Class 4 Deep Sea Coral Habitat',
-                    float(format_precision(self.hsall4_m2_min / 2590000, 2)),
+                    float(format_precision(self.hsall4_m2_min / 2590000.0, 2)),
                     'mi<sup>2</sup>'
                 )
             )
+
+        # NOTE: The following 4 'm2' fields actually have sq miles for units,
+            # not sq meters. This is just easier since it's what the user inputs
+            # so we don't need to run a separate filter or convert user input
+            # before the filter.
+
         if self.hpc_est_m2:
             attributes.append(
                 self.get_min_attributes(
                     'Estuary Habitat',
-                    float(format_precision(self.hpc_est_m2_min / 2590000, 2)),
+                    self.hpc_est_m2_min,
                     'mi<sup>2</sup>'
                 )
             )
@@ -426,7 +432,7 @@ class Scenario(Analysis):
             attributes.append(
                 self.get_min_attributes(
                     'Kelp Habitat',
-                    float(format_precision(self.hpc_klp_m2_min / 2590000, 2)),
+                    self.hpc_klp_m2_min,
                     'mi<sup>2</sup>'
                 )
             )
@@ -434,7 +440,7 @@ class Scenario(Analysis):
             attributes.append(
                 self.get_min_attributes(
                     'Rocky Reef Habitat',
-                    float(format_precision(self.hpc_rck_m2_min / 2590000, 2)),
+                    self.hpc_rck_m2_min,
                     'mi<sup>2</sup>'
                 )
             )
@@ -442,7 +448,7 @@ class Scenario(Analysis):
             attributes.append(
                 self.get_min_attributes(
                     'Seagrass Habitat',
-                    float(format_precision(self.hpc_sgr_m2_min / 2590000, 2)),
+                    self.hpc_sgr_m2_min,
                     'mi<sup>2</sup>'
                 )
             )
