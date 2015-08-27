@@ -60,7 +60,7 @@ HELP_EMAIL = "efhsupport@ecotrust.org"
 # DEFAULT_FROM_EMAIL = "Marine Planning Team <mp-team@marineplanner.org>"
 
 # url for socket.io printing
-SOCKET_URL = 'http://52.26.64.192:8080'
+SOCKET_URL = 'http://pewmp.ecotrust.org:8080'
 # SOCKET_URL = False
 
 # Change the following line to True,
