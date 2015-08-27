@@ -66,9 +66,9 @@ app.clickAttributes = (function() {
             attrs.push({'display': 'Name', 'data': data['Name'].toLocaleString()});
         }
 
-        // if ('ID' in data) {
-        //     attrs.push({'display': 'Id', 'data': data['ID'].toLocaleString()});
-        // }
+        if ('ID' in data) {
+            attrs.push({'display': 'Id', 'data': data['ID'].toLocaleString()});
+        }
         // if ('GRIDCODE' in data) {
         //     attrs.push({'display': 'Gridcode', 'data': data['GRIDCODE'].toLocaleString()});
         // }
@@ -127,6 +127,10 @@ app.clickAttributes = (function() {
             attrs.push({'display': 'Area', 'data': toSquareMiles(data['Area_m2'])});
         }
 
+				if ('AreaMi2' in data) {
+						attrs.push({'display': 'Area', 'data': data['AreaMi2'].toLocaleString() + ' mi&sup2;'});
+				}
+
 				if ('GRIDCODE' in data) {
 					attrs.push({'display':'Class', 'data': data['GRIDCODE']})
 				}
@@ -166,6 +170,10 @@ app.clickAttributes = (function() {
 
 				if ('STATE' in data) {
 						attrs.push({'display':'State', 'data': data['STATE']});
+				}
+
+				if ('State' in data) {
+						attrs.push({'display':'State', 'data': data['State']});
 				}
 
 				if ('rationale' in data) {
