@@ -34,7 +34,7 @@ app.init = function() {
         buffer: 3
     });
     // openStreetMap = new OpenLayers.Layer.OSM();
-    
+
     // googleStreet = new OpenLayers.Layer.Google("Google Streets", {
     //     sphericalMercator: true,
     //     isBaseLayer: true,
@@ -82,7 +82,7 @@ app.init = function() {
         isBaseLayer: true,
         numZoomLevels: max_zoom,
         attribution: "Sources: Esri, DeLorme, FAO, USGS, NOAA, EPA | GEBCO, IHO-IOC GEBCO, NGS, Esri, DeLorme, and others",
-        buffer: 3 
+        buffer: 3
     });
 
     /*var bingHybrid = new OpenLayers.Layer.Bing( {
@@ -100,7 +100,7 @@ app.init = function() {
         key: "AvD-cuulbvBqwFDQGNB1gCXDEH4S6sEkS7Yw9r79gOyCvd2hBvQYPaRBem8cpkjv",
         type: "AerialWithLabels"
     });*/
-    nauticalCharts = new OpenLayers.Layer.WMS("Nautical Charts", "http://egisws02.nos.noaa.gov/ArcGIS/services/RNC/NOAA_RNC/ImageServer/WMSServer", {
+    nauticalCharts = new OpenLayers.Layer.ArcGIS93Rest("Nautical Charts", "http://seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/MapServer/export", {
         layers: 'null'
     }, {
         isBaseLayer: true,
@@ -121,7 +121,7 @@ app.init = function() {
     // adding the following for IE10 touch events
     // obtained from the following blog post
     // http://dotnetbyexample.blogspot.com/2013/03/enabling-basic-openlayers-pinch-zooming.html
-    // map.addControl(new OpenLayersWindowsPinchZoom()); 
+    // map.addControl(new OpenLayersWindowsPinchZoom());
 
     //Scale Bar
     var scalebar = new OpenLayers.Control.ScaleBar({
@@ -189,7 +189,7 @@ app.init = function() {
                 var degreesLon = Math.floor(lonLat.lon);
             } else {
                 var degreesLon = Math.ceil(lonLat.lon);
-            }            
+            }
             var minutesLon = (lonLat.lon - degreesLon) * 60;
 
             return degreesLat + "&deg; " + minutesLat.toFixed(3) + "\' N &nbsp;&nbsp;" + degreesLon + "&deg; " + minutesLon.toFixed(3) + "\' W";
@@ -289,7 +289,7 @@ app.init = function() {
                         'data': attrs[i].data
                     });
                 }
-            // } else if (layer.id === 374 || layer.id === 375 || layer.id === 377 || layer.id === 378) { // special case for Survey Results 
+            // } else if (layer.id === 374 || layer.id === 375 || layer.id === 377 || layer.id === 378) { // special case for Survey Results
             } else if (app.surveyResults.surveyLayerNames.indexOf(layer.name) !== -1) { // is Survey Results layer
                 text = app.clickAttributes.getSurveyAttributes(e.feature.data, layer.name);
             } else if (layer.attributes.length) {
