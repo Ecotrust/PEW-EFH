@@ -31,7 +31,7 @@ def userSaveCallback(sender, **kwargs):
         public_group = public_groups[0]
     staff_groups = Group.objects.filter(name="Share with Staff")
     if len(staff_groups) != 1:
-        staff_group = false
+        staff_group = False
     else:
         staff_group = staff_groups[0]
     try:
