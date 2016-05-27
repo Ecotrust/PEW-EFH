@@ -15,19 +15,21 @@ def get_json(request, project=None):
             activeSettings = MarinePlannerSettings.objects.get(slug_name=project)
         else:
             activeSettings = MarinePlannerSettings.objects.get(active=True)
-        #if activeSettings.table_of_contents is not None:
 
-        #For multiple TOCs per project: do this for each content type
-
-        layer_list = []
-        for theme in activeSettings.table_of_contents.themes.all():
-            for layer in theme.layers.all().order_by('name'):
-                layer_list.append(layer.toDict)
+        toc_list = []
+        for toc in activeSettings.table_of_contents.all():
+            layer_list = []
+            for theme in toc.themes.all():
+                for layer in theme.layers.all().order_by('name'):
+                    layer_list.append(layer.toDict)
+            toc_list.append({
+                "name": toc.name,
+                "layers": layer_list,
+                "themes": [theme.toDict for theme in toc.themes.all().order_by('display_name')]
+            })
         json = {
             "state": { "activeLayers": [] },
-            #"tocs": [{"layers": layer_list, "Themes"...}]
-            "layers": layer_list,
-            "themes": [theme.toDict for theme in activeSettings.table_of_contents.themes.all().order_by('display_name')],
+            "tocs": toc_list,
             "success": True
         }
         return HttpResponse(simplejson.dumps(json))

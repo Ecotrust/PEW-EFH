@@ -155,8 +155,6 @@ def get_sharing_groups(request):
     locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
     json = []
     sharing_groups = user_sharing_groups(request.user)
-    import ipdb
-    ipdb.set_trace()
     for group in sharing_groups:
         members = []
         for user in group.user_set.all():
