@@ -444,6 +444,12 @@
                               </div>
                           </div>
 
+                          <!-- paradigm tab controls-->
+                          <ul id="paradigmTab" class="nav nav-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;" data-bind="foreach: tocs">
+                              <li  data-tab="name">
+                                  <a data-toggle="tab" data-bind="text: name, attr: {href: '#'+name, id: name+'tab' }"></a>
+                              </li>
+                          </ul>
                           <!-- tab controls -->
                           <ul id="myTab" class="nav nav-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;">
                               <li class="active" data-tab="data">

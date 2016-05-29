@@ -19,6 +19,7 @@ function layerModel(options, parent) {
     self.legendVisibility = ko.observable(false);
     self.legendTitle = options.legend_title || false;
     self.legendSubTitle = options.legend_subtitle || false;
+    self.tocs = ko.observableArray();
     self.themes = ko.observableArray();
     self.attributes = options.attributes ? options.attributes.attributes : [];
     self.compress_attributes = options.attributes ? options.attributes.compress_attributes : false;
@@ -899,7 +900,7 @@ function viewModel() {
         $.each(self.visibleLayers(), function(index, layer) {
             if (_.pluck(attributeLayersList, 'name').indexOf(layer.name) == -1) {
                 attributeLayersList.push(layer);
-            } 
+            }
         });
         self.attributeLayers(attributeLayersList);
     };
@@ -941,6 +942,9 @@ function viewModel() {
     self.activeTheme = ko.observable();
     self.activeThemeName = ko.observable();
 
+    // list of TOC models
+    self.tocs = ko.observableArray([]);
+
     // list of theme models
     self.themes = ko.observableArray();
 
@@ -964,7 +968,7 @@ function viewModel() {
 
     self.mapLinks = new mapLinksModel();
 
-    self.enableDrawing = ko.observable(false);   
+    self.enableDrawing = ko.observable(false);
 
     // text for tooltip popup
     self.layerToolTipText = ko.observable();
@@ -1508,8 +1512,8 @@ function viewModel() {
 
     self.getLayerBySlug = function(slug) {
         for (var x=0; x<self.themes().length; x++) {
-            var layer_list = $.grep(self.themes()[x].layers(), function(layer) { 
-                return self.convertToSlug(layer.name) === slug; 
+            var layer_list = $.grep(self.themes()[x].layers(), function(layer) {
+                return self.convertToSlug(layer.name) === slug;
             });
             if (layer_list.length > 0) {
                 return layer_list[0];
@@ -1885,7 +1889,7 @@ function viewModel() {
     self.turnOffUsernameError = function() {
         self.usernameError(false);
     };
-    
+
     return self;
 } //end viewModel
 

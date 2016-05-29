@@ -655,7 +655,7 @@ a.disabled-link:hover {
 #myTabContent {
   margin-top: 0;
   position: absolute;
-  top: 206px;
+  top: 240px;
   bottom: 50px;
   height: auto !important;
 }
