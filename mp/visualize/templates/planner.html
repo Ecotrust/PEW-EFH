@@ -446,232 +446,227 @@
 
                           <!-- paradigm tab controls-->
                           <ul id="paradigmTab" class="nav nav-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;" data-bind="foreach: tocs">
-                              <li class='toc-tab' data-tab="name">
-                                  <a data-toggle="tab" data-bind="text: name, attr: {href: '#'+name, id: name+'tab' }"></a>
-                                  <!-- tab controls
-                                  <ul data-bind="attr: { id: tocid +'-myTab' }" class="nav nav-tabs panel-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;">
+                            <!-- ko if: $index() == 0 -->
+                              <li class='active'>
+                                  <a data-toggle="tab" data-bind="text: name, attr: {href: '#'+tocid }"></a>
+                              </li>
+                            <!-- /ko -->
+                            <!-- ko if: $index() != 0 -->
+                              <li>
+                                  <a data-toggle="tab" data-bind="text: name, attr: {href: '#'+tocid }"></a>
+                              </li>
+                            <!-- /ko -->
+                          </ul>
+
+
+                          <div class='tab-content' data-bind="foreach: tocs">
+
+                            <!-- <div class="tab-pane" data-bind="attr:{id:tocid}" style="background-color: red"> -->
+                            <div class='tab-pane' data-bind="attr: {id:tocid}">
+
+                                  <!-- <ul class="nav nav-tabs panel-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;" data-bind="attr:{id:tocid+'-myTab'}"> -->
+                                  <ul class="nav nav-tabs panel-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;">
                                       <li class="active" data-tab="data">
-                                          <a href="#data" data-toggle="tab" data-bind="attr: { id: tocid +'-dataTab' }">Data</a>
+                                          <a class="dataTab" data-bind="attr: {href:'#'+tocid+'-data', id:tocid+'-dataTab'}" data-toggle="tab">Data</a>
                                       </li>
                                       {% if user.is_authenticated %}
-                                      <li data-tab="designs" data-bind="visible: enableDrawing()">
-                                          <a href="#designs" data-toggle="tab" data-bind="attr: { id: tocid +'-designsTab' }">Designs</a>
+                                      <li data-tab="designs" data-bind="visible: app.viewModel.enableDrawing()">
+                                          <a class="designsTab" data-bind="attr: {href:'#'+tocid+'-designs', id:tocid+'-designsTab'}" data-toggle="tab">Designs</a>
                                       </li>
                                       {% endif %}
                                       <li data-tab="active" >
-                                          <a href="#active" data-toggle="tab" data-bind="attr: { id: tocid +'-activeTab' }">Active</a>
+                                          <a class="activeTab" data-bind="attr: {href:'#'+tocid+'-active', id:tocid+'-activeTab'}" data-toggle="tab">Active</a>
                                       </li>
                                       <li data-tab="legend" >
-                                          <a href="#legend" data-toggle="tab" data-bind="attr: { id: tocid +'-legendTab' }">Legend</a>
+                                          <a class="legendTab" data-bind="attr:{href:'#'+tocid+'-legend', id:tocid+'-legendTab'}" data-toggle="tab">Legend</a>
                                       </li>
-
                                   </ul>
-                                  -->
-                              </li>
-                          </ul>
 
-                          <!-- TODO: need tab for each TOC with matching ids for below -->
-                          <ul id='myTab' class="nav nav-tabs panel-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;">
-                              <li class="active" data-tab="data">
-                                  <a href="#6-data" data-toggle="tab" id="6-dataTab">Data</a>
-                              </li>
-                              {% if user.is_authenticated %}
-                              <li data-tab="designs" data-bind="visible: enableDrawing()">
-                                  <a href="#6-designs" data-toggle="tab" id="6-designsTab">Designs</a>
-                              </li>
-                              {% endif %}
-                              <li data-tab="active" >
-                                  <a href="#6-active" data-toggle="tab" id="6-activeTab">Active</a>
-                              </li>
-                              <li data-tab="legend" >
-                                  <a href="#6-legend" data-toggle="tab" id="6-legendTab">Legend</a>
-                              </li>
+                                  <!-- tab body -->
+                                  <!-- <div data-bind="attr:{id:tocid+'-myTabContent'}" class="tab-content row-fluid myTabContent"> -->
+                                  <div class="tab-content">
 
-                          </ul>
+                                      <!-- DATA TAB -->
+                                      <div class="tab-pane active in fade span12 tab-data" data-bind="attr: {id: tocid+'-data' }">
+                                      <!-- <div id="data" class="tab-pane active in fade span12 tab-data" > -->
+                                          <div >
+                                              <div class="accordion-wrapper">
+                                                  <!-- data accordion -->
+                                                  <div data-bind="attr: {'id': tocid + '-data-accordion' }" class="tab-data-accordion">
+                                                  <!-- <div id="data-accordion" class="tab-data-accordion"> -->
+                                                      <div class="accordion" data-bind="foreach: themeObjects">
+                                                          <div class="accordion-group">
+                                                              <div class="accordion-heading" data-bind="click: setOpenTheme, css: { 'active': isOpenTheme() }">
+                                                                  <div>
+                                                                      <a class="accordion-toggle"> <!--event: {'hover': showDescription}-->
+                                                                          <span data-bind="text: name">Themes</span></a>
+                                                                  </div>
+                                                              </div>
+                                                              <div class="accordion-body collapse" data-bind="css: { 'in': isOpenTheme() }">
+                                                                  <div class="accordion-inner">
+                                                                      <ul  class="unstyled" data-bind="foreach: layers ">
+                                                                          <li class="layer" data-bind="css: { nosublayers: subLayers.length === 0 }">
+                                                                              <div class="btn-group btn-group-layer" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
+                                                                                  <a class="btn btn-info-sign" data-bind="click: toggleDescription, css: { 'active': infoActive() }">
+                                                                                      <i class="icon-info-sign icon-large"></i>
+                                                                                  </a>
 
-                          <!-- tab body -->
-                          <div id="myTabContent" class="tab-content row-fluid" data-bind="foreach: tocs">
-
-                              <!-- DATA TAB -->
-                              <div class="tab-pane active in fade span12 tab-data" data-bind="attr: {id: tocid+'-data' }">
-                              <!-- <div id="data" class="tab-pane active in fade span12 tab-data" > -->
-                                  <div >
-                                      <div class="accordion-wrapper">
-                                          <!-- data accordion -->
-                                          <div data-bind="attr: {'id': tocid + '-data-accordion' }" class="tab-data-accordion">
-                                          <!-- <div id="data-accordion" class="tab-data-accordion"> -->
-                                              <div class="accordion" data-bind="foreach: themeObjects">
-                                                  <div class="accordion-group">
-                                                      <div class="accordion-heading" data-bind="click: setOpenTheme, css: { 'active': isOpenTheme() }">
-                                                          <div>
-                                                              <a class="accordion-toggle"> <!--event: {'hover': showDescription}-->
-                                                                  <span data-bind="text: name">Themes</span></a>
-                                                          </div>
-                                                      </div>
-                                                      <div class="accordion-body collapse" data-bind="css: { 'in': isOpenTheme() }">
-                                                          <div class="accordion-inner">
-                                                              <ul  class="unstyled" data-bind="foreach: layers ">
-                                                                  <li class="layer" data-bind="css: { nosublayers: subLayers.length === 0 }">
-                                                                      <div class="btn-group btn-group-layer" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
-                                                                          <a class="btn btn-info-sign" data-bind="click: toggleDescription, css: { 'active': infoActive() }">
-                                                                              <i class="icon-info-sign icon-large"></i>
-                                                                          </a>
-
-                                                                          <a class="btn btn-layer" data-bind="css: { 'active': active(), 'not-active': ! active() }, click: toggleActive">
-                                                                              <div style="font-weight: normal">
-                                                                                  <span style="padding-left: 5px;" data-bind="text: name"></span>
-                                                                                  <span class="caret" style="display:none" data-bind="visible: subLayers.length > 0"></span>
-                                                                                  <i class="check icon-large icon-check" data-bind="visible: active() && visible()"></i>
-                                                                                  <i class="check icon-large icon-check-empty" data-bind="visible: active() && ! visible()"></i>
+                                                                                  <a class="btn btn-layer" data-bind="css: { 'active': active(), 'not-active': ! active() }, click: toggleActive">
+                                                                                      <div style="font-weight: normal">
+                                                                                          <span style="padding-left: 5px;" data-bind="text: name"></span>
+                                                                                          <span class="caret" style="display:none" data-bind="visible: subLayers.length > 0"></span>
+                                                                                          <i class="check icon-large icon-check" data-bind="visible: active() && visible()"></i>
+                                                                                          <i class="check icon-large icon-check-empty" data-bind="visible: active() && ! visible()"></i>
+                                                                                      </div>
+                                                                                  </a>
+                                                                                  <!-- ko if: subLayers.length > 0 -->
+                                                                                  <!-- ko if: !isCheckBoxLayer() -->
+                                                                                  <ul class="dropdown-menu layer-menu" data-bind="event: { mouseleave: closeMenu }">
+                                                                                      <li data-bind="foreach: subLayers">
+                                                                                          <a data-bind="click: toggleActive">
+                                                                                              <!--<span data-bind="style: {visibility: active() ? 'visible': 'hidden' }">• </span>-->
+                                                                                              <!--<span style="margin-left: -10px" data-bind="style: {visibility: active() ? 'visible': 'hidden' }">
+                                                                                                  <i class="icon-ok-circle"></i>
+                                                                                              </span>-->
+                                                                                              <i class="icon-ok" data-bind="style: {visibility: active() ? 'visible': 'hidden' }"></i>
+                                                                                              <span data-bind="text: name"></span>
+                                                                                          </a>
+                                                                                      </li>
+                                                                                  </ul>
+                                                                                  <!-- /ko -->
+                                                                                  <!-- ko if: isCheckBoxLayer() -->
+                                                                                  <ul class="dropdown-menu layer-menu" data-bind="event: { mouseleave: closeMenu }">
+                                                                                      <li data-bind="foreach: subLayers">
+                                                                                          <a data-bind="click: toggleActive" style="padding-left: 15px;">
+                                                                                              <span style="margin-left: -10px">
+                                                                                                  <i class="icon-check" data-bind="style: {display: active() ? 'inline': 'none' }"></i>
+                                                                                                  <i style="opacity: .4" class="icon-check-empty" data-bind="style: {display: ! active() ? 'inline': 'none' }"></i>
+                                                                                              </span>
+                                                                                              <span data-bind="text: name"></span>
+                                                                                          </a>
+                                                                                      </li>
+                                                                                  </ul>
+                                                                                  <!-- /ko -->
+                                                                                  <!-- /ko -->
                                                                               </div>
-                                                                          </a>
-                                                                          <!-- ko if: subLayers.length > 0 -->
-                                                                          <!-- ko if: !isCheckBoxLayer() -->
-                                                                          <ul class="dropdown-menu layer-menu" data-bind="event: { mouseleave: closeMenu }">
-                                                                              <li data-bind="foreach: subLayers">
-                                                                                  <a data-bind="click: toggleActive">
-                                                                                      <!--<span data-bind="style: {visibility: active() ? 'visible': 'hidden' }">• </span>-->
-                                                                                      <!--<span style="margin-left: -10px" data-bind="style: {visibility: active() ? 'visible': 'hidden' }">
-                                                                                          <i class="icon-ok-circle"></i>
-                                                                                      </span>-->
-                                                                                      <i class="icon-ok" data-bind="style: {visibility: active() ? 'visible': 'hidden' }"></i>
-                                                                                      <span data-bind="text: name"></span>
-                                                                                  </a>
-                                                                              </li>
-                                                                          </ul>
-                                                                          <!-- /ko -->
-                                                                          <!-- ko if: isCheckBoxLayer() -->
-                                                                          <ul class="dropdown-menu layer-menu" data-bind="event: { mouseleave: closeMenu }">
-                                                                              <li data-bind="foreach: subLayers">
-                                                                                  <a data-bind="click: toggleActive" style="padding-left: 15px;">
-                                                                                      <span style="margin-left: -10px">
-                                                                                          <i class="icon-check" data-bind="style: {display: active() ? 'inline': 'none' }"></i>
-                                                                                          <i style="opacity: .4" class="icon-check-empty" data-bind="style: {display: ! active() ? 'inline': 'none' }"></i>
-                                                                                      </span>
-                                                                                      <span data-bind="text: name"></span>
-                                                                                  </a>
-                                                                              </li>
-                                                                          </ul>
-                                                                          <!-- /ko -->
-                                                                          <!-- /ko -->
-                                                                      </div>
-                                                                  </li>
-                                                              </ul>
+                                                                          </li>
+                                                                      </ul>
+                                                                  </div>
+                                                              </div>
                                                           </div>
                                                       </div>
                                                   </div>
+                                                  <!-- /data-accordion -->
                                               </div>
                                           </div>
-                                          <!-- /data-accordion -->
                                       </div>
-                                  </div>
-                              </div>
-                              <!-- END DATA TAB -->
-                              <!-- DESIGNS TAB -->
-                              {% if user.is_authenticated %}
-                                {% include "scenarios.html" %}
-                              {% endif %}
-                              <!-- END DESIGNS TAB -->
+                                      <!-- END DATA TAB -->
+                                      <!-- DESIGNS TAB -->
+                                      {% if user.is_authenticated %}
+                                        {% include "scenarios.html" %}
+                                      {% endif %}
+                                      <!-- END DESIGNS TAB -->
 
-                              <!-- ACTIVE TAB -->
-                              <div class="tab-pane fade" data-bind="attr: {'id': tocid + '-active' }" style="background-color: white; height: 100%">
-                              <!-- <div class="tab-pane fade" style="background-color: white; height: 100%" id="active"> -->
-                                  <div class="row-fluid" style="height: 100%">
-                                      <div data-bind="attr: {'id': tocid + '-active-content' }" class="span12" style="height: 100%;">
-                                      <!-- <div class="span12" style="height: 100%;" id="active-content"> -->
-                                          <div data-bind="visible: app.viewModel.activeLayers().length === 0">
-                                              <div style="margin: 20px;">
-                                                  <p>
-                                                      You currently have no activated data layers.
-                                                  </p>
-                                                  <p>
-                                                      Data layers that are activated in the Data panel will appear in this Active panel.
-                                                  </p>
-                                                  <p>
-                                                      Data layers in the Active panel can be adjusted in terms of their transparency and their ordering on the map.
-                                                  </p>
-                                              </div>
-                                          </div>
-                                          <ul class="unstyled list" style="margin: 0px 5px 20px;" data-bind="sortable: { data: app.viewModel.activeLayers, options: {  } }">
-                                              <li>
-                                                  <div class="btn-group">
-                                                      <button class="btn btn-info-sign" data-bind="click: parent.toggleDescription, css: { 'active': infoActive()}, visible: isLayerModel()"><i class="icon-info-sign icon-large"></i></button>
-                                                      <a class="btn btn-layer" data-bind="css: { 'active': visible(), 'design-layer': !isLayerModel() }, click: toggleVisible">
-                                                          <div data-bind="text: name"></div>
-                                                          <span rel="tooltip" data-bind="attr: {title: sharedBy}">
-                                                              <i class="icon-group" data-bind="visible: shared" style="padding-left: 10px"></i>
-                                                          </span>
-                                                          <span ><i class="icon-large check" data-bind="css: { 'icon-check': visible(), 'icon-check-empty': ! visible() }"></i></span>
-                                                      </a>
-                                                      <a class="btn opacity-button" data-bind="click: $parent.showOpacity"><i class="icon-adjust icon-large"></i></a>
-                                                      <button class="btn deactivate-button" data-bind="click: toggleActive">
-                                                          <i class="icon-remove">
-                                                          </i>
-                                                      </button>
+                                      <!-- ACTIVE TAB -->
+                                      <div class="tab-pane fade" data-bind="attr: {'id': tocid + '-active' }" style="background-color: white; height: 100%">
+                                      <!-- <div class="tab-pane fade" style="background-color: white; height: 100%" id="active"> -->
+                                          <div class="row-fluid" style="height: 100%">
+                                              <div data-bind="attr: {'id': tocid + '-active-content' }" class="span12" style="height: 100%;">
+                                              <!-- <div class="span12" style="height: 100%;" id="active-content"> -->
+                                                  <div data-bind="visible: app.viewModel.activeLayers().length === 0">
+                                                      <div style="margin: 20px;">
+                                                          <p>
+                                                              You currently have no activated data layers.
+                                                          </p>
+                                                          <p>
+                                                              Data layers that are activated in the Data panel will appear in this Active panel.
+                                                          </p>
+                                                          <p>
+                                                              Data layers in the Active panel can be adjusted in terms of their transparency and their ordering on the map.
+                                                          </p>
+                                                      </div>
                                                   </div>
-                                              </li>
-                                          </ul>
-                                      </div>
-                                  </div>
-                              </div>
-                              <!-- END ACTIVE TAB -->
-
-                              <!-- LEGEND TAB -->
-                              <div class="tab-pane fade" data-bind="attr: {'id': tocid + '-legend' }" style="background-color: white; height: 100%">
-                              <!-- <div class="tab-pane fade" style="background-color: white; height: 100%" id="legend"> -->
-                                  <div class="row-fluid" style="height: 100%">
-
-                                      <div data-bind="attr: {'id': tocid + '-legend-content' }" class="accordion">
-                                      <!-- <div class="accordion" id="legend-content"> -->
-                                        <div data-bind="visible: app.viewModel.activeLegendLayers().length == 0">
-                                          Activate data layers and their legends will appear here in the Legend tab.
-                                        </div>
-                                        <div data-bind="foreach: app.viewModel.activeLegendLayers">
-                                          <div class="accordion-group" style="border: 0px;">
-                                              <div class="accordion-heading" data-bind="click: toggleLegendDetails">
-                                                  <a class="accordion-toggle" style="text-decoration: none; padding-left: 0px;">
-                                                      <span class="pagination-centered legend-title" data-bind="html: legendTitle ? legendTitle : name"></span>
-                                                      <p style="margin: 0px -5px 3px; text-align: left;font-size: 12px;" data-bind="visible: legendSubTitle, html: legendSubTitle"></p>
-                                                  </a>
-                                              </div>
-                                              <div class="accordion-body collapse in" data-bind="attr: { id: $root.convertToSlug(name)+'-legend-content' }" >
-                                                  <div class="accordion-inner" style="border: 0px; padding-top: 0px;">
-                                                      <span data-bind="if: legend">
-                                                          <div data-bind="if: legend['elements']">
-                                                              <div data-bind="foreach: legend['elements']">
-                                                                  <div>
-                                                                      <img data-bind="attr: {src: swatch}" />
-                                                                      <span data-bind="text: label" style="font-size: 11px; font-weight: bold;"></span>
-                                                                  </div>
-                                                              </div>
+                                                  <ul class="unstyled list" style="margin: 0px 5px 20px;" data-bind="sortable: { data: app.viewModel.activeLayers, options: {  } }">
+                                                      <li>
+                                                          <div class="btn-group">
+                                                              <button class="btn btn-info-sign" data-bind="click: parent.toggleDescription, css: { 'active': infoActive()}, visible: isLayerModel()"><i class="icon-info-sign icon-large"></i></button>
+                                                              <a class="btn btn-layer" data-bind="css: { 'active': visible(), 'design-layer': !isLayerModel() }, click: toggleVisible">
+                                                                  <div data-bind="text: name"></div>
+                                                                  <span rel="tooltip" data-bind="attr: {title: sharedBy}">
+                                                                      <i class="icon-group" data-bind="visible: shared" style="padding-left: 10px"></i>
+                                                                  </span>
+                                                                  <span ><i class="icon-large check" data-bind="css: { 'icon-check': visible(), 'icon-check-empty': ! visible() }"></i></span>
+                                                              </a>
+                                                              <a class="btn opacity-button" data-bind="click: $parent.showOpacity"><i class="icon-adjust icon-large"></i></a>
+                                                              <button class="btn deactivate-button" data-bind="click: toggleActive">
+                                                                  <i class="icon-remove">
+                                                                  </i>
+                                                              </button>
                                                           </div>
-                                                          <div data-bind="if: legend['colors']">
-                                                              <div data-bind="foreach: legend['colors']">
-                                                                  <div>
-                                                                      <svg style="width: 150px; height: 15px;">
-                                                                          <rect width="15" height="15" data-bind="style: { fill: color }"></rect>
-                                                                          <text x="25" y="12" style="font-size: 11px; fill: #555;" data-bind="text: label">
-                                                                      </svg>
-                                                                      <!-- <span data-bind="text: label" style="font-size: 11px; margin-left: 5px"></span> -->
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-                                                          <div data-bind="if: !legend['elements'] && !legend['colors']">
-                                                              <div data-bind="css: { 'in': legendVisibility }" style="padding-top: 5px;">
-                                                                  <img data-bind="attr: { src: legend }" />
-                                                              </div>
-                                                          </div>
-                                                      </span>
-                                                  </div>
+                                                      </li>
+                                                  </ul>
                                               </div>
                                           </div>
-                                        </div>
                                       </div>
+                                      <!-- END ACTIVE TAB -->
 
-                                  </div>
-                              </div>
-                              <!-- END LEGEND TAB -->
+                                      <!-- LEGEND TAB -->
+                                      <div class="tab-pane fade" data-bind="attr: {'id': tocid + '-legend' }" style="background-color: white; height: 100%">
+                                      <!-- <div class="tab-pane fade" style="background-color: white; height: 100%" id="legend"> -->
+                                          <div class="row-fluid" style="height: 100%">
 
+                                              <div data-bind="attr: {'id': tocid + '-legend-content' }" class="accordion">
+                                              <!-- <div class="accordion" id="legend-content"> -->
+                                                <div data-bind="visible: app.viewModel.activeLegendLayers().length == 0">
+                                                  Activate data layers and their legends will appear here in the Legend tab.
+                                                </div>
+                                                <div data-bind="foreach: app.viewModel.activeLegendLayers">
+                                                  <div class="accordion-group" style="border: 0px;">
+                                                      <div class="accordion-heading" data-bind="click: toggleLegendDetails">
+                                                          <a class="accordion-toggle" style="text-decoration: none; padding-left: 0px;">
+                                                              <span class="pagination-centered legend-title" data-bind="html: legendTitle ? legendTitle : name"></span>
+                                                              <p style="margin: 0px -5px 3px; text-align: left;font-size: 12px;" data-bind="visible: legendSubTitle, html: legendSubTitle"></p>
+                                                          </a>
+                                                      </div>
+                                                      <div class="accordion-body collapse in" data-bind="attr: { id: $root.convertToSlug(name)+'-legend-content' }" >
+                                                          <div class="accordion-inner" style="border: 0px; padding-top: 0px;">
+                                                              <span data-bind="if: legend">
+                                                                  <div data-bind="if: legend['elements']">
+                                                                      <div data-bind="foreach: legend['elements']">
+                                                                          <div>
+                                                                              <img data-bind="attr: {src: swatch}" />
+                                                                              <span data-bind="text: label" style="font-size: 11px; font-weight: bold;"></span>
+                                                                          </div>
+                                                                      </div>
+                                                                  </div>
+                                                                  <div data-bind="if: legend['colors']">
+                                                                      <div data-bind="foreach: legend['colors']">
+                                                                          <div>
+                                                                              <svg style="width: 150px; height: 15px;">
+                                                                                  <rect width="15" height="15" data-bind="style: { fill: color }"></rect>
+                                                                                  <text x="25" y="12" style="font-size: 11px; fill: #555;" data-bind="text: label">
+                                                                              </svg>
+                                                                              <!-- <span data-bind="text: label" style="font-size: 11px; margin-left: 5px"></span> -->
+                                                                          </div>
+                                                                      </div>
+                                                                  </div>
+                                                                  <div data-bind="if: !legend['elements'] && !legend['colors']">
+                                                                      <div data-bind="css: { 'in': legendVisibility }" style="padding-top: 5px;">
+                                                                          <img data-bind="attr: { src: legend }" />
+                                                                      </div>
+                                                                  </div>
+                                                              </span>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!-- END LEGEND TAB -->
+
+                                </div>
+                            </div>
                           </div>
 <!-- STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
                           <div data-bind="visible: showBottomButtons()" class="sidebar-footer">

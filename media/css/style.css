@@ -585,11 +585,11 @@ a.disabled-link:hover {
     padding: 4px 8px;
 }
 
-#designs-data {
-  margin-top: 5px;
+.designs-data {
+  margin-top: 0px;
 }
 
-#design-list .accordion-group {
+.design-list .accordion-group {
   border-radius: 0;
 }
 
@@ -652,7 +652,7 @@ a.disabled-link:hover {
   border-radius: 0px;
 }
 
-#myTabContent {
+.myTabContent {
   margin-top: 0;
   position: absolute;
   top: 242px;
@@ -660,7 +660,7 @@ a.disabled-link:hover {
   height: auto !important;
 }
 
-#myTabContent .accordion-inner {
+.myTabContent .accordion-inner {
   /*overflow: visible;*/
   background: white;
 }

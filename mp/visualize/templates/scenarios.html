@@ -1,26 +1,26 @@
 
-<div class="tab-pane fade" id="designs" data-tab="designs" data-bind="with: parent.scenarios">
-  <div id="designs-slide">
+<div class="tab-pane fade" data-bind="attr:{id:tocid+'-designs'}" data-tab="designs">
+  <div data-bind="attr:{id:tocid+'-designs-slide'}">
     <!-- Create New Design dropdown menu -->
     <div class="row-fluid">
-        <div class="alert alert-success" data-bind="visible: loadingMessage">
-          <strong>Creating!</strong> <span data-bind="text: loadingMessage"></span>
+        <div class="alert alert-success" data-bind="visible: app.viewModel.scenarios.loadingMessage">
+          <strong>Creating!</strong> <span data-bind="text: app.viewModel.scenarios.loadingMessage"></span>
           <div class="progress progress-striped active">
             <div class="bar" style="width: 0%"></div>
           </div>
         </div>
-        <div class="alert alert-error" data-bind="visible: errorMessage">
-          <strong>Error!</strong> <span data-bind="text: errorMessage"></span>
+        <div class="alert alert-error" data-bind="visible: app.viewModel.scenarios.errorMessage">
+          <strong>Error!</strong> <span data-bind="text: app.viewModel.scenarios.errorMessage"></span>
           <span>There are no Grid Cells that match the selected criteria.</span>
           <div>
-            <button class="btn pull-right" data-bind="click: reset">Try Again</button>
+            <button class="btn pull-right" data-bind="click: app.viewModel.scenarios.reset">Try Again</button>
             <div class="clearfix"></div>
           </div>
         </div>
     </div>
 
-    <div class="form-container" data-bind="visible: ! (loadingMessage() || errorMessage())">
-        <div id="designs-data" data-bind="visible: !scenarioForm() && !drawingForm()">
+    <div class="form-container" data-bind="visible: ! (app.viewModel.scenarios.loadingMessage() || app.viewModel.scenarios.errorMessage())">
+        <div data-bind="attr:{id:tocid+'-designs-data'}, visible: !app.viewModel.scenarios.scenarioForm() && !app.viewModel.scenarios.drawingForm()" class="designs-data">
             <!-- <div class="row-fluid">
                 <div class="span12">
                     <div id="create-new-design" class="btn-group pull-left" style="padding-bottom: 10px;">
@@ -39,7 +39,7 @@
                 </div>
             </div> -->
 
-            <div id="design-list" class="row-fluid">
+            <div data-bind="attr:{id:tocid+'-design-list'}" class="design-list row-fluid">
                 <div style="
                     padding-right: 2px;
                     height: 388px;">
@@ -50,18 +50,18 @@
                         {% if user.is_staff %}
                         <div>
                             <div class="accordion-group" style="border: 1px solid #e5e5e5;">
-                                <div class="accordion-heading" data-bind="click: toggleScenariosOpen, css: { 'active': isScenariosOpen() }">
+                                <div class="accordion-heading" data-bind="click: app.viewModel.scenarios.toggleScenariosOpen, css: { 'active': app.viewModel.scenarios.isScenariosOpen() }">
                                     <a class="accordion-toggle">
                                         <span>Grid Filtering</span>
                                     </a>
-                                    <a class="create-new-button" data-bind="click: createWindScenario, clickBubble: false">
+                                    <a class="create-new-button" data-bind="click: app.viewModel.scenarios.createWindScenario, clickBubble: false">
                                         <i class="icon-plus icon-large"></i>
                                     </a>
                                 </div>
-                                <div class="accordion-body collapse" data-bind="css: { 'in': isScenariosOpen() }">
+                                <div class="accordion-body collapse" data-bind="css: { 'in': app.viewModel.scenarios.isScenariosOpen() }">
                                     <div class="accordion-inner">
 
-                                        <div data-bind="visible: !scenarioList().length" style="font-weight: normal">
+                                        <div data-bind="visible: !app.viewModel.scenarios.scenarioList().length" style="font-weight: normal">
                                             <div style="padding: 10px;">
                                                 <p>
                                                     You currently have no Grid Filter Designs.
@@ -76,7 +76,7 @@
                                             </div>
                                         </div>
 
-                                        <ul class="unstyled list" data-bind="foreach: scenarioList ">
+                                        <ul class="unstyled list" data-bind="foreach: app.viewModel.scenarios.scenarioList ">
                                             <li class="layer">
                                                 <div class="btn-group btn-group-layer">
                                                     <!-- <a class="btn btn-info-sign" data-bind="click: toggleDescription, css: { 'active': infoActive() }">
@@ -120,22 +120,22 @@
                         <div>
                             <div id="drawing-accordion" class="accordion-group">
                                 <div class="collections-header">
-                                    <div id="drawings-header" class="accordion-heading" data-bind="click: toggleDrawingsOpen, css: { 'active': isDrawingsOpen() }">
+                                    <div id="drawings-header" class="accordion-heading" data-bind="click: app.viewModel.scenarios.toggleDrawingsOpen, css: { 'active': app.viewModel.scenarios.isDrawingsOpen() }">
                                         <div>
                                             <a class="accordion-toggle">
                                                 <!--<span>Sketches of the Sea</span>-->
                                                 <span>Drawings</span>
                                             </a>
-                                            <a class="create-new-button" data-bind="click: createPolygonDesign, clickBubble: false">
+                                            <a class="create-new-button" data-bind="click: app.viewModel.scenarios.createPolygonDesign, clickBubble: false">
                                                 <i class="icon-plus icon-large"></i>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="accordion-body collapse" data-bind="css: { 'in': isDrawingsOpen() }">
+                                <div class="accordion-body collapse" data-bind="css: { 'in': app.viewModel.scenarios.isDrawingsOpen() }">
                                     <div class="accordion-inner">
 
-                                        <div data-bind="visible: !drawingList().length" style="font-weight: normal">
+                                        <div data-bind="visible: !app.viewModel.scenarios.drawingList().length" style="font-weight: normal">
                                             <div style="padding: 10px;">
                                                 <p>
                                                     You currently have no Drawings.
@@ -150,7 +150,7 @@
                                             </div>
                                         </div>
 
-                                        <ul class="unstyled list" data-bind="foreach: drawingList ">
+                                        <ul class="unstyled list" data-bind="foreach: app.viewModel.scenarios.drawingList ">
                                             <li class="layer">
                                                 <div class="btn-group btn-group-layer">
                                                     <!-- <a class="btn btn-info-sign" data-bind="click: toggleDescription, css: { 'active': infoActive() }">
@@ -193,11 +193,11 @@
             </div>
         </div>
 
-        <div style="height: 100%" data-bind="visible: scenarioForm">
+        <div style="height: 100%" data-bind="visible: app.viewModel.scenarios.scenarioForm">
             <div id="scenario-form" class="panel-container"></div>
         </div>
 
-        <div style="height: 100%" data-bind="visible: drawingForm">
+        <div style="height: 100%" data-bind="visible: app.viewModel.scenarios.drawingForm">
             <div id="drawing-form" class="panel-container"></div>
         </div>
 
