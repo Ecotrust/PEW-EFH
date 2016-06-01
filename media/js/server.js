@@ -54,8 +54,35 @@ app.viewModel.loadLayers = function(data) {
           theme.layers.sort( function(a,b) { return a.name.toUpperCase().localeCompare(b.name.toUpperCase()); } );
 
   		self.themes.push(theme);
+      if (!toc.hasOwnProperty('themeObjects')){
+        toc.themeObjects = [];
+      }
+      toc.themeObjects.push(theme);
   	});
     self.tocs.push(toc);
+    //fixes a problem in which the data accordion scrollbar was reinitialized before the app switched back to the data tab
+    //causing the data tab to appear empty
+    //the following appears to fix that problem
+    $('#' + toc.id + '-dataTab[data-toggle="tab"]').on('shown', function(e) {
+      app.viewModel.showBottomButtons(true);
+      app.viewModel.updateScrollBars();
+      app.viewModel.showLegend(false);
+    });
+    $('#' + toc.id + '-activeTab[data-toggle="tab"]').on('shown', function(e) {
+      app.viewModel.showBottomButtons(true);
+      app.viewModel.updateScrollBars();
+      app.viewModel.showLegend(false);
+    });
+    $('#' + toc.id + '-designsTab[data-toggle="tab"]').on('shown', function(e) {
+      app.viewModel.showBottomButtons(false);
+      app.viewModel.updateAllScrollBars();
+      setTimeout(function() {$('.group-members-popover').popover({html: true, trigger: 'hover', container: 'body'});}, 2000);
+    });
+    $('#' + toc.id + '-legendTab[data-toggle="tab"]').on('shown', function(e) {
+      app.viewModel.showBottomButtons(true);
+      app.viewModel.showLegend(true);
+      app.viewModel.updateScrollBars();
+    });
   });
 
 	app.typeAheadSource = (function () {

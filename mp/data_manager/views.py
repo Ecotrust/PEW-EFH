@@ -23,6 +23,7 @@ def get_json(request, project=None):
                 for layer in theme.layers.all().order_by('name'):
                     layer_list.append(layer.toDict)
             toc_list.append({
+                "tocid": toc.id,
                 "name": toc.name,
                 "layers": layer_list,
                 "themes": [theme.toDict for theme in toc.themes.all().order_by('display_name')]

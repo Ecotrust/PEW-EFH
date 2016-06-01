@@ -13,8 +13,8 @@ app.onResize = function(percent) {
         //$("#map-wrapper").height(height);
         $(".tabs").height(height);
         //$("#legend-wrapper").height(height - 20);
-        $("#data-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
-        $("#designs-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $(".tab-data-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $(".tab-designs-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $("#polygon-design-form").height(height - 204 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $("#wind-design-form").height(height - 204 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         //$("#active").height(height + 20 - (($.browser.msie && $.browser.version < 9)? 130: 96));
