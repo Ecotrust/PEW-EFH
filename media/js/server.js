@@ -63,7 +63,6 @@ app.viewModel.loadLayers = function(data) {
     //fixes a problem in which the data accordion scrollbar was reinitialized before the app switched back to the data tab
     //causing the data tab to appear empty
     //the following appears to fix that problem
-    /*
     $('#' + toc.tocid + '-dataTab[data-toggle="tab"]').on('shown', function(e) {
       app.viewModel.showBottomButtons(true);
       app.viewModel.updateScrollBars();
@@ -84,7 +83,6 @@ app.viewModel.loadLayers = function(data) {
       app.viewModel.showLegend(true);
       app.viewModel.updateScrollBars();
     });
-    */
   });
 
 	app.typeAheadSource = (function () {
