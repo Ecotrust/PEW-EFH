@@ -893,7 +893,10 @@ function scenariosModel(options) {
     self.isScenariosOpen = ko.observable(false);
     self.toggleScenariosOpen = function(force) {
         // ensure designs tab is activated
-        $('#designsTab').tab('show');
+
+        if (force.hasOwnProperty('tocid')){
+            $('#'+force.tocid+'-designsTab').tab('show');
+        }
 
         if (force === 'open') {
             self.isScenariosOpen(true);
@@ -911,7 +914,9 @@ function scenariosModel(options) {
     self.isCollectionsOpen = ko.observable(false);
     self.toggleCollectionsOpen = function(force) {
         // ensure designs tab is activated
-        $('#designsTab').tab('show');
+        if (force.hasOwnProperty('tocid')){
+            $('#'+force.tocid+'-designsTab').tab('show');
+        }
 
         if (force === 'open') {
             self.isCollectionsOpen(true);
@@ -929,7 +934,9 @@ function scenariosModel(options) {
     self.isDrawingsOpen = ko.observable(false);
     self.toggleDrawingsOpen = function(force) {
         // ensure designs tab is activated
-        $('#designsTab').tab('show');
+        if (force.hasOwnProperty('tocid')){
+            $('#'+force.tocid+'-designsTab').tab('show');
+        }
 
         if (force === 'open') {
             self.isDrawingsOpen(true);
@@ -946,9 +953,10 @@ function scenariosModel(options) {
     };
 
     self.updateDesignsScrollBar = function() {
-        var designsScrollpane = $('#designs-accordion').data('jsp');
+        // debugger;
+        var designsScrollpane = $('.designs-accordion').data('jsp');
         if (designsScrollpane === undefined) {
-            $('#designs-accordion').jScrollPane();
+            $('.designs-accordion').jScrollPane();
         } else {
             designsScrollpane.reinitialise();
         }
@@ -1095,7 +1103,7 @@ function scenariosModel(options) {
                             scenario.geometry_orig = feature;
                         },
                         error: function(result) {
-                            debugger;
+                            // debugger;
                         }
                     });
                 }
@@ -1268,7 +1276,6 @@ function scenariosModel(options) {
                 self.showUnloadedDesigns();
             },
             error: function (result) {
-                //debugger;
             }
         });
     };
@@ -1419,6 +1426,6 @@ function scenariosModel(options) {
 
 app.viewModel.scenarios = new scenariosModel();
 
-$('#designsTab').on('show', function (e) {
+$('.designsTab').on('show', function (e) {
     app.viewModel.scenarios.loadDesigns();
 });

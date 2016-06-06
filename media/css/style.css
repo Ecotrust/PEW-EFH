@@ -593,31 +593,31 @@ a.disabled-link:hover {
   border-radius: 0;
 }
 
-#designs-accordion {
+.designs-accordion {
   width: 370px;
 }
 
-#designs-accordion  ul.unstyled {
+.designs-accordion  ul.unstyled {
   margin-bottom: 0px;
   padding: 0px;
 }
 
-#designs-accordion li {
+.designs-accordion li {
   padding-bottom: 10px;
 }
 
-#designs-accordion .dropdown-menu {
+.designs-accordion .dropdown-menu {
   margin-top: 0;
   position: absolute;
   left: 244px;
   min-width: 100px;
 }
 
-#designs-accordion .dropdown-menu li {
+.designs-accordion .dropdown-menu li {
   padding-bottom: 0;
 }
 
-#designs-accordion .accordion-toggle {
+.designs-accordion .accordion-toggle {
   width: 280px;
   display: inline-block;
 }
@@ -639,11 +639,11 @@ a.disabled-link:hover {
   text-decoration: none;
 }
 
-#data-accordion, #designs-accordion, #sharing-groups, #bookmark-sharing-groups {
+#data-accordion, .designs-accordion, #sharing-groups, #bookmark-sharing-groups {
     outline: none;
 }
 
-#data-accordion, #legend-accordion, #designs-accordion {
+#data-accordion, #legend-accordion, .designs-accordion {
   height: 100%;
   overflow-y: auto;
 }
@@ -652,15 +652,15 @@ a.disabled-link:hover {
   border-radius: 0px;
 }
 
-.myTabContent {
+.tab-content {
   margin-top: 0;
-  position: absolute;
-  top: 242px;
-  bottom: 50px;
+  position: static;
+  top: initial;
+  /*bottom: 50px;*/
   height: auto !important;
 }
 
-.myTabContent .accordion-inner {
+.tab-content .accordion-inner {
   /*overflow: visible;*/
   background: white;
 }

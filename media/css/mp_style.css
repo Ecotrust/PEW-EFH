@@ -709,23 +709,23 @@ img + h3 {
     color: rgb(51, 51, 51);
 }
 
-#legend-wrapper hr {
+.legend-wrapper hr {
   margin: 0px !important;
   /*margin-bottom: 5px;*/
 }
 
-#legend-content {
+.legend-content {
   margin-left: 20px;
   margin-bottom:20px;
   outline: none !important;
   height: 100%;
 }
 
-#legend-accordion .accordion-toggle {
+.legend-accordion .accordion-toggle {
     font-size: 12px;
 }
 
-#legend-header {
+.legend-header {
   margin-bottom:10px;
   padding-top: 8px;
   border-bottom: 2px solid #2D8998;

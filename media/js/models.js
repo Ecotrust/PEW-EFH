@@ -1106,16 +1106,16 @@ function viewModel() {
             $('#help-button').hide();
             $('#add-layer-button').hide();
             $('.search-form').hide();
-            $('#myTab').hide();
-            $('#myTabContent').hide();
+            $('.panel-tabs').hide();
+            $('.tab-content').hide();
         } else {
             $('.sidebar-nav').animate( {height: '625px'}, 400 );
             setTimeout( function() {
                 $('#help-button').show();
                 $('#add-layer-button').show();
                 $('.search-form').show();
-                $('#myTab').show();
-                $('#myTabContent').show();
+                $('panel-tabs').show();
+                $('.tab-content').show();
             }, 200);
             setTimeout( function() {
                 self.updateAllScrollBars();
