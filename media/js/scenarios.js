@@ -103,7 +103,7 @@ var madrona = {
                     app.viewModel.scenarios.loadingMessage(null);
                     clearInterval(barTimer);
                     if (result.status === 400) {
-                        $('#scenario-form').append(result.responseText);
+                        $('#'+app.viewModel.currentTocId()+'-scenario-form > div').append(result.responseText);
                         app.viewModel.scenarios.scenarioForm(true);
                     } else {
                         app.viewModel.scenarios.errorMessage(result.responseText.split('\n\n')[0]);
@@ -549,7 +549,7 @@ function scenarioModel(options) {
             self.layer.styleMap.styles['default'].defaultStyle.fillOpacity = newOpacity;
             self.layer.redraw();
         } else {
-            //debugger;
+            console.log('error in scenarios.js: self.opacity.subscribe');
         }
     });
 
@@ -601,13 +601,12 @@ function scenarioModel(options) {
         return $.ajax({
             url: '/features/scenario/' + scenario.uid + '/form/',
             success: function(data) {
-                //$('#scenario-form').append(data);
                 app.viewModel.scenarios.scenarioForm(true);
-                $('#scenario-form').html(data);
+                $('#'+app.viewModel.currentTocId()+'-scenario-form > div').html(data);
                 app.viewModel.scenarios.scenarioFormModel = new scenarioFormModel();
                 var model = app.viewModel.scenarios.scenarioFormModel;
 
-                ko.applyBindings(model, document.getElementById('scenario-form'));
+                ko.applyBindings(model, document.getElementById(app.viewModel.currentTocId()+'-scenario-form').children[0]);
 
                 var parameters = [
                     'species',
@@ -641,7 +640,7 @@ function scenarioModel(options) {
                 // model.updateFiltersAndLeaseBlocks();
             },
             error: function (result) {
-                //debugger;
+                console.log('error in scenarios.js: editScenario');
             }
         });
     };
@@ -659,7 +658,7 @@ function scenarioModel(options) {
                 app.viewModel.scenarios.addScenarioToMap(null, {uid: data[0].uid});
             },
             error: function (result) {
-                //debugger;
+                console.log('error in scenarios.js: createCopyScenario');
             }
         });
     };
@@ -686,7 +685,7 @@ function scenarioModel(options) {
             url: '/scenario/delete_design/' + scenario.uid + '/',
             type: 'POST',
             error: function (result) {
-                //debugger;
+                console.log('error in scenarios.js: deleteScenario');
             }
         });
     };
@@ -953,7 +952,6 @@ function scenariosModel(options) {
     };
 
     self.updateDesignsScrollBar = function() {
-        // debugger;
         var designsScrollpane = $('.designs-accordion').data('jsp');
         if (designsScrollpane === undefined) {
             $('.designs-accordion').jScrollPane();
@@ -988,7 +986,7 @@ function scenariosModel(options) {
     self.removeDrawingForm = function(obj) {
         self.drawingFormModel.cleanUp();
         self.drawingForm(false);
-        var drawingForm = document.getElementById('drawing-form');
+        var drawingForm = document.getElementById(app.viewModel.currentTocId()+'-drawing-form').children[0];
         $(drawingForm).empty();
         ko.cleanNode(drawingForm);
         //in case of canceled edit
@@ -1001,7 +999,7 @@ function scenariosModel(options) {
 
     self.removeScenarioForm = function() {
         self.scenarioForm(false);
-        var scenarioForm = document.getElementById('scenario-form');
+        var scenarioForm = document.getElementById(app.viewModel.currentTocId()+'-scenario-form').children[0];
         $(scenarioForm).empty();
         ko.cleanNode(scenarioForm);
         delete self.scenarioFormModel;
@@ -1017,9 +1015,9 @@ function scenariosModel(options) {
             url: '/features/scenario/form/',
             success: function(data) {
                 self.scenarioForm(true);
-                $('#scenario-form').html(data);
+                $('#'+app.viewModel.currentTocId()+'-scenario-form > .scenario-form').html(data);
                 self.scenarioFormModel = new scenarioFormModel();
-                ko.applyBindings(self.scenarioFormModel, document.getElementById('scenario-form'));
+                ko.applyBindings(self.scenarioFormModel, document.getElementById(app.viewModel.currentTocId()+'-scenario-form').children[0]);
                 self.scenarioFormModel.updateDesignScrollBar();
                 if ( ! self.leaseblockLayer() && app.viewModel.modernBrowser() ) {
                     self.loadLeaseblockLayer();
@@ -1027,7 +1025,7 @@ function scenariosModel(options) {
                 window.dispatchEvent(new Event('resize'));
             },
             error: function (result) {
-                //debugger;
+                console.log('failure at scenarios.js line 1031.');
             }
         });
     };
@@ -1037,13 +1035,13 @@ function scenariosModel(options) {
             url: '/features/aoi/form/',
             success: function(data) {
                 app.viewModel.scenarios.drawingForm(true);
-                $('#drawing-form').html(data);
+                $('#'+app.viewModel.currentTocId()+'-drawing-form > .drawing-form').html(data);
                 app.viewModel.scenarios.drawingFormModel = new polygonFormModel();
-                ko.applyBindings(app.viewModel.scenarios.drawingFormModel, document.getElementById('drawing-form'));
+                ko.applyBindings(app.viewModel.scenarios.drawingFormModel, document.getElementById(app.viewModel.currentTocId()+'-drawing-form').children[0]);
                 window.dispatchEvent(new Event('resize'));
             },
             error: function (result) {
-                //debugger;
+                console.log('error in scenarios.js: createPolygonDesign');
             }
         });
     };
@@ -1103,7 +1101,7 @@ function scenariosModel(options) {
                             scenario.geometry_orig = feature;
                         },
                         error: function(result) {
-                            // debugger;
+                            console.log('error in scenarios.js: addScenarioToMap (get_geometry_orig scenarioId)');
                         }
                     });
                 }
@@ -1167,7 +1165,7 @@ function scenariosModel(options) {
                             scenario.scenarioAttributes = result.attributes;
                         },
                         error: function (result) {
-                            //debugger;
+                            console.log('error in scenarios.js: addScenarioToMap (get_attributes scenarioId)');
                         }
 
                     });
@@ -1220,7 +1218,7 @@ function scenariosModel(options) {
 
             },
             error: function(result) {
-                //debugger;
+                console.log('error in scenarios.js: addScenarioToMap (geojson scenarioId)');
                 app.viewModel.scenarios.errorMessage(result.responseText.split('\n\n')[0]);
             }
         });
@@ -1313,7 +1311,7 @@ function scenariosModel(options) {
                 app.viewModel.scenarios.updateDesignsScrollBar();
             },
             error: function (result) {
-                //debugger;
+                console.log('error in scenarios.js: loadDrawingsFromServer');
             }
         });
     };
@@ -1389,7 +1387,7 @@ function scenariosModel(options) {
             type: 'POST',
             dataType: 'json',
             error: function(result) {
-                //debugger;
+                console.log('error in scenarios.js: submitShare');
             }
         });
     };
@@ -1414,7 +1412,7 @@ function scenariosModel(options) {
                     }
                 },
                 error: function (result) {
-                    //debugger;
+                    console.log('error in scenarios.js: loadDesigns');
                 }
             });
         }

@@ -194,11 +194,15 @@
         </div>
 
         <div style="height: 100%" data-bind="visible: app.viewModel.scenarios.scenarioForm">
-            <div data-bind="attr:{id:tocid+'-scenario-form'}" class="scenario-form panel-container"></div>
+            <div data-bind="attr:{id:tocid+'-scenario-form'}">
+              <div class="scenario-form panel-container"></div>
+            </div>
         </div>
 
         <div style="height: 100%" data-bind="visible: app.viewModel.scenarios.drawingForm">
-            <div data-bind="attr:{id:tocid+'-drawing-form'}" class="drawing-form panel-container"></div>
+            <div data-bind="attr:{id:tocid+'-drawing-form'}">
+              <div class="drawing-form panel-container"></div>
+            </div>
         </div>
 
         {% comment %}

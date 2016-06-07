@@ -37,6 +37,7 @@ function layerModel(options, parent) {
 
     self.isLayerModel = ko.observable(true);
 
+
     if (self.featureAttributionName === 'OCS Lease Blocks') {
         self.featureAttributionName = 'OCS Lease Blocks -- DRAFT Report';
     } else if (self.featureAttributionName === 'Party & Charter Boat') {
@@ -212,7 +213,6 @@ function layerModel(options, parent) {
     } else {
         self.fullName = self.name;
     }
-
 
     self.toggleLegendVisibility = function() {
         var layer = this;
@@ -1196,6 +1196,20 @@ function viewModel() {
         if (self.showLegend()) return "Hide Legend";
         else return "Show Legend";
     });
+
+    //TODO: get first/default toc id from load-state(?) or layers query
+    self.currentTocId = ko.observable('6');
+
+    self.setCurrentTocID = function(toc_tab) {
+      if (toc_tab.hasOwnProperty('tocid')){
+        var tocid = toc_tab.tocid;
+        if (typeof(tocid) != 'string'){
+          tocid = tocid.toString();
+        }
+        console.log('current toc ID: ' + tocid);
+        self.currentTocId(tocid);
+      }
+    };
 
     self.showEmbeddedLegend = ko.observable(false);
 

@@ -131,7 +131,7 @@
                 {% load in_group %}
                 <!-- Map Panel (center panel) -->
                 <div id="map-panel" style="position: absolute; width: 100%; height: 100%">
-                    <div class="row-fluid" data-bind="visible: showMapPanel" style="height: 100%">
+                    <div class="row-fluid" data-bind="visible: app.viewModel.showMapPanel" style="height: 100%">
                         <div class="span12" style="height: 100%">
                             <div class="row-fluid" style="height: 100%">
                                 <div id="map-wrapper" style="height: 100%; border-radius: 0px; border: 0px;">
@@ -171,7 +171,7 @@
                                     <div id="basemaps" style="top: 56px"> <!-- Basemaps, Legends, Layers, Bookmarks, and FullScreen buttons -->
                                         <div class="btn-group btn-group-vertical">
                                           <!--Basemaps Button-->
-                                          <a id="basemap-button" class="btn" data-bind="click: showBasemaps">
+                                          <a id="basemap-button" class="btn" data-bind="click: app.viewModel.showBasemaps">
                                               <i class="icon-globe icon-large"></i>
                                               <span>Basemaps</span>
                                           </a>
@@ -187,20 +187,20 @@
                                               <span data-bind="text: showLayersText()"></span>
                                           </a> -->
                                           <!--Bookmarks Button-->
-                                          <a id="bookmarks-button" class="btn" data-bind="click: showBookmarks, visible: !isFullScreen()">
+                                          <a id="bookmarks-button" class="btn" data-bind="click: app.viewModel.showBookmarks, visible: !app.viewModel.isFullScreen()">
                                               <i class="icon-map-marker icon-large"></i>
                                               <span>Bookmarks</span>
-                                              <span data-bind="visible: bookmarks.bookmarksList().length > 0">
-                                                  (<span data-bind="text: bookmarks.bookmarksList().length"></span>)
+                                              <span data-bind="visible: app.viewModel.bookmarks.bookmarksList().length > 0">
+                                                  (<span data-bind="text: app.viewModel.bookmarks.bookmarksList().length"></span>)
                                               </span>
                                           </a>
                                           <!--Map Links Button-->
-                                          <a id="basemap-button" class="btn" href="#map-links-modal" data-toggle="modal" data-bind="click: resetMapLinks, visible: !isFullScreen()">
+                                          <a id="basemap-button" class="btn" href="#map-links-modal" data-toggle="modal" data-bind="click: app.viewModel.resetMapLinks, visible: !app.viewModel.isFullScreen()">
                                               <i class="icon-link icon-large"></i>
                                               <span>Share this Map</span>
                                           </a>
                                           <!-- Print Button -->
-                                          <a class="btn" id="btn-print" data-bind="click: printing.showPrintDialog, visible: printing.enabled() && !isFullScreen()">
+                                          <a class="btn" id="btn-print" data-bind="click: app.viewModel.printing.showPrintDialog, visible: app.viewModel.printing.enabled() && !app.viewModel.isFullScreen()">
                                               <i class="icon-print icon-large"></i>
                                               <span>Print/Export</span>
                                           </a>
@@ -221,7 +221,7 @@
 
                                     <!-- the following container is used to estimate width for the actual Aggregated Attribution Overlay -->
                                     <div id="aggregated-attribute-overlay-test" style="position: absolute; visibility: hidden; height: auto; width: auto">
-                                        <div data-bind="foreach: attributeLayers()">
+                                        <div data-bind="foreach: app.viewModel.attributeLayers()">
                                             <div data-bind="css: {display: $root.aggregatedAttributes()[name] ? 'block' : 'none'}">
                                               <h4 data-bind="text: featureAttributionName"></h4>
                                               <dl data-bind="foreach: { data: $root.aggregatedAttributes()[name], afterAdd:$root.updateMarker }">
@@ -236,10 +236,10 @@
 
                                     <!-- Aggregated Attribution Overlay -->
 
-                                    <div data-bind="visible: showFeatureAttribution">
-                                        <div id="aggregated-attribute-overlay" style="display: none" class="scrollpane" data-bind="visible: aggregatedAttributes, style: {width: aggregatedAttributesWidth}">
+                                    <div data-bind="visible: app.viewModel.showFeatureAttribution">
+                                        <div id="aggregated-attribute-overlay" style="display: none" class="scrollpane" data-bind="visible: app.viewModel.aggregatedAttributes, style: {width: app.viewModel.aggregatedAttributesWidth}">
                                             <div id="aggregated-attribute-content" class="accordion">
-                                                <div data-bind="foreach: attributeLayers()">
+                                                <div data-bind="foreach: app.viewModel.attributeLayers()">
                                                     <div class="accordion-group">
                                                         <div data-bind="visible: $root.aggregatedAttributes()[name]">
                                                             <div class="accordion-heading" data-bind="click: toggleLayerAttribution">
@@ -267,20 +267,20 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <span id="close-attribute-overlay" class="pull-right"><a href="#" style="position: absolute; top: 10px; right: 10px; opacity: .6;" class="btn btn-mini close" data-bind="click: closeAttribution"> x </a> </span>
+                                            <span id="close-attribute-overlay" class="pull-right"><a href="#" style="position: absolute; top: 10px; right: 10px; opacity: .6;" class="btn btn-mini close" data-bind="click: app.viewModel.closeAttribution"> x </a> </span>
                                         </div>
                                     </div>
 
                                     <!-- Bookmark Message -->
-                                    <div id="error-overlay" data-bind="visible: error() === 'restoreState'" style="display:none">
+                                    <div id="error-overlay" data-bind="visible: app.viewModel.error() === 'restoreState'" style="display:none">
                                         <div>
                                             <span class="pull-right">
-                                                <a href="#" style="margin-left: 10px; opacity: .6;" class="close btn btn-mini" data-bind="click: closeAlert"> x </a>
-                                                <a class="btn btn-mini" data-bind="click: bookmarks.restoreState">
+                                                <a href="#" style="margin-left: 10px; opacity: .6;" class="close btn btn-mini" data-bind="click: app.viewModel.closeAlert"> x </a>
+                                                <a class="btn btn-mini" data-bind="click: app.viewModel.bookmarks.restoreState">
                                                     Return to Previous View
                                                 </a>
                                             </span>
-                                            <span data-bind="text: bookmarks.activeBookmark"></span>
+                                            <span data-bind="text: app.viewModel.bookmarks.activeBookmark"></span>
                                             <div class="clearfix"></div>
                                         </div>
                                     </div>
@@ -289,7 +289,7 @@
                                     <div id="fullscreen-error-overlay" style="display:none">
                                         <div>
                                             <span class="pull-right">
-                                                <a href="#" style="margin-left: 10px; opacity: .6;" class="close btn btn-mini" data-bind="click: closeAlert"> x </a>
+                                                <a href="#" style="margin-left: 10px; opacity: .6;" class="close btn btn-mini" data-bind="click: app.viewModel.closeAlert"> x </a>
 
                                             </span>
                                             <span>We're sorry, the Fullscreen option is not supported in all browsers at this time...If it's important, you might try Firefox or Chrome.</span>
@@ -297,32 +297,32 @@
                                     </div>
 
                                   <!-- Description Overlay  style="display:none"-->
-                                    <div id ="description-overlay" class="row-fluid" style="display: none" data-bind="visible: showDescription() && !showOverview()" >
+                                    <div id ="description-overlay" class="row-fluid" style="display: none" data-bind="visible: app.viewModel.showDescription() && !app.viewModel.showOverview()" >
                                         <div class="span11">
-                                            <span class="title" data-bind="text: activeInfoLayer().name"></span> --
-                                            <span class="text" data-bind="text: activeInfoLayer().description"></span>
-                                            <div class="pull-right"><a class="btn btn-mini" data-bind="click: expandDescription, text: 'Show More...'"></a></div>
+                                            <span class="title" data-bind="text: app.viewModel.activeInfoLayer().name"></span> --
+                                            <span class="text" data-bind="text: app.viewModel.activeInfoLayer().description"></span>
+                                            <div class="pull-right"><a class="btn btn-mini" data-bind="click: app.viewModel.expandDescription, text: 'Show More...'"></a></div>
                                         </div>
                                         <div class="span1">
-                                            <a href="#" style="margin-left: 10px; opacity: .6;" class="btn btn-mini pull-right close" data-bind="click: closeDescription"> x </a>
+                                            <a href="#" style="margin-left: 10px; opacity: .6;" class="btn btn-mini pull-right close" data-bind="click: app.viewModel.closeDescription"> x </a>
                                         </div>
                                     </div>
 
-                                    <div id="overview-overlay" class="row-fluid" style="display: none" data-bind="visible: showOverview()" >
+                                    <div id="overview-overlay" class="row-fluid" style="display: none" data-bind="visible: app.viewModel.showOverview()" >
                                         <div id="overview-overlay-content" class="span12">
                                             <div id="overview-overlay-header" >
-                                                <span class="btn-group" data-bind="visible: activeInfoLayer() && activeInfoLayer().subLayers && activeInfoLayer().subLayers.length !== 0">
-                                                    <a id="overview-dropdown-button" class="btn dropdown-toggle" href="#" name="description-dropdown" data-bind="click: activateOverviewDropdown">
-                                                        <span data-bind="text: activeInfoSublayer().name ? activeInfoSublayer().name : activeInfoLayer().name"></span>
+                                                <span class="btn-group" data-bind="visible: app.viewModel.activeInfoLayer() && app.viewModel.activeInfoLayer().subLayers && app.viewModel.activeInfoLayer().subLayers.length !== 0">
+                                                    <a id="overview-dropdown-button" class="btn dropdown-toggle" href="#" name="description-dropdown" data-bind="click: app.viewModel.activateOverviewDropdown">
+                                                        <span data-bind="text: app.viewModel.activeInfoSublayer().name ? app.viewModel.activeInfoSublayer().name : app.viewModel.activeInfoLayer().name"></span>
                                                         <span class="caret"></span>
                                                     </a>
                                                     <ul id="overview-overlay-dropdown" class="dropdown-menu">
                                                         <li>
-                                                            <a data-bind="click: activeInfoLayer().toggleSublayerDescription">
-                                                                <span data-bind="text: activeInfoLayer().name"></span>
+                                                            <a data-bind="click: app.viewModel.activeInfoLayer().toggleSublayerDescription">
+                                                                <span data-bind="text: app.viewModel.activeInfoLayer().name"></span>
                                                             </a>
                                                         </li>
-                                                        <li data-bind="foreach: activeInfoLayer().subLayers">
+                                                        <li data-bind="foreach: app.viewModel.activeInfoLayer().subLayers">
                                                             <a data-bind="click: toggleSublayerDescription">
                                                                 <span data-bind="text: name"></span>
                                                             </a>
@@ -330,20 +330,20 @@
                                                     </ul>
                                                 </span>
                                                 <div style="width: 90%;overflow: hidden;text-overflow: ellipsis;">
-                                                    <span style="white-space: nowrap" class="title" data-bind="text: activeInfoLayer().name, visible: activeInfoLayer() && (!activeInfoLayer().subLayers || activeInfoLayer().subLayers.length == 0)"></span>
+                                                    <span style="white-space: nowrap" class="title" data-bind="text: app.viewModel.activeInfoLayer().name, visible: app.viewModel.activeInfoLayer() && (!app.viewModel.activeInfoLayer().subLayers || app.viewModel.activeInfoLayer().subLayers.length == 0)"></span>
                                                 </div>
-                                                <span style="position: absolute; top: 8px; right: 8px"><a href="#" style="margin-left: 10px; opacity: .8;" class="btn btn-mini pull-right close" data-bind="click: closeDescription"> x </a> </span>
+                                                <span style="position: absolute; top: 8px; right: 8px"><a href="#" style="margin-left: 10px; opacity: .8;" class="btn btn-mini pull-right close" data-bind="click: app.viewModel.closeDescription"> x </a> </span>
                                             </div>
                                             <div id="overview-overlay-text" style="margin-top: 5px">
-                                                <span class="text" data-bind="text: getOverviewText()" style="white-space: pre-wrap"></span>
+                                                <span class="text" data-bind="text: app.viewModel.getOverviewText()" style="white-space: pre-wrap"></span>
                                                 <div class="notes">
-                                                    <div data-bind="visible: activeInfoSublayer() ? activeInfoSublayer().data_source : activeInfoLayer().data_source">
+                                                    <div data-bind="visible: app.viewModel.activeInfoSublayer() ? app.viewModel.activeInfoSublayer().data_source : app.viewModel.activeInfoLayer().data_source">
                                                         Source:
-                                                        <span data-bind="text: activeInfoSublayer() ? activeInfoSublayer().data_source : activeInfoLayer().data_source"></span>
+                                                        <span data-bind="text: app.viewModel.activeInfoSublayer() ? app.viewModel.activeInfoSublayer().data_source : app.viewModel.activeInfoLayer().data_source"></span>
                                                     </div>
-                                                    <div style="margin-top: 5px" data-bind="visible: activeInfoSublayer() ? activeInfoSublayer().data_notes : activeInfoLayer().data_notes">
+                                                    <div style="margin-top: 5px" data-bind="visible: app.viewModel.activeInfoSublayer() ? app.viewModel.activeInfoSublayer().data_notes : app.viewModel.activeInfoLayer().data_notes">
                                                         Notes:
-                                                        <span data-bind="text: activeInfoSublayer() ? activeInfoSublayer().data_notes : activeInfoLayer().data_notes"></span>
+                                                        <span data-bind="text: app.viewModel.activeInfoSublayer() ? app.viewModel.activeInfoSublayer().data_notes : app.viewModel.activeInfoLayer().data_notes"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -352,28 +352,28 @@
                                               <span class="span11">
                                                 <div class="text" style="margin-top: 5px">
                                                     <span>
-                                                        <a class="btn btn-mini" data-bind="css: { disabled: ! activeDataLink() }, attr: { href: activeDataLink() }" target="_blank">
+                                                        <a class="btn btn-mini" data-bind="css: { disabled: ! app.viewModel.activeDataLink() }, attr: { href: app.viewModel.activeDataLink() }" target="_blank">
                                                             <span rel="tooltip" title="Download ESRI Formatted Dataset">
                                                                 DATA
                                                             </span>
                                                         </a>
                                                     </span>
                                                     <span>
-                                                        <a class="btn btn-mini" data-bind="css: { disabled: ! activeMetadataLink() }, attr: { href: activeMetadataLink() }" target="_blank">
+                                                        <a class="btn btn-mini" data-bind="css: { disabled: !app.viewModel.activeMetadataLink() }, attr: { href: app.viewModel.activeMetadataLink() }" target="_blank">
                                                             <span rel="tooltip" title="View the Metadata">
                                                                 METADATA
                                                             </span>
                                                         </a>
                                                     </span>
                                                     <span>
-                                                        <a class="btn btn-mini" data-bind="css: { disabled: ! activeSourceLink() }, attr: { href: activeSourceLink() }" target="_blank">
+                                                        <a class="btn btn-mini" data-bind="css: { disabled: !app.viewModel.activeSourceLink() }, attr: { href: app.viewModel.activeSourceLink() }" target="_blank">
                                                             <span rel="tooltip" title="Link to Dataset Source Provider">
                                                                 SOURCE
                                                             </span>
                                                         </a>
                                                     </span>
                                                     <span>
-                                                        <a class="btn btn-mini" data-bind="css: { disabled: ! activeTilesLink() }, attr: { href: activeTilesLink() }" target="_blank">
+                                                        <a class="btn btn-mini" data-bind="css: { disabled: !app.viewModel.activeTilesLink() }, attr: { href: app.viewModel.activeTilesLink() }" target="_blank">
                                                             <span rel="tooltip" title="Web Mapping Services">
                                                                 WMS
                                                             </span>
@@ -397,9 +397,9 @@
 
 
                 <!-- Data Panel (left panel) -->
-                <div id="left-panel" class="row-fluid" data-bind="visible: showLayers()">
+                <div id="left-panel" class="row-fluid" data-bind="visible: app.viewModel.showLayers()">
                   <div class="span4 tabs">
-                      <div id="planner-sidebar" class="sidebar-nav" data-bind="css: {'fullscreen-data': isFullScreen()}">
+                      <div id="planner-sidebar" class="sidebar-nav" data-bind="css: {'fullscreen-data': app.viewModel.isFullScreen()}">
 
                           <!-- Header -->
                           <div id="data-panel-header">
@@ -420,8 +420,8 @@
                                               {% endif %}
                                           {% endif %}
                                       </a>
-                                      <h3 class="pull-right" data-bind="visible: mapTitle, text: mapTitle"></h3>
-                                      <i id="minimize-icon" class="icon-minus icon-large" data-bind="click: minimizeLeftPanel" style="cursor: pointer; position: absolute; top: 5px; right: 12px;"></i>
+                                      <h3 class="pull-right" data-bind="visible: app.viewModel.mapTitle, text: app.viewModel.mapTitle"></h3>
+                                      <i id="minimize-icon" class="icon-minus icon-large" data-bind="click: app.viewModel.minimizeLeftPanel" style="cursor: pointer; position: absolute; top: 5px; right: 12px;"></i>
                                   </div>
                               </div>
                           </div>
@@ -429,10 +429,10 @@
                           <!-- Search -->
                           <div class="row-fluid" style="padding: 10px 0px 20px 0px; height: 30px;">
                               <div class="search-form span12">
-                                  <form class="form-search" data-bind="submit: layerSearch" style="margin-left: auto; margin-right: auto; width: 80%; height: 0px">
+                                  <form class="form-search" data-bind="submit: app.viewModel.layerSearch" style="margin-left: auto; margin-right: auto; width: 80%; height: 0px">
                                       <div class="span12" style="float: none;">
                                           <span style="border-radius: 4px;">
-                                            <input type="search" class="field search-box" data-provide="typeahead" data-bind="value: searchTerm, event: { keyup: keySearch }" name="s" id="s" placeholder="Search" style="border-radius: 4px;">
+                                            <input type="search" class="field search-box" data-provide="typeahead" data-bind="value: app.viewModel.searchTerm, event: { keyup: app.viewModel.keySearch }" name="s" id="s" placeholder="Search" style="border-radius: 4px;">
                                           </span>
                                           <input type="submit" class="search" name="submit" id="searchsubmit" value="Search" style="background: url(http://ourfloridareefs.org/wp-content/themes/OurFloridaReefs/images/search.png) no-repeat 0 0; width: 26px; height: 30px; border: none; padding: 0; cursor: pointer; font-size: 0; margin-top: 9px; border-radius: 0px">
                                           <!-- <input type="text" class="search-box" data-provide="typeahead" data-bind="value: searchTerm, event: { keyup: keySearch }" style="overflow: hidden; text-overflow: ellipsis; width: 80%;" placeholder="Search">
@@ -445,20 +445,20 @@
                           </div>
 
                           <!-- paradigm tab controls-->
-                          <ul id="paradigmTab" class="nav nav-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;" data-bind="foreach: tocs">
+                          <ul id="paradigmTab" class="nav nav-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;" data-bind="foreach: app.viewModel.tocs">
                             <!-- ko if: $index() == 0 -->
-                              <li class='active'>
+                              <li class='active' data-bind="click: app.viewModel.setCurrentTocID">
                                   <a data-toggle="tab" data-bind="text: name, attr: {href: '#'+tocid }"></a>
                               </li>
                             <!-- /ko -->
                             <!-- ko if: $index() != 0 -->
-                              <li>
+                              <li data-bind="click: app.viewModel.setCurrentTocID">
                                   <a data-toggle="tab" data-bind="text: name, attr: {href: '#'+tocid }"></a>
                               </li>
                             <!-- /ko -->
                           </ul>
 
-                          <div class='tab-content' data-bind="foreach: tocs">
+                          <div class='tab-content' data-bind="foreach: app.viewModel.tocs">
 
                             <!-- <div class="tab-pane" data-bind="attr:{id:tocid}" style="background-color: red"> -->
                             <div class='tab-pane' data-bind="attr: {id:tocid}">
@@ -669,7 +669,8 @@
                             </div>
                           </div>
 <!-- STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-                          <div data-bind="visible: showBottomButtons()" class="sidebar-footer">
+
+                          <div data-bind="visible: app.viewModel.showBottomButtons()" class="sidebar-footer">
                               <span id="bottom-button-span" class="btn-group">
                                 <a id="help-button" class="btn" style="outline: none; margin-top: 10px;" href="#help-modal" data-toggle="modal">Tutorial</a>
                               </span>
@@ -683,7 +684,7 @@
 
                 </div>
             </div>
-            <span class="timestamp" data-bind="visible: mapTitle"><span data-bind="text: new Date().toString('M/d/yyyy HH:mm')"></span></span>
+            <span class="timestamp" data-bind="visible: app.viewModel.mapTitle"><span data-bind="text: new Date().toString('M/d/yyyy HH:mm')"></span></span>
         </div>
 
         <!--/row-->
@@ -697,8 +698,8 @@
             <div class="arrow">
             </div>
             <div class="popover-inner">
-                <div class="popover-content" data-bind="if: selectedLayer">
-                    <div class="slider" data-bind="jqSlider: selectedLayer().opacity, jqOptions: { min: 0, max: 1, step: .01, range: 'min' }"></div>
+                <div class="popover-content" data-bind="if: app.viewModel.selectedLayer">
+                    <div class="slider" data-bind="jqSlider: app.viewModel.selectedLayer().opacity, jqOptions: { min: 0, max: 1, step: .01, range: 'min' }"></div>
                 </div>
             </div>
         </div>
