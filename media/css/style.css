@@ -660,6 +660,12 @@ a.disabled-link:hover {
   height: auto !important;
 }
 
+.my-tab-content {
+  top: 0px;
+  bottom: 50px;
+  position: absolute;
+}
+
 .tab-content .accordion-inner {
   /*overflow: visible;*/
   background: white;

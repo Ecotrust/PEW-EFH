@@ -1008,7 +1008,7 @@ body.print #legend-wrapper, body.print #map-wrapper, body.print #map {
 body.print #map-panel {
 	margin-left: 0px;
 }
-body.print #legend {
+body.print .legend {
     margin-left: 1%;
 }
 

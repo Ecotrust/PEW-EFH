@@ -17,6 +17,7 @@ app.onResize = function(percent) {
         $(".designs-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $("#polygon-design-form").height(height - 244 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $("#wind-design-form").height(height - 244 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $(".legend-content").height(height - 200 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         //$("#active").height(height + 20 - (($.browser.msie && $.browser.version < 9)? 130: 96));
     }
     app.map.render('map');
