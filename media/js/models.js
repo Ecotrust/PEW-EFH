@@ -1206,8 +1206,10 @@ function viewModel() {
         if (typeof(tocid) != 'string'){
           tocid = tocid.toString();
         }
-        console.log('current toc ID: ' + tocid);
         self.currentTocId(tocid);
+      }
+      if ( ! ($.browser.msie && $.browser.version < 9) && ! app.embeddedMap ) {
+        setTimeout(function() {$("#"+tocid+"-data-accordion").jScrollPane();},100);
       }
     };
 
@@ -1267,23 +1269,24 @@ function viewModel() {
     //update jScrollPane scrollbar
     self.updateScrollBars = function() {
         if ( ! app.embeddedMap ) {
-            var dataScrollpane = $('#data-accordion').data('jsp');
+
+            var dataScrollpane = $('#'+app.viewModel.currentTocId()+'-data-accordion').data('jsp');
             if (dataScrollpane === undefined) {
-                $('#data-accordion').jScrollPane();
+                $('#'+app.viewModel.currentTocId()+'-data-accordion').jScrollPane();
             } else {
                 dataScrollpane.reinitialise();
             }
 
-            var activeScrollpane = $('#active-content').data('jsp');
+            var activeScrollpane = $('#'+app.viewModel.currentTocId()+'-active-content').data('jsp');
             if (activeScrollpane === undefined) {
-                $('#active-content').jScrollPane();
+                $('#'+app.viewModel.currentTocId()+'-active-content').jScrollPane();
             } else {
                 activeScrollpane.reinitialise();
             }
 
-            var legendScrollpane = $('#legend-content').data('jsp');
+            var legendScrollpane = $('#'+app.viewModel.currentTocId()+'-legend-content').data('jsp');
             if (legendScrollpane === undefined) {
-                $('#legend-content').jScrollPane();
+                $('#'+app.viewModel.currentTocId()+'-legend-content').jScrollPane();
             } else {
                 setTimeout(function() {legendScrollpane.reinitialise();},100);
             }

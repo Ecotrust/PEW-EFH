@@ -564,7 +564,7 @@ a.disabled-link:hover {
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#bb2d8998, endColorstr=#bb2d8998)";
 }
 
-#data-accordion .dropdown-menu {
+.tab-data-accordion .dropdown-menu {
   right: 26px;
   max-height: 160px;
   min-height: 60px;
@@ -572,12 +572,12 @@ a.disabled-link:hover {
   overflow-y: auto;
 }
 
-#data-accordion .dropdown-menu {
+.tab-data-accordion .dropdown-menu {
   right: 0px;
   margin-top: 0px;
 }
 
-#data-accordion li.layer {
+.tab-data-accordion li.layer {
 	margin-bottom: 10px;
 }
 
@@ -639,16 +639,16 @@ a.disabled-link:hover {
   text-decoration: none;
 }
 
-#data-accordion, .designs-accordion, #sharing-groups, #bookmark-sharing-groups {
+.tab-data-accordion, .designs-accordion, #sharing-groups, #bookmark-sharing-groups {
     outline: none;
 }
 
-#data-accordion, #legend-accordion, .designs-accordion {
+.tab-data-accordion, #legend-accordion, .designs-accordion {
   height: 100%;
   overflow-y: auto;
 }
 
-#data-accordion .accordion-group {
+.tab-data-accordion .accordion-group {
   border-radius: 0px;
 }
 

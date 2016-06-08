@@ -952,9 +952,9 @@ function scenariosModel(options) {
     };
 
     self.updateDesignsScrollBar = function() {
-        var designsScrollpane = $('.designs-accordion').data('jsp');
+        var designsScrollpane = $('#'+app.viewModel.currentTocId()+'-designs-accordion').data('jsp');
         if (designsScrollpane === undefined) {
-            $('.designs-accordion').jScrollPane();
+            $('#'+app.viewModel.currentTocId()+'-designs-accordion').jScrollPane();
         } else {
             designsScrollpane.reinitialise();
         }

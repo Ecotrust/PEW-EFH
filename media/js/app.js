@@ -13,7 +13,7 @@ app.onResize = function(percent) {
         //$("#map-wrapper").height(height);
         $(".tabs").height(height);
         //$("#legend-wrapper").height(height - 20);
-        $(".data-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $(".tab-data-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $(".designs-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $("#polygon-design-form").height(height - 244 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $("#wind-design-form").height(height - 244 - (($.browser.msie && $.browser.version < 9)? 130: 96));
@@ -81,7 +81,7 @@ app.viewModel.loadLayersFromServer().done(function() {
   });
 
   if ( ! ($.browser.msie && $.browser.version < 9) && ! app.embeddedMap ) {
-    $("#data-accordion").jScrollPane();
+    $(".tab-data-accordion").jScrollPane();
   }
     //$("#legend-wrapper").jScrollPane();
   // }

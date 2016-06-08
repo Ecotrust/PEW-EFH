@@ -64,7 +64,7 @@ li a {
 	top: 2px;
 
 }
-#data-accordion .jspContainer, .jspPane, .jspScrollable {
+.tab-data-accordion .jspContainer, .jspPane, .jspScrollable {
 	background: white!important;
 }
 
@@ -351,13 +351,13 @@ input + i.icon-remove-sign {
 	color: #2d8998;
 }
 
-#data .form-search {
+.data-pane .form-search {
 	padding: 0px 0px 20px 10px;
 	margin-left: 20px;
 	margin-top: -5px;
 }
 
-#data .form-search .btn, .search-row .form-search .btn {
+.data-pane .form-search .btn, .search-row .form-search .btn {
 	margin-left: -8px;
 	margin-top: 0px;
 }
@@ -534,10 +534,10 @@ img + h3 {
 .active .accordion-body {
 	/*border-left: 3px solid #2d8998;*/
 }
-#data,
-#data .tab-content,
-#data .row-fluid,
-#data .row-fluid .span12,
+.data-pane,
+.data-pane .tab-content,
+.data-pane .row-fluid,
+.data-pane .row-fluid .span12,
 .sidebar-nav,
 .sidebar-nav .accordion,
 .sidebar-nav .accordion-heading
@@ -1086,7 +1086,7 @@ body.borderless #map-wrapper {
 		padding-left: 0px;
 	}
 
-	#data-accordion .btn-group-layer .btn-layer {
+	.tab-data-accordion .btn-group-layer .btn-layer {
 	  width: 78%;
 	  /*font-size: 12px;*/
 	}
@@ -1128,7 +1128,7 @@ body.borderless #map-wrapper {
 		/*margin-left: -18px;*/
 	}
 
-	#data-accordion .btn-group-layer .btn-layer {
+	.tab-data-accordion .btn-group-layer .btn-layer {
 	  width: 78%;
 	  /*font-size: 12px;*/
 	}
