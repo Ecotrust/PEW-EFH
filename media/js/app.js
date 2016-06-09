@@ -14,6 +14,7 @@ app.onResize = function(percent) {
         $(".tabs").height(height);
         //$("#legend-wrapper").height(height - 20);
         $(".tab-data-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $(".tab-active-content").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $(".designs-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $("#polygon-design-form").height(height - 244 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $("#wind-design-form").height(height - 244 - (($.browser.msie && $.browser.version < 9)? 130: 96));
@@ -82,7 +83,9 @@ app.viewModel.loadLayersFromServer().done(function() {
   });
 
   if ( ! ($.browser.msie && $.browser.version < 9) && ! app.embeddedMap ) {
-    $(".tab-data-accordion").jScrollPane();
+    console.log('set jScrollPane here?');
+    // $(".tab-data-accordion").jScrollPane();
+    // $('#'+app.viewModel.currentTocId()+'-data > div > .accordion-wrapper').jScrollPane();
   }
     //$("#legend-wrapper").jScrollPane();
   // }

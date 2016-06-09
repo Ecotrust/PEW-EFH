@@ -562,7 +562,7 @@ img + h3 {
 	display: block;
 }
 
-.sidebar-nav .btn i, #active .btn i {
+.sidebar-nav .btn i, .tab-active .btn i {
 	font-size: 13px;
 }
 .sidebar-nav .btn-group-layer .btn-layer  {
@@ -582,38 +582,38 @@ img + h3 {
 	padding: 10px 10px 10px 10px;
 }
 
-#active {
+.tab-active {
     outline: 0;
 }
-#active div:focus {
+.tab-active div:focus {
     outline: 0;
 }
 
-#active ul li {
+.tab-active ul li {
 	margin-bottom: 10px;
 }
-#active .btn {
+.tab-active .btn {
 	padding-left: 0px;
 }
-#active .opacity-button {
+.tab-active .opacity-button {
     padding: 4px 9px;
 }
-#active .btn:last-child {
+.tab-active .btn:last-child {
 	padding: 4px 9px;
 }
-#active .btn-group {
+.tab-active .btn-group {
 	width: 90%;
 }
-#active .btn-group .btn-layer {
+.tab-active .btn-group .btn-layer {
 	text-align: left;
 	width: 70%;
 
 }
-#active .btn-info-sign {
+.tab-active .btn-info-sign {
     padding: 4px 8px;
 }
 
-#active .btn-layer > div {
+.tab-active .btn-layer > div {
 	display: inline-block;
 	line-height: 1;
 	padding-left: 8px;
@@ -1119,7 +1119,7 @@ body.borderless #map-wrapper {
 	.showcase .caption {
 		top: 100px;
 	}
-	#active .btn-group .btn-layer {
+	.tab-active .btn-group .btn-layer {
 		width: 70%;
 		/*font-size: 12px;*/
 	}

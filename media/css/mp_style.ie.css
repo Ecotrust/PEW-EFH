@@ -60,19 +60,19 @@ div.olControlZoom a {
     padding-left: 10px;
 }
 
-#active .btn {
+.tab-active .btn {
     padding-right: 5px;
 }
 
-#active .icon-info-sign {
+.tab-active .icon-info-sign {
     padding-left: 10px;
 }
 
-#active .icon-adjust {
+.tab-active .icon-adjust {
     padding-left: 10px;
 }
 
-#active .icon-remove {
+.tab-active .icon-remove {
     padding-left: 10px;
 }
 

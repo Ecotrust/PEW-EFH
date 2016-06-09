@@ -1272,16 +1272,18 @@ function viewModel() {
 
             var dataScrollpane = $('#'+app.viewModel.currentTocId()+'-data-accordion').data('jsp');
             if (dataScrollpane === undefined) {
-                $('#'+app.viewModel.currentTocId()+'-data-accordion').jScrollPane();
+                setTimeout(function() {$('#'+app.viewModel.currentTocId()+'-data-accordion').jScrollPane();},100);
+                // $('#'+app.viewModel.currentTocId()+'-data-accordion').jScrollPane();
+                // $('#'+app.viewModel.currentTocId()+'-data > div > .accordion-wrapper').jScrollPane();
             } else {
-                dataScrollpane.reinitialise();
+                setTimeout(function() {dataScrollpane.reinitialise();},100);
             }
 
             var activeScrollpane = $('#'+app.viewModel.currentTocId()+'-active-content').data('jsp');
             if (activeScrollpane === undefined) {
                 $('#'+app.viewModel.currentTocId()+'-active-content').jScrollPane();
             } else {
-                activeScrollpane.reinitialise();
+                setTimeout(function() {activeScrollpane.reinitialise();},100);
             }
 
             var legendScrollpane = $('#'+app.viewModel.currentTocId()+'-legend-content').data('jsp');
@@ -1749,7 +1751,7 @@ function viewModel() {
         }
 
         app.setMapPosition(longitude, latitude, zoom);
-        $('#activeTab').tab('show');
+        $('#'+app.viewModel.currentTocId()+'-activeTab').tab('show');
 
         //start the tour
         setTimeout( function() { $.pageguide('open'); }, 700 );

@@ -88,7 +88,7 @@
                                 <a href="#designs" data-toggle="tab">Designs</a>
                             </li>
                             <li>
-                                <a href="#active" data-toggle="tab">Active
+                                <a data-bind="attr:{href:'#'+app.viewModel.currentTocId+'-active}" data-toggle="tab">Active
                                 <span class="badge badge-inverse" data-bind="text: activeLayers().length">0</span></a>
                             </li>
 
