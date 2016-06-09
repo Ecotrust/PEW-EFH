@@ -69,6 +69,8 @@ app.viewModel.loadLayersFromServer().done(function() {
 
   // trigger events that depend on the map
   $(document).trigger('map-ready');
+  
+  $('#'+app.viewModel.currentTocId()+'-tab > a').click();
 
   // if we have the hash state go ahead and load it now
   if (app.hash) {
