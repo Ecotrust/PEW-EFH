@@ -534,10 +534,14 @@ img + h3 {
 .active .accordion-body {
 	/*border-left: 3px solid #2d8998;*/
 }
+
+.data-pane .tab-content {
+  position: static;
+}
+
 .data-pane,
-.data-pane .tab-content,
-.data-pane .row-fluid,
-.data-pane .row-fluid .span12,
+/*.data-pane .row-fluid,*/
+/*.data-pane .row-fluid .span12,*/
 .sidebar-nav,
 .sidebar-nav .accordion,
 .sidebar-nav .accordion-heading
@@ -1162,5 +1166,9 @@ body.borderless #map-wrapper {
 		position: relative;
 		top: -15px!important;
 	}
+
+  .tab-active-content .jspContainer .jspPane {
+    left: 0 !important;
+  }
 
 }
