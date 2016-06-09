@@ -573,40 +573,39 @@
                                       <!-- <div class="tab-pane fade" style="background-color: white; height: 100%" id="active"> -->
                                           <div class="row-fluid" style="height: 100%">
                                               <div data-bind="attr: {'id': tocid + '-active-content' }" class="span12 tab-active-content" style="height: 100%;">
-                                                <div class="span12" style="height: 100%;" class="active-content">
-                                                    <div data-bind="visible: app.viewModel.activeLayers().length === 0">
-                                                        <div style="margin: 20px;">
-                                                            <p>
-                                                                You currently have no activated data layers.
-                                                            </p>
-                                                            <p>
-                                                                Data layers that are activated in the Data panel will appear in this Active panel.
-                                                            </p>
-                                                            <p>
-                                                                Data layers in the Active panel can be adjusted in terms of their transparency and their ordering on the map.
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <ul class="unstyled list" style="margin: 0px 5px 20px;" data-bind="sortable: { data: app.viewModel.activeLayers, options: {  } }">
-                                                        <li>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-info-sign" data-bind="click: parent.toggleDescription, css: { 'active': infoActive()}, visible: isLayerModel()"><i class="icon-info-sign icon-large"></i></button>
-                                                                <a class="btn btn-layer" data-bind="css: { 'active': visible(), 'design-layer': !isLayerModel() }, click: toggleVisible">
-                                                                    <div data-bind="text: name"></div>
-                                                                    <span rel="tooltip" data-bind="attr: {title: sharedBy}">
-                                                                        <i class="icon-group" data-bind="visible: shared" style="padding-left: 10px"></i>
-                                                                    </span>
-                                                                    <span ><i class="icon-large check" data-bind="css: { 'icon-check': visible(), 'icon-check-empty': ! visible() }"></i></span>
-                                                                </a>
-                                                                <a class="btn opacity-button" data-bind="click: $parents[1].showOpacity"><i class="icon-adjust icon-large"></i></a>
-                                                                <button class="btn deactivate-button" data-bind="click: toggleActive">
-                                                                    <i class="icon-remove">
-                                                                    </i>
-                                                                </button>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                              <!-- <div class="span12" style="height: 100%;" id="active-content"> -->
+                                                  <div data-bind="visible: app.viewModel.activeLayers().length === 0">
+                                                      <div style="margin: 20px;">
+                                                          <p>
+                                                              You currently have no activated data layers.
+                                                          </p>
+                                                          <p>
+                                                              Data layers that are activated in the Data panel will appear in this Active panel.
+                                                          </p>
+                                                          <p>
+                                                              Data layers in the Active panel can be adjusted in terms of their transparency and their ordering on the map.
+                                                          </p>
+                                                      </div>
+                                                  </div>
+                                                  <ul class="unstyled list" style="margin: 0px 5px 20px;" data-bind="sortable: { data: app.viewModel.activeLayers, options: {  } }">
+                                                      <li>
+                                                          <div class="btn-group">
+                                                              <button class="btn btn-info-sign" data-bind="click: parent.toggleDescription, css: { 'active': infoActive()}, visible: isLayerModel()"><i class="icon-info-sign icon-large"></i></button>
+                                                              <a class="btn btn-layer" data-bind="css: { 'active': visible(), 'design-layer': !isLayerModel() }, click: toggleVisible">
+                                                                  <div data-bind="text: name"></div>
+                                                                  <span rel="tooltip" data-bind="attr: {title: sharedBy}">
+                                                                      <i class="icon-group" data-bind="visible: shared" style="padding-left: 10px"></i>
+                                                                  </span>
+                                                                  <span ><i class="icon-large check" data-bind="css: { 'icon-check': visible(), 'icon-check-empty': ! visible() }"></i></span>
+                                                              </a>
+                                                              <a class="btn opacity-button" data-bind="click: $parents[1].showOpacity"><i class="icon-adjust icon-large"></i></a>
+                                                              <button class="btn deactivate-button" data-bind="click: toggleActive">
+                                                                  <i class="icon-remove">
+                                                                  </i>
+                                                              </button>
+                                                          </div>
+                                                      </li>
+                                                  </ul>
                                               </div>
                                           </div>
                                       </div>
