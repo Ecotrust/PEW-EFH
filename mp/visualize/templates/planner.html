@@ -446,7 +446,7 @@
                           </div>
 
                           <!-- paradigm tab controls-->
-                          <ul id="paradigmTab" class="nav nav-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;" data-bind="foreach: app.viewModel.tocs">
+                          <ul id="paradigmTab" class="nav nav-tabs paradigm-tabs" style="padding-top: 8px; margin-left: 2px; margin-bottom: 0px;" data-bind="foreach: app.viewModel.tocs">
                               <li class="paradigm-tab" data-bind="click: app.viewModel.setCurrentTocID, attr:{id:tocid+'-tab'}">
                                   <a data-toggle="tab" data-bind="text: name, attr: {href: '#'+tocid }"></a>
                               </li>
