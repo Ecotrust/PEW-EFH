@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify
 class TOC(models.Model):
     name = models.CharField(max_length=100)
     themes = models.ManyToManyField("TOCTheme", blank=True, null=True)
+    order = models.IntegerField(default=0)
 
     def __unicode__(self):
         return unicode('%s' % (self.name))
@@ -16,6 +17,7 @@ class TOCTheme(models.Model):
     name = models.CharField(max_length=100, help_text="This field should be a 'slugified' version of Display Name (must start with a letter and should only contain letters (a-z or A-Z), digits (0-9), hyphens(-), and underscores(_))")
     description = models.TextField(blank=True, null=True)
     layers = models.ManyToManyField("Layer", blank=True, null=True)
+    # order = models.IntegerField(default=0)
 
     def TOC(self):
         #import pdb

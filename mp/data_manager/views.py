@@ -17,7 +17,7 @@ def get_json(request, project=None):
             activeSettings = MarinePlannerSettings.objects.get(active=True)
 
         toc_list = []
-        for toc in activeSettings.table_of_contents.all():
+        for toc in activeSettings.table_of_contents.all().order_by('order'):
             layer_list = []
             for theme in toc.themes.all():
                 for layer in theme.layers.all().order_by('name'):
@@ -25,6 +25,7 @@ def get_json(request, project=None):
             toc_list.append({
                 "tocid": toc.id,
                 "name": toc.name,
+                "order": toc.order,
                 "layers": layer_list,
                 "themes": [theme.toDict for theme in toc.themes.all().order_by('display_name')]
             })
