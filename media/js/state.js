@@ -114,7 +114,11 @@ app.loadCompressedState = function(state) {
     }
 
     app.establishLayerLoadState();
-    // data tab and open themes
+    // toc tab, data tab and open themes
+    if (state.toc){
+      app.viewModel.currentTocId(state.toc);
+      $('#'+app.viewModel.currentTocId()+'-tab > a').click();
+    }
     if (state.themes) {
         //$('#dataTab').tab('show');
         if (state.themes) {

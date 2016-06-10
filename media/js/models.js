@@ -1211,6 +1211,7 @@ function viewModel() {
       if ( ! ($.browser.msie && $.browser.version < 9) && ! app.embeddedMap ) {
         setTimeout(function() {$("#"+tocid+"-data-accordion").jScrollPane();},100);
       }
+      app.updateUrl();
     };
 
     self.showEmbeddedLegend = ko.observable(false);
