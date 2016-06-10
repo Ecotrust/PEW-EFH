@@ -509,6 +509,7 @@ function layerModel(options, parent) {
         } else { // otherwise layer is not currently active
             layer.activateLayer();
         }
+        app.updateUrl();
     };
 
 
