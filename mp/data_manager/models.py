@@ -3,10 +3,13 @@ from utils import get_domain
 from django.template.defaultfilters import slugify
 #from sorl.thumbnail import ImageField
 
+class TOCThemeOrder(models.Model):
+    theme = models.ForeignKey("TOCTheme")
+    order = models.IntegerField(default=0)
+    toc = models.ForeignKey('TOC', blank=True, null=True)
 
 class TOC(models.Model):
     name = models.CharField(max_length=100)
-    themes = models.ManyToManyField("TOCTheme", blank=True, null=True)
     order = models.IntegerField(default=0)
 
     def __unicode__(self):

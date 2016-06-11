@@ -17,9 +17,11 @@ def get_json(request, project=None):
             activeSettings = MarinePlannerSettings.objects.get(active=True)
 
         toc_list = []
+
         for toc in activeSettings.table_of_contents.all().order_by('order'):
             layer_list = []
-            for theme in toc.themes.all():
+            for themeOrdering in TOCThemeOrder.objects.filter(toc=toc).order_by('order'):
+                theme = themeOrdering.theme
                 for layer in theme.layers.all().order_by('name'):
                     layer_list.append(layer.toDict)
             toc_list.append({
@@ -27,7 +29,7 @@ def get_json(request, project=None):
                 "name": toc.name,
                 "order": toc.order,
                 "layers": layer_list,
-                "themes": [theme.toDict for theme in toc.themes.all().order_by('display_name')]
+                "themes": [themeOrder.theme.toDict for themeOrder in TOCThemeOrder.objects.filter(toc=toc).order_by('order')]
             })
         json = {
             "state": { "activeLayers": [] },

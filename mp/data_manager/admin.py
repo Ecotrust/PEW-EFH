@@ -1,8 +1,14 @@
 from django.contrib import admin
 from models import *
 
+class TocThemeInline(admin.TabularInline):
+    model=TOCThemeOrder
+
 class TOCAdmin(admin.ModelAdmin):
     list_display = ('name', 'id', 'order')
+    inlines = [
+        TocThemeInline,
+    ]
 
 class TOCThemeAdmin(admin.ModelAdmin):
     list_display = ('display_name', 'name', 'TOC', 'id')
