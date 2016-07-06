@@ -125,7 +125,7 @@
 }
 #wind-design-form .jspPane {
     border-radius: 10px;
-    padding-left: 15px;
+    padding-left: 15px !important;
     top: 0px;
     width: 355px !important;
 }

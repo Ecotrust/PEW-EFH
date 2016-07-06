@@ -98,8 +98,7 @@
                                                     </a>
                                                     <ul class="dropdown-menu">
                                                         <li><a data-bind="visible: ! shared(), click: editScenario">Edit</a></li>
-                                                        <!--<li><a id="share-option" href="#share-modal" data-toggle="modal">Share</a></li>-->
-                                                        <li><a data-bind="attr:{id:parent.tocid+'-share-option'}, visible: ! shared() && $parent.hasSharingGroups, click: $parent.showSharingModal" class="share-option">Share</a></li>
+                                                        <li><a data-bind="attr:{id:$parent.tocid+'-share-option'}, visible: ! shared() && app.viewModel.scenarios.hasSharingGroups, click: app.viewModel.scenarios.showSharingModal" class="share-option">Share</a></li>
                                                         <li><a data-bind="click: $parent.zoomToScenario">Zoom To</a></li>
                                                         <li class="divider"></li>
                                                         <li><a data-bind="visible: ! shared(), click: deleteScenario">Delete</a></li>
@@ -172,7 +171,7 @@
                                                     </a>
                                                     <ul class="dropdown-menu">
                                                         <li><a data-bind="visible: ! shared(), click: editDrawing">Edit</a></li>
-                                                        <li><a data-bind="attr:{id:parent.tocid+'-share-option'}, visible: ! shared() && $parent.hasSharingGroups, click: $parent.showSharingModal" class="share-option">Share</a></li>
+                                                        <li><a data-bind="attr:{id:$parent.tocid+'-share-option'}, visible: ! shared() && app.viewModel.scenarios.hasSharingGroups, click: app.viewModel.scenarios.showSharingModal" class="share-option">Share</a></li>
                                                         <li><a data-bind="click: $parent.zoomToScenario">Zoom To</a></li>
                                                         <li class="divider"></li>
                                                         <li><a data-bind="visible: ! shared(), click: deleteDrawing">Delete</a></li>
