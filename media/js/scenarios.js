@@ -756,6 +756,9 @@ function scenariosModel(options) {
     self.drawingList = ko.observableArray();
     self.drawingForm = ko.observable(false);
 
+    self.collectionList = ko.observableArray();
+    self.collectionForm = ko.observable(false);
+
     self.reportsVisible = ko.observable(false);
 
     self.leaseblockLayer = ko.observable(false);
@@ -1046,6 +1049,22 @@ function scenariosModel(options) {
         });
     };
 
+    self.createCollectionScenario = function() {
+      return $.ajax({
+        url: '/features/collection/form/',
+        success: function(data) {
+          app.viewModel.scenarios.collectionForm(true);
+          $('#'+app.viewModel.currentTocId()+'-collection-form > .collection-form').html(data);
+          app.viewModel.scenarios.collectionFormModel = new collectionFormModel();
+          ko.applyBindings(app.viewModel.scenarios.collectionFormModel, document.getElementById(app.viewModel.currentTocId()+'-collection-form').children[0]);
+          window.dispatchEvent(new Event('resize'));
+        },
+        error: function (result) {
+          console.log('error in scenarios.js: createCollectionScenario');
+        }
+      });
+    };
+
     self.createLineDesign = function() {};
 
     self.createPointDesign = function() {};
@@ -1140,7 +1159,7 @@ function scenariosModel(options) {
                         });
                         self.toggleDrawingsOpen('open');
                         self.zoomToScenario(scenario);
-                    } else {
+                    } else if (isScenarioModel) {
                         scenario = new scenarioModel({
                             id: properties.uid,
                             uid: properties.uid,
@@ -1150,6 +1169,16 @@ function scenariosModel(options) {
                         });
                         self.toggleScenariosOpen('open');
                         self.zoomToScenario(scenario);
+                    } else if (isCollectionModel) {
+                      scenario = new collectionModel({
+                        id: properties.uid,
+                        uid: properties.uid,
+                        name: properties.name,
+                        description: properties.description,
+                        features: layer.features
+                      });
+                      self.toggleCollectionsOpen('open');
+                      self.zoomToScenario(scenario);
                     }
                     scenario.layer = layer;
                     scenario.layer.scenarioModel = scenario;
@@ -1272,6 +1301,7 @@ function scenariosModel(options) {
                 self.loadScenarios(scenarios);
                 self.scenariosLoaded = true;
                 self.showUnloadedDesigns();
+                app.viewModel.scenarios.updateDesignsScrollBar();
             },
             error: function (result) {
             }
@@ -1334,6 +1364,43 @@ function scenariosModel(options) {
             app.viewModel.layerIndex[drawing.uid] = drawingViewModel;
         });
         self.drawingList.sort(self.alphabetizeByName);
+    };
+
+    self.loadCollectionsFromServer = function() {
+      $.ajax({
+        url: '/drawing/get_collections',
+        type: 'GET',
+        dataType: 'json',
+        success: function (collections) {
+          self.loadCollections(collections);
+          self.collectionsLoaded = true;
+          self.showUnloadedDesigns();
+          app.viewModel.scenarios.updateDesignsScrollBar();
+        },
+        error: function (result) {
+          console.log('error in scenarios.js: loadCollectionsFromServer');
+        }
+      });
+    };
+
+    self.loadCollections = function(collections) {
+      self.collectionList.removeAll();
+      $.each(collections, function (i,collection) {
+        var collectionViewModel = new collectionModel({
+          id: collection.uid,
+          uid: collection.uid,
+          name: collection.name,
+          description: collection.description,
+          attributes: collection.attributes,
+          shares: collection.shared,
+          sharedByUsername: collection.shared_by_username,
+          sharedByName: cllection.shared_by_name,
+          sharingGroups: collection.sharing_groups
+        });
+        self.collectionList.push(collectionViewModel);
+        app.viewModel.layerIndex[collection.uid] = collectionViewModel;
+      });
+      self.collectionList.sort(self.alphabetizeByName);
     };
 
     self.loadLeaseblockLayer = function() {

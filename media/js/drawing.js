@@ -93,8 +93,6 @@ function drawingModel(options) {
     };
 }
 
-
-
 function polygonFormModel(options) {
     var self = this;
 
@@ -268,3 +266,90 @@ function polygonFormModel(options) {
 
     return self;
 } // end polygonFormModel
+
+function collectionModel(options) {
+    var self = this;
+
+    self.editCollection = function() {
+      self.collection = this;
+      if (! self.collection.active()) {
+        self.collection.activateLayer;
+      }
+
+      return $.ajax({
+        url: '/features/collection/' + self.collection.uid + '/form/',
+        success: function(data) {
+          app.viewModel.scenarios.collectionForm(true);
+          $('#'+app.viewModel.currentTocId()+'-collection-form > div').html(data);
+          app.viewModel.scenarios.collectionFormModel = new collectionFormModel();
+          var model = app.viewModel.scenarios.collectionFormModel;
+
+          ko.applyBindings(model, document.getElementById(app.viewModel.currentTocId()+'-collection-form').children[0]);
+
+          // var parameters = [
+          //     'species',
+          //     'lifestage',
+          //     'mean_fthm',
+          //     'hsall_m2',
+          //     'cnt_cs',
+          //     'cnt_penn'
+          // ];
+          //
+          // for (var i = 0; i < parameters.length; i++) {
+          //     var id = '#id_' + parameters[i];
+          //
+          //     if ($(id).is(':checked')) {
+          //         model.toggleParameter(parameters[i]);
+          //     }
+          // }
+
+        },
+        error: function (result) {
+          console.log('error in drawing.js: editCollection');
+        }
+      });
+    };
+
+    self.deleteCollection = function() {
+      var collection = this;
+
+      //remove from activeLayers
+      app.viewModel.activeLayers.remove(collection);
+      //remove from app.map
+      if (collection.layer) {
+          app.map.removeLayer(collection.layer);
+      }
+      //remove from selectionList
+      app.viewModel.scenarios.collectionList.remove(collection);
+      //update scrollbar
+      app.viewModel.scenarios.updateDesignsScrollBar();
+
+      //remove from server-side db (this should provide error message to the user on fail)
+      $.ajax({
+          url: '/drawing/delete_collection/' + collection.uid + '/',
+          type: 'POST',
+          error: function (result) {
+              console.log('error in drawing.js: deleteCollection');
+          }
+      });
+
+    };
+
+    self.addDrawing = function() {
+
+    }
+
+    self.removeDrawing = function() {
+
+    }
+
+    self.calculateScore = function() {
+
+    }
+}
+
+function collectionFormModel(options) {
+  var self = this;
+
+  return self;
+}
