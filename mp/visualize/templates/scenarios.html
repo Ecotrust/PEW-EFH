@@ -20,7 +20,7 @@
     </div>
 
     <div class="form-container" data-bind="visible: ! (app.viewModel.scenarios.loadingMessage() || app.viewModel.scenarios.errorMessage())">
-        <div data-bind="attr:{id:tocid+'-designs-data'}, visible: !app.viewModel.scenarios.scenarioForm() && !app.viewModel.scenarios.drawingForm()" class="designs-data">
+        <div data-bind="attr:{id:tocid+'-designs-data'}, visible: !app.viewModel.scenarios.scenarioForm() && !app.viewModel.scenarios.drawingForm() && !app.viewModel.scenarios.collectionForm()" class="designs-data">
             <!-- <div class="row-fluid">
                 <div class="span12">
                     <div id="create-new-design" class="btn-group pull-left" style="padding-bottom: 10px;">
@@ -275,8 +275,8 @@
         </div>
 
         <div style="height: 100%" data-bind="visible: app.viewModel.scenarios.collectionForm">
-            <div data-bind="attr:{id:tocid+'-collection-form'}">
-              <div class="collection-form panel-container"></div>
+            <div data-bind="attr:{id:tocid+'-scenario-collection-form'}">
+              <div class="scenario-collection-form panel-container"></div>
             </div>
         </div>
 

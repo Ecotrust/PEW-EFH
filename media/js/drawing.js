@@ -280,11 +280,11 @@ function collectionModel(options) {
         url: '/features/collection/' + self.collection.uid + '/form/',
         success: function(data) {
           app.viewModel.scenarios.collectionForm(true);
-          $('#'+app.viewModel.currentTocId()+'-collection-form > div').html(data);
+          $('#'+app.viewModel.currentTocId()+'-scenario-collection-form > div').html(data);
           app.viewModel.scenarios.collectionFormModel = new collectionFormModel();
           var model = app.viewModel.scenarios.collectionFormModel;
 
-          ko.applyBindings(model, document.getElementById(app.viewModel.currentTocId()+'-collection-form').children[0]);
+          ko.applyBindings(model, document.getElementById(app.viewModel.currentTocId()+'-scenario-collection-form').children[0]);
 
           // var parameters = [
           //     'species',

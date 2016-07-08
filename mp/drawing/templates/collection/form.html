@@ -1,49 +1,44 @@
 {% extends "common/panel.html" %}
 {% block title %}{{title}}{% endblock %}
-
 {% block panel %}
 
 <script type="text/javascript" charset="utf-8">
+
     madrona.onShow(function(){
-        madrona.setupForm($('#collection-design-form'));
-        var max_step = 1;
+        madrona.setupForm($('#scenario-collection-form'));
+
+        $(window).on('resize', function() {
+          updateDesignScrollBar();
+        });
 
         var step = 1;
+        var max_step = {{ form.get_steps|length|add:"1" }};
 
         function validate(step) {
-            return_value = true;
-            if (step == 1) {
-                if ( app.viewModel.scenarios.drawingFormModel.isDrawing()) {
-                    $('#double-click-instructions').effect("highlight", {}, 1000);
-                    return_value = false;
-                } else if ( ! app.viewModel.scenarios.drawingFormModel.hasShape() ) {
-                    $('#click-to-begin-drawing').effect("highlight", {}, 1000);
-                    return_value = false;
-                }
-            } else if (step == max_step) {
-
-            }
-            return return_value;
+            return true;
         };
 
         function wizard(action) {
-            if (step == 1 && action == 'next') {
-                if (app.viewModel.scenarios.drawingFormModel.isEditing()) {
-                    // do nothing, button is / should be disabled
-                    return;
-                }
-                if (validate(step)) {
-                    step += 1;
-                    app.viewModel.scenarios.drawingFormModel.completeEdit();
-                    $('#id_geometry_orig')[0].value = 'SRID=3857;' + new OpenLayers.Format.WKT().write(app.viewModel.scenarios.drawingFormModel.polygonLayer.features[0]);
-                }
-            } else if (step > 1 && action == 'prev') {
-                step -= 1;
-            }
-            $('div.step').each(function(index) {
-                $(this).hide();
-            });
-            $('div#step' + step).show();
+          if (step == 1 && action == 'next') {
+              if (validate(step)) {
+                  step += 1;
+              }
+          } else if (step < max_step && action == 'next') {
+              step += 1;
+          } else if (step > 1 && action == 'prev') {
+              step -= 1;
+          }
+          if (step === max_step) {
+              // if ( app.viewModel.scenarios.scenarioFormModel.gridCellsRemaining() === 0) {
+              //     $('#empty-results-warning').effect("highlight", {}, 1000);
+              // }
+          }
+          $('div.step').each(function(index) {
+              $(this).hide();
+          });
+          $('div#step' + step).show();
+          updateDesignScrollBar();
+          $('#scenario-collection-form').data('jsp').scrollTo(0,0);
 
             if (step == 1) {
                 $('#button_prev').hide();
@@ -61,25 +56,45 @@
             }
         };
 
+        function showhide_widget(element) {
+            element.fadeToggle(100); //slideToggle
+        }
+
+        function updateDesignScrollBar() {
+            var designsWizardScrollpane = $('#scenario-collection-form').data('jsp');
+            if (designsWizardScrollpane === undefined) {
+                $('#scenario-collection-form').jScrollPane();
+            } else {
+                setTimeout(function() {designsWizardScrollpane.reinitialise();},200);
+            }
+        };
+
+        updateDesignScrollBar();
+        wizard();
+
+        // $('.inputfield').each(function() {
+        //     $(this).hide();
+        // });
+
         $('#button_prev').click( function() { wizard('prev'); });
         $('#button_next').click( function() { wizard('next'); });
-        step = 1;
+
         {% if form.errors %}
             step = 2; // form errors exist
+            wizard();
         {% endif %}
-        wizard();
 
 
         $('#id_name').keypress(function (e) {
             if (e.which === 13) {
-                $('.drawing-form .submit_button').click();
+                $('.scenario-collection-form .submit_button').click();
                 return false;
             } else {
                 $('#invalid-name-message').hide();
             }
         });
-        /*
-        $('.drawing-form .submit_button').click( function() {
+
+        $('.scenario-collection-form .submit_button').click( function() {
             var name = $('#id_name').val();
             if ($.trim(name) !== "") {
                 return true;
@@ -87,17 +102,17 @@
             $('#invalid-name-message').show();
             return false;
         });
-        */
-        $('#click-to-begin-drawing').effect("highlight", {}, 1000);
+
+        // $('#click-to-begin-drawing').effect("highlight", {}, 1000);
     });
 </script>
 
 {% if form.media %} {{ form.media }} {% endif %}
 <h4>
-    Drawing
+    Scenario Collection
 </h4>
 
-<form id="polygon-design-form" action="{{action}}" method="post">
+<form id="scenario-collection-form" action="{{action}}" method="post">
     {% for hidden in form.hidden_fields %}
         <div style="display:none;">
             {{ hidden.errors }}
@@ -111,87 +126,38 @@
           <div class="span6">
               <p class="step-text"><i>Step 1 of 2 </i></p>
           </div>
-          <div class="span6">
-            <label id="planning-grid-layer-toggle" data-bind="click: togglePlanningGridLayer">
-                <input id="planning-grid-layer-checkbox" data-bind="checked: planningGridLayer.active()" type="checkbox" name="checkbox" value="value">
-                Show Planning Grid</input>
-            </label>
+          <p class="instructions" style="margin-top: 10px">Provide a <b>Name</b> to identify your Collection </p>
+          <div class="step1-inputs">
+              <div class="step1-param">
+                  {{ form.name.errors }}
+                  {{ form.name }}
+                  <div id="invalid-name-message" class="control-group error" style="display: none; margin-top: -10px; margin-left: -5px;">
+                      <span class="help-inline">The <b>Name</b> field is required.</span>
+                  </div>
+              </div>
+              <p class="instructions">Optionally, you may add a <b>Description</b> </p>
+              <div class="step1-param">
+                  {{ form.description.errors }}
+                  {{ form.description }}
+              </div>
           </div>
-        </div>
-        <div data-bind="visible: ! isDrawing() && ! showEdit()">
-            <p id="click-to-begin-drawing" class="well instructions">Click the <b>Draw Shape</b> button below to begin drawing your polygon.</p>
-            <a class="btn" style="margin-top: 10px" data-bind="click: startSketch, css: { disabled: isDrawing() }">
-                <span>Draw Shape</span>
-            </a>
-        </div>
-        <div data-bind="visible: isDrawing()">
-            <div id="drawing-instructions" class="well">
-                <div>
-                    <b>Click on the map</b> to add the points that make up your polygon.
-                </div>
-                <div id="double-click-instructions" style="padding-top: 10px">
-                    <b>Double-click</b> to finish drawing.
-                </div>
-            </div>
-        </div>
-        <div data-bind="visible: showEdit()">
-            <div id="drawing-step-1" data-bind="visible: ! isEditing()">
-                <div id="step-1-instructions" class="well">
-                    <p class="instructions">Click <b>Next</b> if you are satisfied with your drawing.</p>
-                    <p class="instructions" style="margin-top: 10px;">Click <b>Edit Shape</b> to make changes to your drawing.</p>
-                </div>
-                <a class="btn" style="margin-top: 10px" data-bind="click: startEdit, css: { disabled: isEditing() }">
-                    <span>Edit Shape</span>
-                </a>
-            </div>
-            <div id="draw-editing" data-bind="visible: isEditing()">
-                <div id="editing-instructions" class="well">
-                    <p class="instructions">
-                        <b>Click and drag</b> the handles or vertices of the drawing.
-                    </p>
-                    <p class="instructions">
-                        When you are done, click <b>Done Editing</b> below.
-                    </p>
-                </div>
-                <a class="btn" style="margin-top: 10px" data-bind="click: clipToGrid">
-                    <span>Done Editing</span>
-                </a>
-            </div>
-            <div id="clip-failed-alert" style="margin-top: 10px;">
-                <p class="alert alert-danger" data-bind="visible: clipAttemptFailed()">
-                    Make sure your drawing overlaps with the planning grid...
-                </p>
-            </div>
+
         </div>
 
-        <div id="PanelGeometry"></div>
     </div>
-
+<!--
     <div class="step" id="step2">
         <p class="step-text"><i>Step 2 of 2 </i></p>
-        <p class="instructions" style="margin-top: 10px">Provide a <b>Name</b> to identify your Drawing </p>
-        <div class="step3-inputs">
-            <div class="step3-param">
-                {{ form.name.errors }}
-                {{ form.name }}
-                <div id="invalid-name-message" class="control-group error" style="display: none; margin-top: -10px; margin-left: -5px;">
-                    <span class="help-inline">The <b>Name</b> field is required.</span>
-                </div>
-            </div>
-            <p class="instructions">Optionally, you may add a <b>Description</b> <!--and/or attach a file--> </p>
-            <div class="step3-param">
-                {{ form.description.errors }}
-                {{ form.description }}
-            </div>
-        </div>
-    </div>
+    </div> -->
+    <p><button type="submit" value="submit" class="btn-submit btn">submit</button></p>
 </form>
 
 
 <div class="wizard_nav" style="width:100%">
     <div class="btn-group pull-right" style="margin-right: 19px">
         <a href="#" class="button btn" onclick="this.blur(); return false;" id="button_prev"><span>&lt; Previous</span></a>
-        <a href="#" class="button btn button-next"  onclick="this.blur(); return false;" id="button_next" data-bind="css: { disabled: isEditing() || !showEdit() }"><span>Next &gt;</span></a>
+        <!-- <a href="#" class="button btn button-next"  onclick="this.blur(); return false;" id="button_next" data-bind="css: { disabled: isEditing() || !showEdit() }"><span>Next &gt;</span></a> -->
+        <a href="#" class="button btn button-next"  onclick="this.blur(); return false;" id="button_next"><span>Next &gt;</span></a>
         <a href="#" class="submit_button button btn" onclick="this.blur(); return false;"><span>Save</span></a>
     </div>
 </div>

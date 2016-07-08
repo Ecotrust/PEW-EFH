@@ -23,7 +23,7 @@
     /*width: 355px !important;*/
 }
 
-#wind-design-form, #polygon-design-form {
+#wind-design-form, #polygon-design-form, #scenario-collection-form {
     border-top-width: 0px;
     width: 370px !important;
     border-radius: 0px;
@@ -307,6 +307,10 @@ form {
 .drawing-form textarea,
 .drawing-form input[name="name"] {
     width: 90%;
+}
+.scenario-collection-form div.panel h4,
+.scenario-collection-form div.panel .step {
+  margin-left: 15px;
 }
 
 .drawing-form div .step {

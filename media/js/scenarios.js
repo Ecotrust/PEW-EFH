@@ -979,6 +979,11 @@ function scenariosModel(options) {
             self.removeDrawingForm(obj);
         }
 
+        //clear up collection form
+        if (self.collectionForm() || self.collectionFormModel) {
+            self.removeCollectionForm();
+        }
+
         //remove the key/value pair from aggregatedAttributes
         app.viewModel.removeFromAggregatedAttributes(self.leaseblockLayer().name);
         app.viewModel.updateAttributeLayers();
@@ -1010,6 +1015,18 @@ function scenariosModel(options) {
         if ( self.leaseblockLayer() && app.map.getLayersByName(self.leaseblockLayer().name).length ) {
             app.map.removeLayer(self.leaseblockLayer());
         }
+    };
+
+    self.removeCollectionForm = function() {
+        self.collectionForm(false);
+        var collectionForm = document.getElementById(app.viewModel.currentTocId()+'-scenario-collection-form').children[0];
+        $(collectionForm).empty();
+        ko.cleanNode(collectionForm);
+        delete self.collectionFormModel;
+        //hide remaining leaseblocks
+        // if ( self.leaseblockLayer() && app.map.getLayersByName(self.leaseblockLayer().name).length ) {
+        //     app.map.removeLayer(self.leaseblockLayer());
+        // }
     };
 
     self.createWindScenario = function() {
@@ -1054,9 +1071,9 @@ function scenariosModel(options) {
         url: '/features/collection/form/',
         success: function(data) {
           app.viewModel.scenarios.collectionForm(true);
-          $('#'+app.viewModel.currentTocId()+'-collection-form > .collection-form').html(data);
+          $('#'+app.viewModel.currentTocId()+'-scenario-collection-form > .scenario-collection-form').html(data);
           app.viewModel.scenarios.collectionFormModel = new collectionFormModel();
-          ko.applyBindings(app.viewModel.scenarios.collectionFormModel, document.getElementById(app.viewModel.currentTocId()+'-collection-form').children[0]);
+          ko.applyBindings(app.viewModel.scenarios.collectionFormModel, document.getElementById(app.viewModel.currentTocId()+'-scenario-collection-form').children[0]);
           window.dispatchEvent(new Event('resize'));
         },
         error: function (result) {
