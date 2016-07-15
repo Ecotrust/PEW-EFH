@@ -17,11 +17,7 @@ from simplejson import dumps
 def get_drawings(request):
     json = []
 
-    public_groups = Group.objects.filter(name='Share with Public')
-    if len(public_groups) != 1:
-        public_group = False
-    else:
-        public_group = public_groups[0]
+    public_group = get_public_group()
 
     if request.user.is_authenticated():
         drawings = AOI.objects.filter(user=request.user).order_by('date_created')
@@ -129,7 +125,6 @@ def get_clipped_shape(request):
 
     # return HttpResponse(dumps({"clipped_wkt": wkt}), status=200)
 
-
 '''
 '''
 def aoi_analysis(request, aoi_id):
@@ -176,12 +171,97 @@ def get_geometry_orig(request, uid):
 
 '''
 '''
-# def wind_analysis(request, wind_id):
-#     from wind_analysis import display_wind_analysis
-#     wind_obj = get_object_or_404(WindEnergySite, pk=wind_id)
-#     #check permissions
-#     viewable, response = wind_obj.is_viewable(request.user)
-#     if not viewable:
-#         return response
-#     return display_wind_analysis(request, wind_obj)
-#     # Create your views here.
+def get_collections(request):
+    json = []
+
+    public_group = get_public_group()
+
+    if request.user.is_authenticated():
+        collections = Collection.objects.filter(user=request.user).order_by('date_created')
+
+        for collection in collections:
+            sharing_groups = [group.name for group in collection.sharing_groups.all()]
+            json.append({
+                'id': collection.id,
+                'uid': collection.uid,
+                'name': collection.name,
+                'description': collection.description,
+                # 'attributes': collection.serialize_attributes,
+                'sharing_groups': sharing_groups
+            })
+
+        shared_collections = Collection.objects.shared_with_user(request.user)
+        for collection in shared_collections:
+            if collection not in collections:
+                username = collection.user.username
+                actual_name = collection.user.first_name + ' ' + collection.user.last_name
+                public = public_group in collection.sharing_groups.all()
+                json.append({
+                    'id': collection.id,
+                    'uid': collection.uid,
+                    'name': collection.name,
+                    'description': collection.description,
+                    # 'attributes': collection.serialize_attributes,
+                    'shared': True,
+                    'shared_by_username': username,
+                    'shared_by_name': actual_name,
+                    'public': public
+                })
+
+        groups = list(request.user.groups.all())
+        if public_group and not public_group in request.user.groups.all():
+            groups = groups + [public_group]
+        shared_collections_list = list(shared_collections)
+    else:
+        if public_group:
+            groups = [public_group]
+        else:
+            groups = []
+        collections = []
+        shared_collections_list = []
+
+    for group in groups:
+        group_shared_collections = Collection.objects.filter(sharing_groups=group)
+        for collection in group_shared_collections:
+            if collection not in collections and collection not in shared_collections_list:
+                shared_collections_list.append(drawing)
+                username = collection.user.username
+                actual_name = collection.user.first_name + ' ' + collection.user.last_name
+                public = public_group in collection.sharing_groups.all()
+                json.append({
+                    'id': collection.id,
+                    'uid': collection.uid,
+                    'name': collection.name,
+                    'description': collection.description,
+                    # 'attributes': collection.serialize_attributes,
+                    'shared': True,
+                    'shared_by_username': username,
+                    'shared_by_name': actual_name,
+                    'public': public
+                })
+
+    return HttpResponse(dumps(json))
+
+def delete_collection(request, uid):
+    try:
+        collection_obj = get_feature_by_uid(uid)
+    except Feature.DoesNotExist:
+        raise Http404
+
+    #check permissions
+    viewable, response = collection_obj.is_viewable(request.user)
+    if not viewable:
+        return response
+
+    collection_obj.delete()
+
+    return HttpResponse("", status=200)
+
+def get_public_group():
+    public_groups = Group.objects.filter(name='Share with Public')
+    if len(public_groups) != 1:
+        public_group = False
+    else:
+        public_group = public_groups[0]
+
+    return public_group

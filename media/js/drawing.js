@@ -270,6 +270,8 @@ function polygonFormModel(options) {
 function collectionModel(options) {
     var self = this;
 
+    var ret = scenarioModel.apply(this, arguments);
+
     self.editCollection = function() {
       self.collection = this;
       if (! self.collection.active()) {
@@ -344,6 +346,10 @@ function collectionModel(options) {
     }
 
     self.calculateScore = function() {
+
+    }
+
+    self.createCopyCollection = function() {
 
     }
 }

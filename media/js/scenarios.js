@@ -1402,16 +1402,16 @@ function scenariosModel(options) {
 
     self.loadCollections = function(collections) {
       self.collectionList.removeAll();
-      $.each(collections, function (i,collection) {
+      $.each(collections, function (i, collection) {
         var collectionViewModel = new collectionModel({
           id: collection.uid,
           uid: collection.uid,
           name: collection.name,
           description: collection.description,
           attributes: collection.attributes,
-          shares: collection.shared,
+          shared: collection.shared,
           sharedByUsername: collection.shared_by_username,
-          sharedByName: cllection.shared_by_name,
+          sharedByName: collection.shared_by_name,
           sharingGroups: collection.sharing_groups
         });
         self.collectionList.push(collectionViewModel);
@@ -1484,6 +1484,9 @@ function scenariosModel(options) {
 
             // load the drawing
             self.loadDrawingsFromServer();
+
+            // load the collections
+            self.loadCollectionsFromServer();
 
             $.ajax({
                 url: '/scenario/get_sharing_groups',
