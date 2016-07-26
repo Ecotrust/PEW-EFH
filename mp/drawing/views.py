@@ -5,7 +5,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from madrona.features.models import Feature
 from madrona.features import get_feature_by_uid
 from madrona.common.utils import LargestPolyFromMulti
-from scenarios.models import GridCell
+from scenarios.models import GridCell, Scenario
 from models import *
 from ofr_manipulators import clip_to_grid
 from simplejson import dumps

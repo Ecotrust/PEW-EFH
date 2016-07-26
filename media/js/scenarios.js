@@ -1117,7 +1117,7 @@ function scenariosModel(options) {
             url: '/features/generic-links/links/geojson/' + scenarioId + '/',
             type: 'GET',
             dataType: 'json',
-            success: function(feature) {
+            success: function(retFeatures) {
                 if ( scenario ) {
                     opacity = scenario.opacity();
                     stroke = scenario.opacity();
@@ -1126,20 +1126,23 @@ function scenariosModel(options) {
                     fillColor = "#C9BE62";
                     strokeColor = "#A99E42";
 
-                    $.ajax( {
-                        url: '/drawing/get_geometry_orig/' + scenarioId + '/',
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            var format = new OpenLayers.Format.WKT(),
-                                wkt = data.geometry_orig,
-                                feature = format.read(wkt);
-                            scenario.geometry_orig = feature;
-                        },
-                        error: function(result) {
-                            console.log('error in scenarios.js: addScenarioToMap (get_geometry_orig scenarioId)');
-                        }
-                    });
+                    for (var featIndex = 0; featIndex < retFeatures.features.length; featIndex++){
+                        featureId = retFeatures.features[featIndex].properties.uid;
+                        $.ajax( {
+                            url: '/drawing/get_geometry_orig/' + featureId + '/',
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function(data) {
+                                var format = new OpenLayers.Format.WKT(),
+                                    wkt = data.geometry_orig,
+                                    feature = format.read(wkt);
+                                scenario.geometry_orig = feature;
+                            },
+                            error: function(result) {
+                                console.log('error in scenarios.js: addScenarioToMap (get_geometry_orig featureId)');
+                            }
+                        });
+                    }
                 }
                 var layer = new OpenLayers.Layer.Vector(
                     scenarioId,
@@ -1157,7 +1160,7 @@ function scenariosModel(options) {
                     }
                 );
 
-                layer.addFeatures(new OpenLayers.Format.GeoJSON().read(feature));
+                layer.addFeatures(new OpenLayers.Format.GeoJSON().read(retFeatures));
 
                 if ( scenario ) {
                     //reasigning opacity here, as opacity wasn't 'catching' on state load for scenarios
@@ -1165,7 +1168,7 @@ function scenariosModel(options) {
                     scenario.layer = layer;
                 } else { //create new scenario
                     //only do the following if creating a scenario
-                    var properties = feature.features[0].properties;
+                    var properties = retFeatures.features[0].properties;
                     if (isDrawingModel) {
                         scenario = new drawingModel({
                             id: properties.uid,

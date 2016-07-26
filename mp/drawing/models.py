@@ -76,3 +76,7 @@ class Collection(FeatureCollection):
         form = 'drawing.forms.CollectionForm'
         form_template = 'collection/form.html'
         show_template = 'collection/show.html'
+        valid_children = (
+            'drawing.models.AOI',
+            'scenarios.models.Scenario'
+        )
