@@ -365,6 +365,7 @@ $(document).ready(function() {
     app.viewModel.startActiveTour();
   });
 
+  // #share-option doesn't exist anymore, only .share-option. Do we still need this?
   $(document).on('click', '#share-option', function() {
     app.viewModel.scenarios.initSharingModal();
   });

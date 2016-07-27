@@ -498,6 +498,9 @@ function scenarioModel(options) {
     });
     self.temporarilySelectedGroups = ko.observableArray();
 
+    self.selectedScenarios = ko.observableArray();
+    self.temporarilySelectedScenarios = ko.observableArray();
+
     self.isLayerModel = ko.observable(false);
 
     self.attributes = [];
@@ -851,6 +854,37 @@ function scenariosModel(options) {
         }
         return false;
     };
+
+
+
+    self.hasAssociatedScenarios = ko.observable(false);
+
+    self.associatedDrawing = ko.observable();
+    self.showAssociationModal = function(drawing){
+        self.associatedDrawing(drawing);
+        self.associatedDrawing().temporarilySelectedScenarios(self.associatedDrawing().selectedScenarios().slice(0));
+        $('#draw-scenario-associate-modal').modal('show');
+    };
+
+    self.scenarioMembers = function() {};
+
+    self.toggleScenario = function(obj) {
+      var scenarioId = obj.uid,
+          indexOf = self.associatedDrawing().temporarilySelectedScenarios.indexOf(scenarioId);
+      if ( indexOf === -1 ) {  //add group to list
+          self.associatedDrawing().temporarilySelectedScenarios.push(scenarioId);
+      } else { //remove group from list
+          self.associatedDrawing().temporarilySelectedScenarios.splice(indexOf, 1);
+      }
+    }
+
+    self.scenarioIsSelected = function(scenarioId) {
+        if(self.associatedDrawing()) {
+            var indexOf = self.associatedDrawing().temporarilySelectedScenarios.indexOf(scenarioId);
+            return indexOf !== -1;
+        }
+        return false;
+    }
 
     self.zoomToScenario = function(scenario) {
         if (scenario.layer) {
@@ -1477,6 +1511,27 @@ function scenariosModel(options) {
                 console.log('error in scenarios.js: submitShare');
             }
         });
+    };
+
+    self.cancelAssociate = function() {
+      self.associatedDrawing().temporarilySelectedScenarios.removeAll();
+    };
+
+    self.submitAssociate = function() {
+      self.associatedDrawing().selectedScenarios(self.associatedDrawing().temporarilySelectedScenarios().slice(0));
+      var data = {
+        'scenario': self.associatedDrawing().uid,
+        'collections': self.associatedDrawing().selectedScenarios()
+      };
+      $.ajax( {
+        url: '/scenario/associate_scenario',
+        data: data,
+        type: 'POST',
+        dataType: 'json',
+        error: function(result) {
+          console.log('error in scenarios.js: submitAssociate');
+        }
+      });
     };
 
     self.loadDesigns = function() {
