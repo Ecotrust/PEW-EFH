@@ -866,8 +866,6 @@ function scenariosModel(options) {
         $('#draw-scenario-associate-modal').modal('show');
     };
 
-    self.scenarioMembers = function() {};
-
     self.toggleScenario = function(obj) {
       var scenarioId = obj.uid,
           indexOf = self.associatedDrawing().temporarilySelectedScenarios.indexOf(scenarioId);

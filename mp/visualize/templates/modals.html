@@ -232,8 +232,8 @@
                                 <i class="check icon-large icon-check" data-bind="visible: $parent.scenarioIsSelected(uid)"></i>
                                 <i class="check icon-large icon-check-empty" data-bind="visible: !$parent.scenarioIsSelected(uid)"></i>
                                 <span data-bind="text: name"></span>
-                                <a class="group-members-popover" rel="popover" data-bind="attr: {'data-content': $parent.scenarioMembers(uid)}" data-original-title="Members">
-                                    <i class="icon-group"> </i>
+                                <a class="group-members-popover" rel="popover" data-bind="attr: {'data-content': description}" data-original-title="Description">
+                                    <i class="icon-info-sign"> </i>
                                 </a>
                             </div>
                         </div>
