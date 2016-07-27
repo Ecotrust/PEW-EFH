@@ -36,7 +36,10 @@ def copy_design(request, uid):
         return response
 
     design_obj.pk = None
-    design_obj.user = request.user
+    if design_obj.user == request.user:
+        design_obj.name = "%s (copy)" % design_obj.name
+    else:
+        design_obj.user = request.user
     design_obj.save()
 
     json = []

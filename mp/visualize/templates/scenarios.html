@@ -102,7 +102,7 @@
                                                         <li><a data-bind="click: $parent.zoomToScenario">Zoom To</a></li>
                                                         <li class="divider"></li>
                                                         <li><a data-bind="visible: ! shared(), click: deleteScenario">Delete</a></li>
-                                                        <li><a data-bind="visible: shared, click: createCopyScenario">Create Copy</a></li>
+                                                        <!-- <li><a data-bind="click: createCopyScenario">Create Copy</a></li> -->
                                                     </ul>
                                                     <!-- style="height: 20px; padding: 4px 12px; border-left-width: 0px" -->
                                                 </div>
@@ -172,7 +172,9 @@
                                                     <ul class="dropdown-menu">
                                                         <li><a data-bind="visible: ! shared(), click: editDrawing">Edit</a></li>
                                                         <li><a data-bind="attr:{id:$parent.tocid+'-share-option'}, visible: ! shared() && app.viewModel.scenarios.hasSharingGroups, click: app.viewModel.scenarios.showSharingModal" class="share-option">Share</a></li>
-                                                        <li><a data-bind="click: $parent.zoomToScenario">Zoom To</a></li>
+                                                        <li><a data-bind="click: app.viewModel.scenarios.zoomToScenario">Zoom To</a></li>
+                                                        <li><a data-bind="click: createCopyDrawing">Copy</a></li>
+                                                        <li><a data-bind="click: selectScenarioForAdd">Add To Scenario</a></li>
                                                         <li class="divider"></li>
                                                         <li><a data-bind="visible: ! shared(), click: deleteDrawing">Delete</a></li>
                                                         <li><a data-bind="visible: shared, click: createCopyDrawing">Create Copy</a></li>
@@ -243,7 +245,7 @@
                                                         <li><a data-bind="click: $parent.zoomToScenario">Zoom To</a></li>
                                                         <li class="divider"></li>
                                                         <li><a data-bind="visible: ! shared(), click: deleteCollection">Delete</a></li>
-                                                        <li><a data-bind="visible: shared, click: createCopyCollection">Create Copy</a></li>
+                                                        <li><a data-bind="click: createCopyCollection">Create Copy</a></li>
                                                     </ul>
                                                     <!-- style="height: 20px; padding: 4px 12px; border-left-width: 0px" -->
                                                 </div>

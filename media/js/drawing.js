@@ -68,6 +68,19 @@ function drawingModel(options) {
             }
         });
     };
+
+    self.selectScenarioForAdd = function () {
+      var drawing = this;
+      //TODO: Trigger scenario selection modal
+
+    }
+
+    self.addToScenario = function() {
+      var drawing = this;
+      //TODO: Trigger this after a scenario is selected from the modal opened by selectScenarioForAdd
+      // * post drawing and collection to server to copy and associate.
+    }
+
     self.deleteDrawing = function() {
         var drawing = this;
 
