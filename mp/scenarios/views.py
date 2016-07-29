@@ -294,21 +294,22 @@ def share_design(request):
 def associate_scenario(request):
 
     from drawing.models import Collection
-    collection_list = request.POST['collections[]']
-    if 'drawing_collection' in collection_list:
-        collections = [get_feature_by_uid(collection_list)]
-    elif 'drawing_collection' in collection_list[0]:
+    collection_list = request.POST.getlist('collections[]')
+    if len(collection_list) > 0:
         collections = []
         for collection in collection_list:
-            collections.append(get_feature_by_uid(collection))
+            if 'drawing_collection' in collection:
+                collections.append(get_feature_by_uid(collection))
+            else:
+                return HttpResponse(dumps([{'message':"Invalid %s given: %s" % (settings.COLLECTION_NAME,str(collection_list))}]), status=500)
     else:
-        return HttpResponse(dumps([{'message':"Invalid %s given: %s" % (settings.COLLECTION_NAME,str(collection_list))}]), status=500)
+        return HttpResponse(dumps([{'message':"No %s given" % settings.COLLECTION_NAME}]), status=500)
 
-    scenario_list = request.POST['scenario']
-    if len(scenario_list) == 1 or 'drawing_aoi' in scenario_list:
+    scenario_list = request.POST.get('scenario')
+    if 'drawing_aoi' in scenario_list:
         scenario = get_feature_by_uid(scenario_list)
     else:
-        return HttpResponse(dumps([{'message':"Invalid number of %s(s) given." % settings.SCENARIO_NAME}]), status=500)
+        return HttpResponse(dumps([{'message':"Invalid %s given: %s." % (settings.SCENARIO_NAME,str(scenario_list))}]), status=500)
 
     try:
         json = []

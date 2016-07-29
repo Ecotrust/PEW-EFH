@@ -1526,11 +1526,18 @@ function scenariosModel(options) {
         data: data,
         type: 'POST',
         dataType: 'json',
+        success: function(data) {
+            for (var data_index = 0; data_index < data.length; data_index++) {
+                app.viewModel.scenarios.addScenarioToMap(null, {uid: data[data_index].uid});
+            }
+            self.associatedDrawing().temporarilySelectedScenarios.removeAll();
+        },
         error: function(result) {
           console.log('error in scenarios.js: submitAssociate');
           if (result.hasOwnProperty('message')) {
               window.alert(result.message);
           }
+          self.associatedDrawing().temporarilySelectedScenarios.removeAll();
         }
       });
     };
