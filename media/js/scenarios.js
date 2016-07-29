@@ -1528,6 +1528,9 @@ function scenariosModel(options) {
         dataType: 'json',
         error: function(result) {
           console.log('error in scenarios.js: submitAssociate');
+          if (result.hasOwnProperty('message')) {
+              window.alert(result.message);
+          }
         }
       });
     };

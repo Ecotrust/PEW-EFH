@@ -164,6 +164,9 @@ LOGGING = {
     }
 }
 
+SCENARIO_NAME = 'Drawing'
+COLLECTION_NAME = 'Scenario'  #Confusing choice, I know. RDH
+
 import logging
 logging.getLogger('django.db.backends').setLevel(logging.ERROR)
 
