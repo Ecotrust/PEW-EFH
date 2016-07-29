@@ -301,15 +301,15 @@ def associate_scenario(request):
             if 'drawing_collection' in collection:
                 collections.append(get_feature_by_uid(collection))
             else:
-                return HttpResponse(dumps([{'message':"Invalid %s given: %s" % (settings.COLLECTION_NAME,str(collection_list))}]), status=500)
+                return HttpResponse("Invalid %s given: %s" % (settings.COLLECTION_NAME,str(collection_list)), status=500)
     else:
-        return HttpResponse(dumps([{'message':"No %s given" % settings.COLLECTION_NAME}]), status=500)
+        return HttpResponse("No %s given" % settings.COLLECTION_NAME, status=500)
 
     scenario_list = request.POST.get('scenario')
     if 'drawing_aoi' in scenario_list:
         scenario = get_feature_by_uid(scenario_list)
     else:
-        return HttpResponse(dumps([{'message':"Invalid %s given: %s." % (settings.SCENARIO_NAME,str(scenario_list))}]), status=500)
+        return HttpResponse("Invalid %s given: %s." % (settings.SCENARIO_NAME,str(scenario_list)), status=500)
 
     try:
         json = []
@@ -318,17 +318,17 @@ def associate_scenario(request):
             if success:
                 json.append(json_ret)
             else:
-                return HttpResponse(dumps([{'message':"Failed to copy %s %s for %s %s." % (
+                return HttpResponse("Failed to copy %s %s for %s %s." % (
                     settings.SCENARIO_NAME,
                     str(scenario.uid),
                     settings.COLLECTION_NAME,
                     str(collection.uid)
-                )}]), status=500)
+                ), status=500)
     except:
-        return HttpResponse(dumps([{'message':"Failed to copy %s for %s." % (
+        return HttpResponse("Failed to copy %s for %s." % (
             settings.SCENARIO_NAME,
             settings.COLLECTION_NAME
-        )}]), status=500)
+        ), status=500)
 
     return HttpResponse(dumps(json), status=200)
 

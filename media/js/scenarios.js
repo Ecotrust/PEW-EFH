@@ -1534,9 +1534,7 @@ function scenariosModel(options) {
         },
         error: function(result) {
           console.log('error in scenarios.js: submitAssociate');
-          if (result.hasOwnProperty('message')) {
-              window.alert(result.message);
-          }
+          window.alert(result.responseText);
           self.associatedDrawing().temporarilySelectedScenarios.removeAll();
         }
       });
