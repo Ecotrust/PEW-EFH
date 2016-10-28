@@ -132,7 +132,7 @@ app.clickAttributes = (function() {
         }
 
         if ('Shape_Area' in data) {
-            attrs.push({'display': 'Area', 'data': toSquareMiles(data['Area_m2'])});
+            attrs.push({'display': 'Area', 'data': toSquareMiles(data['Shape_Area'])});
         }
 
 				if ('AreaMi2' in data) {
