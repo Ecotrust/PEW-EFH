@@ -131,6 +131,10 @@ app.clickAttributes = (function() {
             attrs.push({'display': 'Area', 'data': toSquareMiles(data['Area_m2'])});
         }
 
+        if ('Shape_Area' in data) {
+            attrs.push({'display': 'Area', 'data': toSquareMiles(data['Area_m2'])});
+        }
+
 				if ('AreaMi2' in data) {
 						attrs.push({'display': 'Area', 'data': data['AreaMi2'].toLocaleString() + ' mi&sup2;'});
 				}
