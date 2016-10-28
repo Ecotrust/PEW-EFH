@@ -66,6 +66,10 @@ app.clickAttributes = (function() {
             attrs.push({'display': 'Name', 'data': data['Name'].toLocaleString()});
         }
 
+        if ('SiteName' in data) {
+            attrs.push({'display': 'Name', 'data': data['SiteName'].toLocaleString()});
+        }
+
         if ('ID' in data) {
             attrs.push({'display': 'Id', 'data': data['ID'].toLocaleString()});
         }
@@ -183,6 +187,10 @@ app.clickAttributes = (function() {
 						}
 						attrs.push({'display':'Type', 'data': rationale});
 				}
+
+        if ('RegAction' in data) {
+            attrs.push({'display': 'Type', 'data': data['RegAction'].toLocaleString()});
+        }
 
 				if ('EFH_prop' in data) {
 						attrs.push({'display': 'Description', 'data': data['EFH_prop']});
