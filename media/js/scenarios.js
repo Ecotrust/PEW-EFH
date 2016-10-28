@@ -1200,42 +1200,45 @@ function scenariosModel(options) {
                     scenario.layer = layer;
                 } else { //create new scenario
                     //only do the following if creating a scenario
-                    var properties = retFeatures.features[0].properties;
-                    if (isDrawingModel) {
-                        scenario = new drawingModel({
-                            id: properties.uid,
-                            uid: properties.uid,
-                            name: properties.name,
-                            description: properties.description,
-                            features: layer.features
+                    if (retFeatures.features.length > 0){
+
+                      var properties = retFeatures.features[0].properties;
+                      if (isDrawingModel) {
+                          scenario = new drawingModel({
+                              id: properties.uid,
+                              uid: properties.uid,
+                              name: properties.name,
+                              description: properties.description,
+                              features: layer.features
+                          });
+                          self.toggleDrawingsOpen('open');
+                          self.zoomToScenario(scenario);
+                      } else if (isScenarioModel) {
+                          scenario = new scenarioModel({
+                              id: properties.uid,
+                              uid: properties.uid,
+                              name: properties.name,
+                              description: properties.description,
+                              features: layer.features
+                          });
+                          self.toggleScenariosOpen('open');
+                          self.zoomToScenario(scenario);
+                      } else if (isCollectionModel) {
+                        scenario = new collectionModel({
+                          id: properties.uid,
+                          uid: properties.uid,
+                          name: properties.name,
+                          description: properties.description,
+                          features: layer.features
                         });
-                        self.toggleDrawingsOpen('open');
+                        self.toggleCollectionsOpen('open');
                         self.zoomToScenario(scenario);
-                    } else if (isScenarioModel) {
-                        scenario = new scenarioModel({
-                            id: properties.uid,
-                            uid: properties.uid,
-                            name: properties.name,
-                            description: properties.description,
-                            features: layer.features
-                        });
-                        self.toggleScenariosOpen('open');
-                        self.zoomToScenario(scenario);
-                    } else if (isCollectionModel) {
-                      scenario = new collectionModel({
-                        id: properties.uid,
-                        uid: properties.uid,
-                        name: properties.name,
-                        description: properties.description,
-                        features: layer.features
-                      });
-                      self.toggleCollectionsOpen('open');
-                      self.zoomToScenario(scenario);
+                      }
+                      scenario.layer = layer;
+                      scenario.layer.scenarioModel = scenario;
+                      scenario.active(true);
+                      scenario.visible(true);
                     }
-                    scenario.layer = layer;
-                    scenario.layer.scenarioModel = scenario;
-                    scenario.active(true);
-                    scenario.visible(true);
 
                     //get attributes
                     $.ajax( {
@@ -1254,47 +1257,54 @@ function scenariosModel(options) {
                     //in case of edit, removes previously stored scenario
                     //self.scenarioList.remove(function(item) { return item.uid === scenario.uid } );
 
-                    if ( isDrawingModel ) {
-                        var previousDrawing = ko.utils.arrayFirst(self.drawingList(), function(oldDrawing) {
-                            return oldDrawing.uid === scenario.uid;
-                        });
-                        if ( previousDrawing ) {
-                            self.drawingList.replace( previousDrawing, scenario );
+                    if (scenario) {
+
+                        if ( isDrawingModel ) {
+                            var previousDrawing = ko.utils.arrayFirst(self.drawingList(), function(oldDrawing) {
+                                return oldDrawing.uid === scenario.uid;
+                            });
+                            if ( previousDrawing ) {
+                                self.drawingList.replace( previousDrawing, scenario );
+                            } else {
+                                self.drawingList.push(scenario);
+                            }
+                            self.drawingList.sort(self.alphabetizeByName);
                         } else {
-                            self.drawingList.push(scenario);
+                            var previousScenario = ko.utils.arrayFirst(self.scenarioList(), function(oldScenario) {
+                                return oldScenario.uid === scenario.uid;
+                            });
+                            if ( previousScenario ) {
+                                self.scenarioList.replace( previousScenario, scenario );
+                            } else {
+                                self.scenarioList.push(scenario);
+                            }
+                            self.scenarioList.sort(self.alphabetizeByName);
                         }
-                        self.drawingList.sort(self.alphabetizeByName);
-                    } else {
-                        var previousScenario = ko.utils.arrayFirst(self.scenarioList(), function(oldScenario) {
-                            return oldScenario.uid === scenario.uid;
-                        });
-                        if ( previousScenario ) {
-                            self.scenarioList.replace( previousScenario, scenario );
-                        } else {
-                            self.scenarioList.push(scenario);
-                        }
-                        self.scenarioList.sort(self.alphabetizeByName);
+
                     }
 
                     //self.scenarioForm(false);
                     self.reset();
                 }
 
-                //app.addVectorAttribution(layer);
-                //in case of edit, removes previously displayed scenario
-                for (var i=0; i<app.map.layers.length; i++) {
-                    if (app.map.layers[i].name === scenario.uid) {
-                        app.map.removeLayer(app.map.layers[i]);
-                        i--;
-                    }
-                }
-                app.map.addLayer(scenario.layer);
-                //add scenario to Active tab
-                app.viewModel.activeLayers.remove(function(item) { return item.uid === scenario.uid; } );
-                app.viewModel.activeLayers.unshift(scenario);
+                if (scenario) {
 
-                if (zoomTo) {
-                    self.zoomToScenario(scenario);
+                    //app.addVectorAttribution(layer);
+                    //in case of edit, removes previously displayed scenario
+                    for (var i=0; i<app.map.layers.length; i++) {
+                        if (app.map.layers[i].name === scenario.uid) {
+                            app.map.removeLayer(app.map.layers[i]);
+                            i--;
+                        }
+                    }
+                    app.map.addLayer(scenario.layer);
+                    //add scenario to Active tab
+                    app.viewModel.activeLayers.remove(function(item) { return item.uid === scenario.uid; } );
+                    app.viewModel.activeLayers.unshift(scenario);
+
+                    if (zoomTo) {
+                        self.zoomToScenario(scenario);
+                    }
                 }
 
             },

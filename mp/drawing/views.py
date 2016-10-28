@@ -150,7 +150,10 @@ def get_attributes(request, uid):
     if not viewable:
         return response
 
-    return HttpResponse(dumps(scenario_obj.serialize_attributes))
+    if 'serialize_attributes' in scenario_obj.keys():
+        return HttpResponse(dumps(scenario_obj.serialize_attributes))
+    else:
+        return HttpResponse(dumps([]))
 
 '''
 '''
