@@ -3,7 +3,7 @@
 <div id="printing-popover" style="display:none" class="popover fade left in">
     <div class="arrow">
     </div>
-    <div class="popover-inner" data-bind="with: app.viewModel.printing">
+    <div class="popover-inner" data-bind="with: printing">
         <h3 class="popover-title">
             Print/Export
         </h3>
@@ -25,7 +25,7 @@
                            <!-- <label class="radio control-label">
                                 <input type="radio" value=".tiff" name="format" data-bind="checked: format">Georeferenced TIFF
                             </label> -->
-
+                            
                         </div>
                         <strong>Options</strong>
                         <label class="checkbox">
@@ -39,7 +39,7 @@
                         <div class="well">
 
                             <fieldset data-bind="visible: format() !== '.pdf'">
-                                <strong>Image Size</strong>
+                                <strong>Image Size</strong> 
                                 <label>Width (<span data-bind="text: units">inches</span>)</label>
                                 <input type="text" class="spinner" data-bind="spinner: shotWidthDisplay, spinnerOptions: { step: .1 }">
                                 <label>Height (<span data-bind="text: units">inches</span>)</label>
@@ -90,7 +90,7 @@
 </div>
 
 <!-- Print Dialog -->
-<div id="print-modal" class="modal hide fade" data-bind="with: app.viewModel.printing">
+<div id="print-modal" class="modal hide fade" data-bind="with: printing">
     <div class="modal-header">
         <button type="button" class="close clearfix" data-dismiss="modal" aria-hidden="true">&times;</button>
     </div>
@@ -101,11 +101,11 @@
             </div>
         </div>
         <div class="row-fluid results" data-bind="visible: showSpinner">
-
+            
             <div class="span12 loading">
                 <strong><img src="{{MEDIA_URL}}img/ajax-loader.gif"/> <span data-bind="text: jobStatus"></span></strong>
             </div>
-
+         
         </div>
     </div>
     <div class="modal-footer" data-bind="visible: ! showSpinner()">
@@ -122,7 +122,7 @@
         <h3>Bookmark Email</h3>
     </div>
     <form class="form-horizontal" id="bookmark-form">
-        <div class="modal-body">
+        <div class="modal-body">        
             <div class="control-group">
               <label class="control-label" for="recipient">To</label>
               <div class="controls">
@@ -135,7 +135,7 @@
                   <textarea class="input-xlarge" rows="3" name="comment" placeholder="A link to your bookmark will be included in the email.  Include any additional text you would like to send here."></textarea>
               </div>
             </div>
-            <input type="hidden" name="link" data-bind="attr: {value: app.viewModel.bookmarkEmail}">
+            <input type="hidden" name="link" data-bind="attr: {value: bookmarkEmail}">
         </div>
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal">Close</a>
@@ -143,3 +143,4 @@
         </div>
     </form>
 </div>
+

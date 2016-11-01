@@ -18,8 +18,7 @@ app.getState = function () {
         dls: layers.reverse(),
         basemap: app.map.baseLayer.name,
         themes: {ids: app.viewModel.getOpenThemeIDs()},
-        tab: $('.panel-tabs').find('li.active').data('tab'),
-        toc: app.viewModel.currentTocId()
+        tab: $('#myTab').find('li.active').data('tab')
         // legends: app.viewModel.showLegend() ? 'true': 'false',
         // layers: app.viewModel.showLayers() ? 'true': 'false'
         //and active tab
@@ -35,9 +34,6 @@ app.establishLayerLoadState = function () {
     var loadTimer, status;
     if (app.map.layers.length === 0) {
         app.layersAreLoaded = true;
-        $('.designsTab').on('show', function (e) {
-            app.viewModel.scenarios.loadDesigns();
-        });
     } else {
         loadTimer = setInterval(function () {
             status = true;
@@ -50,10 +46,6 @@ app.establishLayerLoadState = function () {
                 app.layersAreLoaded = true;
                 //console.log('layers are loaded');
                 clearInterval(loadTimer);
-                //This code relies on elements to exist, so put here to delay.
-                $('.designsTab').on('show', function (e) {
-                    app.viewModel.scenarios.loadDesigns();
-                });
             }
         }, 100);
     }
@@ -94,7 +86,7 @@ app.loadCompressedState = function(state) {
             app.viewModel.unloadedDesigns = unloadedDesigns;
             // $('#designsTab').tab('show'); //to activate the loading of designs
             // better yet...
-            app.viewModel.scenarios.loadDesigns();
+            app.viewModel.scenarios.loadDesigns(); 
        }
     }
 
@@ -114,11 +106,7 @@ app.loadCompressedState = function(state) {
     }
 
     app.establishLayerLoadState();
-    // toc tab, data tab and open themes
-    if (state.toc){
-      app.viewModel.currentTocId(state.toc);
-      $('#'+app.viewModel.currentTocId()+'-tab > a').click();
-    }
+    // data tab and open themes
     if (state.themes) {
         //$('#dataTab').tab('show');
         if (state.themes) {
@@ -335,3 +323,5 @@ app.updateUrl = function () {
     window.location.hash = $.param(state);
     app.viewModel.currentURL(window.location.pathname + window.location.hash);
 };
+
+

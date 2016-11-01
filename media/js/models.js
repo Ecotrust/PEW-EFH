@@ -19,7 +19,6 @@ function layerModel(options, parent) {
     self.legendVisibility = ko.observable(false);
     self.legendTitle = options.legend_title || false;
     self.legendSubTitle = options.legend_subtitle || false;
-    self.tocs = ko.observableArray();
     self.themes = ko.observableArray();
     self.attributes = options.attributes ? options.attributes.attributes : [];
     self.compress_attributes = options.attributes ? options.attributes.compress_attributes : false;
@@ -36,7 +35,6 @@ function layerModel(options, parent) {
     self.shared = ko.observable(false);
 
     self.isLayerModel = ko.observable(true);
-
 
     if (self.featureAttributionName === 'OCS Lease Blocks') {
         self.featureAttributionName = 'OCS Lease Blocks -- DRAFT Report';
@@ -213,6 +211,7 @@ function layerModel(options, parent) {
     } else {
         self.fullName = self.name;
     }
+
 
     self.toggleLegendVisibility = function() {
         var layer = this;
@@ -509,7 +508,6 @@ function layerModel(options, parent) {
         } else { // otherwise layer is not currently active
             layer.activateLayer();
         }
-        app.updateUrl();
     };
 
 
@@ -901,7 +899,7 @@ function viewModel() {
         $.each(self.visibleLayers(), function(index, layer) {
             if (_.pluck(attributeLayersList, 'name').indexOf(layer.name) == -1) {
                 attributeLayersList.push(layer);
-            }
+            } 
         });
         self.attributeLayers(attributeLayersList);
     };
@@ -943,9 +941,6 @@ function viewModel() {
     self.activeTheme = ko.observable();
     self.activeThemeName = ko.observable();
 
-    // list of TOC models
-    self.tocs = ko.observableArray([]);
-
     // list of theme models
     self.themes = ko.observableArray();
 
@@ -969,7 +964,7 @@ function viewModel() {
 
     self.mapLinks = new mapLinksModel();
 
-    self.enableDrawing = ko.observable(false);
+    self.enableDrawing = ko.observable(false);   
 
     // text for tooltip popup
     self.layerToolTipText = ko.observable();
@@ -1107,16 +1102,16 @@ function viewModel() {
             $('#help-button').hide();
             $('#add-layer-button').hide();
             $('.search-form').hide();
-            $('.panel-tabs').hide();
-            $('.tab-content').hide();
+            $('#myTab').hide();
+            $('#myTabContent').hide();
         } else {
             $('.sidebar-nav').animate( {height: '625px'}, 400 );
             setTimeout( function() {
                 $('#help-button').show();
                 $('#add-layer-button').show();
                 $('.search-form').show();
-                $('panel-tabs').show();
-                $('.tab-content').show();
+                $('#myTab').show();
+                $('#myTabContent').show();
             }, 200);
             setTimeout( function() {
                 self.updateAllScrollBars();
@@ -1198,23 +1193,6 @@ function viewModel() {
         else return "Show Legend";
     });
 
-    //TODO: get first/default toc id from load-state(?) or layers query
-    self.currentTocId = ko.observable('6');
-
-    self.setCurrentTocID = function(toc_tab) {
-      if (toc_tab.hasOwnProperty('tocid')){
-        var tocid = toc_tab.tocid;
-        if (typeof(tocid) != 'string'){
-          tocid = tocid.toString();
-        }
-        self.currentTocId(tocid);
-      }
-      if ( ! ($.browser.msie && $.browser.version < 9) && ! app.embeddedMap ) {
-        setTimeout(function() {$("#"+tocid+"-data-accordion").jScrollPane();},100);
-      }
-      app.updateUrl();
-    };
-
     self.showEmbeddedLegend = ko.observable(false);
 
     // toggle embedded legend (on embedded maps)
@@ -1271,26 +1249,23 @@ function viewModel() {
     //update jScrollPane scrollbar
     self.updateScrollBars = function() {
         if ( ! app.embeddedMap ) {
-
-            var dataScrollpane = $('#'+app.viewModel.currentTocId()+'-data-accordion').data('jsp');
+            var dataScrollpane = $('#data-accordion').data('jsp');
             if (dataScrollpane === undefined) {
-                setTimeout(function() {$('#'+app.viewModel.currentTocId()+'-data-accordion').jScrollPane();},100);
-                // $('#'+app.viewModel.currentTocId()+'-data-accordion').jScrollPane();
-                // $('#'+app.viewModel.currentTocId()+'-data > div > .accordion-wrapper').jScrollPane();
+                $('#data-accordion').jScrollPane();
             } else {
-                setTimeout(function() {dataScrollpane.reinitialise();},100);
+                dataScrollpane.reinitialise();
             }
 
-            var activeScrollpane = $('#'+app.viewModel.currentTocId()+'-active-content').data('jsp');
+            var activeScrollpane = $('#active-content').data('jsp');
             if (activeScrollpane === undefined) {
-                $('#'+app.viewModel.currentTocId()+'-active-content').jScrollPane();
+                $('#active-content').jScrollPane();
             } else {
-                setTimeout(function() {activeScrollpane.reinitialise();},100);
+                activeScrollpane.reinitialise();
             }
 
-            var legendScrollpane = $('#'+app.viewModel.currentTocId()+'-legend-content').data('jsp');
+            var legendScrollpane = $('#legend-content').data('jsp');
             if (legendScrollpane === undefined) {
-                $('#'+app.viewModel.currentTocId()+'-legend-content').jScrollPane();
+                $('#legend-content').jScrollPane();
             } else {
                 setTimeout(function() {legendScrollpane.reinitialise();},100);
             }
@@ -1533,8 +1508,8 @@ function viewModel() {
 
     self.getLayerBySlug = function(slug) {
         for (var x=0; x<self.themes().length; x++) {
-            var layer_list = $.grep(self.themes()[x].layers(), function(layer) {
-                return self.convertToSlug(layer.name) === slug;
+            var layer_list = $.grep(self.themes()[x].layers(), function(layer) { 
+                return self.convertToSlug(layer.name) === slug; 
             });
             if (layer_list.length > 0) {
                 return layer_list[0];
@@ -1753,7 +1728,7 @@ function viewModel() {
         }
 
         app.setMapPosition(longitude, latitude, zoom);
-        $('#'+app.viewModel.currentTocId()+'-activeTab').tab('show');
+        $('#activeTab').tab('show');
 
         //start the tour
         setTimeout( function() { $.pageguide('open'); }, 700 );
@@ -1910,7 +1885,7 @@ function viewModel() {
     self.turnOffUsernameError = function() {
         self.usernameError(false);
     };
-
+    
     return self;
 } //end viewModel
 

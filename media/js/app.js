@@ -13,12 +13,10 @@ app.onResize = function(percent) {
         //$("#map-wrapper").height(height);
         $(".tabs").height(height);
         //$("#legend-wrapper").height(height - 20);
-        $(".tab-data-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
-        $(".tab-active-content").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
-        $(".designs-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
-        $("#polygon-design-form").height(height - 244 - (($.browser.msie && $.browser.version < 9)? 130: 96));
-        $("#wind-design-form").height(height - 244 - (($.browser.msie && $.browser.version < 9)? 130: 96));
-        $(".legend-content").height(height - 200 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $("#data-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $("#designs-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $("#polygon-design-form").height(height - 204 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $("#wind-design-form").height(height - 204 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         //$("#active").height(height + 20 - (($.browser.msie && $.browser.version < 9)? 130: 96));
     }
     app.map.render('map');
@@ -69,8 +67,6 @@ app.viewModel.loadLayersFromServer().done(function() {
 
   // trigger events that depend on the map
   $(document).trigger('map-ready');
-  
-  $('#'+app.viewModel.currentTocId()+'-tab > a').click();
 
   // if we have the hash state go ahead and load it now
   if (app.hash) {
@@ -85,9 +81,7 @@ app.viewModel.loadLayersFromServer().done(function() {
   });
 
   if ( ! ($.browser.msie && $.browser.version < 9) && ! app.embeddedMap ) {
-    console.log('set jScrollPane here?');
-    // $(".tab-data-accordion").jScrollPane();
-    // $('#'+app.viewModel.currentTocId()+'-data > div > .accordion-wrapper').jScrollPane();
+    $("#data-accordion").jScrollPane();
   }
     //$("#legend-wrapper").jScrollPane();
   // }
@@ -160,22 +154,22 @@ $(document).ready(function() {
   //fixes a problem in which the data accordion scrollbar was reinitialized before the app switched back to the data tab
   //causing the data tab to appear empty
   //the following appears to fix that problem
-  $('.dataTab[data-toggle="tab"]').on('shown', function(e) {
+  $('#dataTab[data-toggle="tab"]').on('shown', function(e) {
     app.viewModel.showBottomButtons(true);
     app.viewModel.updateScrollBars();
     app.viewModel.showLegend(false);
   });
-  $('.activeTab[data-toggle="tab"]').on('shown', function(e) {
+  $('#activeTab[data-toggle="tab"]').on('shown', function(e) {
     app.viewModel.showBottomButtons(true);
     app.viewModel.updateScrollBars();
     app.viewModel.showLegend(false);
   });
-  $('.designsTab[data-toggle="tab"]').on('shown', function(e) {
+  $('#designsTab[data-toggle="tab"]').on('shown', function(e) {
     app.viewModel.showBottomButtons(false);
     app.viewModel.updateAllScrollBars();
     setTimeout(function() {$('.group-members-popover').popover({html: true, trigger: 'hover', container: 'body'});}, 2000);
   });
-  $('.legendTab[data-toggle="tab"]').on('shown', function(e) {
+  $('#legendTab[data-toggle="tab"]').on('shown', function(e) {
     app.viewModel.showBottomButtons(true);
     app.viewModel.showLegend(true);
     app.viewModel.updateScrollBars();

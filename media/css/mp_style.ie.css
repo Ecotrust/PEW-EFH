@@ -36,10 +36,10 @@ div.olControlZoom a {
     margin-right: 5px;
 }
 
-.tab-data-accordion i.icon-info-sign {
+#data-accordion i.icon-info-sign {
 	margin-left: -5px;
 }
-.tab-data-accordion .btn-info-sign {
+#data-accordion .btn-info-sign {
 	width: 5px;
 }
 
@@ -60,19 +60,19 @@ div.olControlZoom a {
     padding-left: 10px;
 }
 
-.tab-active .btn {
+#active .btn {
     padding-right: 5px;
 }
 
-.tab-active .icon-info-sign {
+#active .icon-info-sign {
     padding-left: 10px;
 }
 
-.tab-active .icon-adjust {
+#active .icon-adjust {
     padding-left: 10px;
 }
 
-.tab-active .icon-remove {
+#active .icon-remove {
     padding-left: 10px;
 }
 
