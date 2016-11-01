@@ -1,12 +1,18 @@
 from django.contrib import admin
-from models import * 
+from models import *
+
+class TocThemeInline(admin.TabularInline):
+    model=TOCThemeOrder
 
 class TOCAdmin(admin.ModelAdmin):
-    list_display = ('name', 'id')
+    list_display = ('name', 'id', 'order')
+    inlines = [
+        TocThemeInline,
+    ]
 
 class TOCThemeAdmin(admin.ModelAdmin):
     list_display = ('display_name', 'name', 'TOC', 'id')
-    
+
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == "layers":
             kwargs["queryset"] = Layer.objects.filter(is_sublayer=False).order_by('name')
@@ -21,7 +27,7 @@ class LayerAdmin(admin.ModelAdmin):
     search_fields = ['name', 'layer_type', 'url']
     ordering = ('name',)
     exclude = ('slug_name','wms_slug','themes','summarize_to_grid','filterable','proj','data_overview','compress_display','attribute_event','bookmark','map_tiles','kml')
-    
+
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == "sublayers":
             kwargs["queryset"] = Layer.objects.order_by('name')
@@ -47,4 +53,3 @@ admin.site.register(Layer, LayerAdmin)
 admin.site.register(AttributeInfo, AttributeInfoAdmin)
 admin.site.register(LookupInfo, LookupInfoAdmin)
 admin.site.register(DataNeed, DataNeedAdmin)
-

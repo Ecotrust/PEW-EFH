@@ -72,14 +72,14 @@
 
         $('#id_name').keypress(function (e) {
             if (e.which === 13) {
-                $('#drawing-form .submit_button').click();
+                $('.drawing-form .submit_button').click();
                 return false;
             } else {
                 $('#invalid-name-message').hide();
             }
         });
         /*
-        $('#drawing-form .submit_button').click( function() {
+        $('.drawing-form .submit_button').click( function() {
             var name = $('#id_name').val();
             if ($.trim(name) !== "") {
                 return true;
