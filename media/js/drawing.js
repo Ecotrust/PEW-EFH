@@ -350,20 +350,35 @@ function collectionModel(options) {
 
     };
 
-    self.zoomToScenario = function(scenario) {
-        if (scenario.layer) {
-            var layer = scenario.layer;
-            if (!scenario.active()) {
-                scenario.activateLayer();
-            }
-            app.map.zoomToExtent(layer.getDataExtent());
-            if (scenario.uid.indexOf('drawing') !== -1) {
-                app.map.zoomOut();
-                app.map.zoomOut();
-            }
-        } else {
-            self.addScenarioToMap(scenario, {zoomTo: true});
+    self.zoomToScenario = function(collection) {
+        if (!collection.active()) {
+            collection.activateLayer();
         }
+        // ActivateLayer needs some time to load (50-100ms locally).
+        // This next function checks every 20th of a second for up to 1/2 second
+        //   to see if the layer has loaded and then zooms if appropriate.
+        countdown = 10;
+        zoomToLoadedCollection = function(countdown, collection) {
+          setTimeout( function(){
+              if (collection.layer) {
+                  var layer = collection.layer;
+                  if (layer.features.length > 0) {
+                    app.map.zoomToExtent(layer.getDataExtent());
+                    app.map.zoomOut(); //Sometimes close is too close
+                  } else {
+                      window.alert('No drawings associated with this scenario.');
+                  }
+              } else {
+                  if (countdown > 0) {
+                    zoomToLoadedCollection(countdown-1, collection);
+                  } else {
+                      window.alert('Could not determine the extent of this scenario.');
+                  }
+              }
+            }, 50
+          );
+        };
+        zoomToLoadedCollection(countdown, collection);
     };
 
     self.addDrawing = function() {
