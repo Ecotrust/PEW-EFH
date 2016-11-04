@@ -43,7 +43,7 @@ def copy_design(request, uid, collection=False):
 
     design_obj.pk = None
     if collection:
-        design_obj.name = "%s (%s)" % (design_obj.name, collection.name)
+        design_obj.name = "[%s] %s" % (collection.name, design_obj.name)
         design_obj.user = request.user
     else:
         if design_obj.user == request.user:

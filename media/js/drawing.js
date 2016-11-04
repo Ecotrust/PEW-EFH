@@ -350,21 +350,39 @@ function collectionModel(options) {
 
     };
 
+    self.zoomToScenario = function(scenario) {
+        if (scenario.layer) {
+            var layer = scenario.layer;
+            if (!scenario.active()) {
+                scenario.activateLayer();
+            }
+            app.map.zoomToExtent(layer.getDataExtent());
+            if (scenario.uid.indexOf('drawing') !== -1) {
+                app.map.zoomOut();
+                app.map.zoomOut();
+            }
+        } else {
+            self.addScenarioToMap(scenario, {zoomTo: true});
+        }
+    };
+
     self.addDrawing = function() {
 
-    }
+    };
 
     self.removeDrawing = function() {
 
-    }
+    };
 
     self.calculateScore = function() {
 
-    }
+    };
 
     self.createCopyCollection = function() {
 
-    }
+    };
+
+
 }
 
 function collectionFormModel(options) {

@@ -242,7 +242,7 @@
                                                     <ul class="dropdown-menu">
                                                         <li><a data-bind="visible: ! shared(), click: editCollection">Edit</a></li>
                                                         <li><a data-bind="attr:{id:$parent.tocid+'-share-option'}, visible: ! shared() && app.viewModel.scenarios.hasSharingGroups, click: app.viewModel.scenarios.showSharingModal" class="share-option">Share</a></li>
-                                                        <li><a data-bind="click: $parent.zoomToScenario">Zoom To</a></li>
+                                                        <li><a data-bind="click: $data.zoomToScenario">Zoom To</a></li>
                                                         <li class="divider"></li>
                                                         <li><a data-bind="visible: ! shared(), click: deleteCollection">Delete</a></li>
                                                         <li><a data-bind="click: createCopyCollection">Create Copy</a></li>
