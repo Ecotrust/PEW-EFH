@@ -43,13 +43,15 @@ def copy_design(request, uid, collection=False):
 
     design_obj.pk = None
     if collection:
-        design_obj.name = "[%s] %s" % (collection.name, design_obj.name)
         design_obj.user = request.user
+        display_name = "[%s] %s" % (collection.name, design_obj.name)
     else:
+        design_obj.collection = None
         if design_obj.user == request.user:
             design_obj.name = "%s (copy)" % design_obj.name
         else:
             design_obj.user = request.user
+        display_name = design_obj.name
     design_obj.save()
 
     if collection:
@@ -61,6 +63,7 @@ def copy_design(request, uid, collection=False):
         'id': design_obj.id,
         'uid': design_obj.uid,
         'name': design_obj.name,
+        'display_name': display_name,
         'description': design_obj.description,
         'attributes': design_obj.serialize_attributes
     })

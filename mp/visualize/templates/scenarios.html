@@ -156,7 +156,7 @@
                                                         <i class="icon-info-sign icon-large"></i>
                                                     </a> -->
                                                     <a style="font-weight: normal" class="btn btn-layer" data-bind="css: { 'active': active(), 'not-active': ! active() }, click: toggleActive">
-                                                        <div data-bind="text: name" style="display: inline"></div>
+                                                        <div data-bind="text: display_name" style="display: inline"></div>
                                                         <span rel="tooltip" data-bind="attr: {title: sharedBy}">
                                                             <i class="icon-signin" data-bind="visible: shared" style="padding-left: 10px"></i>
                                                         </span>
@@ -245,7 +245,7 @@
                                                         <li><a data-bind="click: $data.zoomToScenario">Zoom To</a></li>
                                                         <li class="divider"></li>
                                                         <li><a data-bind="visible: ! shared(), click: deleteCollection">Delete</a></li>
-                                                        <li><a data-bind="click: createCopyCollection">Create Copy</a></li>
+                                                        <li><a data-bind="click: $data.createCopyCollection">Create Copy</a></li>
                                                     </ul>
                                                     <!-- style="height: 20px; padding: 4px 12px; border-left-width: 0px" -->
                                                 </div>

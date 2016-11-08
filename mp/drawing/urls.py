@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     url(r'get_attributes/(?P<uid>[\w_]+)/$', get_attributes), #get attributes for a given scenario
     url(r'get_geometry_orig/(?P<uid>[\w_]+)/$', get_geometry_orig), #get geometry_orig wkt
     url(r'clip_to_grid$', get_clipped_shape),
+    url(r'copy_collection/(?P<uid>[\w_]+)/$', copy_collection),
 
     url(r'get_collections$', get_collections),
     url(r'delete_collection/(?P<uid>[\w_]+)/$', delete_collection),

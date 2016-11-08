@@ -393,8 +393,20 @@ function collectionModel(options) {
 
     };
 
-    self.createCopyCollection = function() {
-
+    self.createCopyCollection = function(collection) {
+      $.ajax({
+          url: '/drawing/copy_collection/' + collection.uid + '/',
+          type: 'POST',
+          dataType: 'json',
+          success: function(data) {
+              // app.viewModel.scenarios.addScenarioToMap(null, {uid: data[0].uid});
+          },
+          error: function (result) {
+              console.log('error in drawing.js: createCopyCollection');
+          }
+      });
+      features = collection.layer.features;
+      // TODO: Open 'edit' view of new collection.
     };
 
 

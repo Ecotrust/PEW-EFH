@@ -24,10 +24,12 @@ def get_drawings(request):
 
         for drawing in drawings:
             sharing_groups = [group.name for group in drawing.sharing_groups.all()]
+            display_name = "[%s] %s" % (drawing.collection.name, drawing.name) if drawing.collection else drawing.name
             json.append({
                 'id': drawing.id,
                 'uid': drawing.uid,
                 'name': drawing.name,
+                'display_name': display_name,
                 'description': drawing.description,
                 'attributes': drawing.serialize_attributes,
                 'sharing_groups': sharing_groups
@@ -39,10 +41,12 @@ def get_drawings(request):
                 username = drawing.user.username
                 actual_name = drawing.user.first_name + ' ' + drawing.user.last_name
                 public = public_group in drawing.sharing_groups.all()
+                display_name = "[%s] %s" % (drawing.collection.name, drawing.name) if drawing.collection else drawing.name
                 json.append({
                     'id': drawing.id,
                     'uid': drawing.uid,
                     'name': drawing.name,
+                    'display_name': display_name,
                     'description': drawing.description,
                     'attributes': drawing.serialize_attributes,
                     'shared': True,
@@ -172,6 +176,19 @@ def get_geometry_orig(request, uid):
     return HttpResponse(dumps({"geometry_orig": wkt}), status=200)
 
 
+def copy_collection(request, uid):
+    try:
+        original_collection = get_feature_by_uid(uid)
+        copy_name = "(Copy) %s" % original_collection.name
+        copy_description = "Copy of %s" % original_collection.name
+        copy = Collection.objects.create(user=request.user, name=copy_name, description=copy_description)
+        from scenarios.views import copy_design
+        for original_feature in original_collection.feature_set():
+            copy_design(request, original_feature.uid, copy)
+        return HttpResponse(dumps(copy), status=200)
+    except:
+        return HttpResponse('Failed to create collection copy.', status=500)
+
 '''
 '''
 def get_collections(request):
@@ -256,6 +273,8 @@ def delete_collection(request, uid):
     if not viewable:
         return response
 
+    # TODO: delete all shapes associated
+    # TODO: (frontend) "Are you sure?"
     collection_obj.delete()
 
     return HttpResponse("", status=200)

@@ -459,6 +459,7 @@ function scenarioModel(options) {
     self.id = options.uid || null;
     self.uid = options.uid || null;
     self.name = options.name;
+    self.display_name = options.display_name?options.display_name:self.name;
     self.featureAttributionName = self.name;
     self.description = options.description;
     self.shared = ko.observable();
@@ -1153,6 +1154,12 @@ function scenariosModel(options) {
                 if ( scenario ) {
                     opacity = scenario.opacity();
                     stroke = scenario.opacity();
+                    if (retFeatures.features[0].properties.hasOwnProperty('collection')) {
+                      display_name = "[" + retFeatures.features[0].properties.collection.name +"] " + scenario.name;
+                    } else {
+                      display_name = scenario.name;
+                    }
+                    scenario.display_name = display_name;
                 }
                 if ( isDrawingModel ) {
                     fillColor = "#C9BE62";
@@ -1203,11 +1210,17 @@ function scenariosModel(options) {
                     if (retFeatures.features.length > 0){
 
                       var properties = retFeatures.features[0].properties;
+                      if (properties.hasOwnProperty('collection')){
+                        display_name = "[" + properties.collection.name + "] " + properties.name;
+                      } else {
+                        display_name = properties.name;
+                      }
                       if (isDrawingModel) {
                           scenario = new drawingModel({
                               id: properties.uid,
                               uid: properties.uid,
                               name: properties.name,
+                              display_name: display_name?display_name:properties.name,
                               description: properties.description,
                               features: layer.features
                           });
@@ -1218,6 +1231,7 @@ function scenariosModel(options) {
                               id: properties.uid,
                               uid: properties.uid,
                               name: properties.name,
+                              display_name: properties.display_name?properties.display_name:properties.name,
                               description: properties.description,
                               features: layer.features
                           });
@@ -1228,6 +1242,7 @@ function scenariosModel(options) {
                           id: properties.uid,
                           uid: properties.uid,
                           name: properties.name,
+                          display_name: properties.display_name?properties.display_name:properties.name,
                           description: properties.description,
                           features: layer.features
                         });
@@ -1378,6 +1393,7 @@ function scenariosModel(options) {
                 id: scenario.uid,
                 uid: scenario.uid,
                 name: scenario.name,
+                display_name: scenario.display_name?scenario.display_name:scenario.name,
                 description: scenario.description,
                 attributes: scenario.attributes,
                 shared: scenario.shared,
@@ -1415,6 +1431,7 @@ function scenariosModel(options) {
                 id: drawing.uid,
                 uid: drawing.uid,
                 name: drawing.name,
+                display_name: drawing.display_name?drawing.display_name:drawing.name,
                 description: drawing.description,
                 attributes: drawing.attributes,
                 shared: drawing.shared,
@@ -1452,6 +1469,7 @@ function scenariosModel(options) {
           id: collection.uid,
           uid: collection.uid,
           name: collection.name,
+          display_name: collection.display_name?collection.display_name:collection.name,
           description: collection.description,
           attributes: collection.attributes,
           shared: collection.shared,
