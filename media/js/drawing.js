@@ -343,6 +343,10 @@ function collectionModel(options) {
       $.ajax({
           url: '/drawing/delete_collection/' + collection.uid + '/',
           type: 'POST',
+          success: function (result) {
+            app.viewModel.scenarios.loadDrawingsFromServer();
+            app.viewModel.scenarios.loadScenariosFromServer();
+          },
           error: function (result) {
               console.log('error in drawing.js: deleteCollection');
           }

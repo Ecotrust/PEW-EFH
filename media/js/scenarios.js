@@ -1331,8 +1331,8 @@ function scenariosModel(options) {
     }; // end addScenarioToMap
 
     self.alphabetizeByName = function(a, b) {
-        var name1 = a.name.toLowerCase(),
-            name2 = b.name.toLowerCase();
+        var name1 = a.display_name.toLowerCase()?a.display_name:a.name.toLowerCase(),
+            name2 = b.display_name.toLowerCase()?b.display_name:b.name.toLowerCase();
         if (name1 < name2) {
             return -1;
         } else if (name1 > name2) {

@@ -273,7 +273,8 @@ def delete_collection(request, uid):
     if not viewable:
         return response
 
-    # TODO: delete all shapes associated
+    for associated_feature in collection_obj.feature_set():
+        associated_feature.delete()
     # TODO: (frontend) "Are you sure?"
     collection_obj.delete()
 
