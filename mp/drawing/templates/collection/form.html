@@ -112,7 +112,8 @@
     Scenario Collection
 </h4>
 
-<form id="scenario-collection-form" action="{{action}}" method="post">
+<form id="scenario-collection-form" action="{{action}}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     {% for hidden in form.hidden_fields %}
         <div style="display:none;">
             {{ hidden.errors }}
@@ -140,6 +141,13 @@
                   {{ form.description.errors }}
                   {{ form.description }}
               </div>
+              <p class="instructions">If you have a <b>shapefile</b> of your scenario, add it here:</p>
+              <div class="step1-param">
+                  {{ form.import_file.errors }}
+                  {{ form.import_file }}
+              </div>
+              <a>View Requirements</a>
+              <p class="instructions"> If you do not have a shapefile, please add closures to your proposal from the 'Drawings' section of this tool.</p>
           </div>
 
         </div>
@@ -149,7 +157,7 @@
     <div class="step" id="step2">
         <p class="step-text"><i>Step 2 of 2 </i></p>
     </div> -->
-    <p><button type="submit" value="submit" class="btn-submit btn">submit</button></p>
+    <p><button type="submit" value="submit" name="submit" id="collection-submit" class="btn-submit btn">submit</button></p>
 </form>
 
 

@@ -54,7 +54,9 @@ ADMINS = (
 )
 HELP_EMAIL = "efhsupport@ecotrust.org"
 
+CONTENT_TYPES = ['image', 'video']
 
+MAX_UPLOAD_SIZE = "5242880"
 
 # FEEDBACK_RECIPIENT = "Marine Planning Team <mp-team@marineplanner.org>"
 # DEFAULT_FROM_EMAIL = "Marine Planning Team <mp-team@marineplanner.org>"

@@ -6,6 +6,7 @@ from madrona.common.utils import LargestPolyFromMulti
 from general.utils import sq_meters_to_sq_miles, format_precision
 from ofr_manipulators import clip_to_grid, intersecting_cells
 from reports import get_summary_reports
+import settings
 
 @register
 class AOI(PolygonFeature):
@@ -70,6 +71,7 @@ class AOI(PolygonFeature):
 @register
 class Collection(FeatureCollection):
     description = models.TextField(null=True,blank=True)
+    import_file = models.FileField(upload_to="%s/upload/" % settings.MEDIA_ROOT, null=True, blank=True)
 
     class Options:
         verbose_name = 'Collection of Proposed Scenarios'
@@ -80,3 +82,6 @@ class Collection(FeatureCollection):
             'drawing.models.AOI',
             'scenarios.models.Scenario'
         )
+
+    def save(self, rerun=True, *args, **kwargs):
+        super(Collection, self).save(*args, **kwargs) # Call the "real" save() method

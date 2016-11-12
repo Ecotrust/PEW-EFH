@@ -24,7 +24,7 @@ var madrona = {
                 return false;
             }
             //submitted = true;
-            submitForm($form);
+            $('#collection-submit').click();
         });
 
         //no longer needed...? (if it was going here it meant there was a problem)

@@ -17,5 +17,7 @@ class CollectionForm(FeatureForm):
     description = forms.CharField(
         widget=forms.Textarea(attrs={'cols': 30, 'rows': 3}), required=False)
 
+    import_file = forms.FileField(required=False)
+
     class Meta(FeatureForm.Meta):
         model = Collection
