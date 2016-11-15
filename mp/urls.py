@@ -7,7 +7,7 @@ from data_manager.api import LayerResource, ThemeResource, TocThemeResource
 from tastypie.api import Api
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-import visualize
+import visualize, drawing
 import explore
 #from mapproxy.views import proxy_view
 #import map_proxy
@@ -47,6 +47,7 @@ urlpatterns = patterns('',
                        url("^media/admin/(?P<path>.*)$",
                                "django.views.static.serve",
                                {"document_root": settings.ADMIN_MEDIA_PATH}),
+                       (r'^features/collection/form/$', drawing.views.form_resources),
                        (r'', include('madrona.common.urls')),
                        )
 

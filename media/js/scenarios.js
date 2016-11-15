@@ -24,7 +24,7 @@ var madrona = {
                 return false;
             }
             //submitted = true;
-            $('#collection-submit').click();
+            submitForm($form);
         });
 
         //no longer needed...? (if it was going here it meant there was a problem)
@@ -44,7 +44,7 @@ var madrona = {
             //var $form = $(this).closest('.panel').find('form'),
             var url = $form.attr('action'),
                 $bar = $form.closest('.tab-pane').find('.bar'),
-                data = {},
+                data = new FormData(),
                 barTimer;
 
             //progress bar
@@ -71,18 +71,24 @@ var madrona = {
                           app.checkboxes[$input.attr('name')] = [$input.attr('value')];
                         }
                       } else {
-                        data[$input.attr('name')] = 'True';
+                        data.append($input.attr('name'), 'True');
                       }
                     } else {
-                        data[$input.attr('name')] = 'False';
+                        data.append($input.attr('name'), 'False');
                     }
                 } else {
-                    data[$input.attr('name')] = $input.val();
+                    if ($input.attr('type') == 'file') {
+                        $.each($input[0].files, function(i, file) {
+                            data.append('file-'+i, file);
+                        });
+                    } else {
+                        data.append($input.attr('name'), $input.val());
+                    }
                 }
             });
             var checkboxList = Object.keys(app.checkboxes);
             for (var i = 0; i < checkboxList.length; i++) {
-              data[checkboxList[i]] = app.checkboxes[checkboxList[i]];
+              data.append(checkboxList[i], app.checkboxes[checkboxList[i]]);
             }
 
             app.viewModel.scenarios.scenarioForm(false);
@@ -90,9 +96,12 @@ var madrona = {
 
             $.ajax( {
                 url: url,
-                traditional: true,
                 data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
                 type: 'POST',
+                traditional: true,
                 dataType: 'json',
                 success: function(result) {
                     app.viewModel.scenarios.addScenarioToMap(null, {uid: result['X-Madrona-Show']});

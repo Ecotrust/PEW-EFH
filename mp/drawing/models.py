@@ -71,7 +71,6 @@ class AOI(PolygonFeature):
 @register
 class Collection(FeatureCollection):
     description = models.TextField(null=True,blank=True)
-    import_file = models.FileField(upload_to="%s/upload/" % settings.MEDIA_ROOT, null=True, blank=True)
 
     class Options:
         verbose_name = 'Collection of Proposed Scenarios'
@@ -84,4 +83,5 @@ class Collection(FeatureCollection):
         )
 
     def save(self, rerun=True, *args, **kwargs):
+        # Foothold to manage save logic outside of Madrona - may not be necessary with overriding the form post url/view
         super(Collection, self).save(*args, **kwargs) # Call the "real" save() method

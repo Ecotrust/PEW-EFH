@@ -288,3 +288,13 @@ def get_public_group():
         public_group = public_groups[0]
 
     return public_group
+
+def form_resources(request, uid=None):
+    from madrona.features.views import form_resources as madrona_form_resources
+    from madrona.features.views import create as madrona_create
+    from drawing.models import Collection
+    if request.method == 'POST':
+        #TODO unpack uploaded files if present
+        if uid is None:
+            return madrona_create(request, Collection, request.build_absolute_uri())
+    return madrona_form_resources(request, Collection, uid)
