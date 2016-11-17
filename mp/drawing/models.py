@@ -9,8 +9,26 @@ from reports import get_summary_reports
 import settings
 from django.contrib.gis.db.models import GeometryField
 
+class GeometryFeature(SpatialFeature):
+    geometry_orig = GeometryField(srid=settings.GEOMETRY_DB_SRID,
+            null=True, blank=True, verbose_name="Original Polygon Geometry")
+    geometry_final = GeometryField(srid=settings.GEOMETRY_DB_SRID,
+            null=True, blank=True, verbose_name="Final Polygon Geometry")
+
+    @property
+    def centroid_kml(self):
+        """
+        KML geometry representation of the centroid of the polygon
+        """
+        geom = self.geometry_final.point_on_surface.transform(settings.GEOMETRY_CLIENT_SRID, clone=True)
+        return geom.kml
+
+
+    class Meta(Feature.Meta):
+        abstract = True
+
 @register
-class AOI(PolygonFeature):
+class AOI(GeometryFeature):
     description = models.TextField(null=True,blank=True)
 
     @property
@@ -69,83 +87,6 @@ class AOI(PolygonFeature):
         form_template = 'aoi/form.html'
         show_template = 'aoi/show.html'
 
-class GeometryFeature(SpatialFeature):
-    geometry_orig = GeometryField(srid=settings.GEOMETRY_DB_SRID,
-            null=True, blank=True, verbose_name="Original Polygon Geometry")
-    geometry_final = GeometryField(srid=settings.GEOMETRY_DB_SRID,
-            null=True, blank=True, verbose_name="Final Polygon Geometry")
-
-    @property
-    def centroid_kml(self):
-        """
-        KML geometry representation of the centroid of the polygon
-        """
-        geom = self.geometry_final.point_on_surface.transform(settings.GEOMETRY_CLIENT_SRID, clone=True)
-        return geom.kml
-
-
-    class Meta(Feature.Meta):
-        abstract = True
-
-@register
-class AOI_Multi(GeometryFeature):
-    description = models.TextField(null=True,blank=True)
-
-    @property
-    def formatted_area(self):
-        return int((self.area_in_sq_miles * 10) +.5) / 10.
-
-    @property
-    def area_in_sq_miles(self):
-        return sq_meters_to_sq_miles(self.geometry_final.area)
-
-    def summary_reports(self, attributes):
-        # Call get_summary_reports with intersecting Grid Cells
-        grid_cells = intersecting_cells(self.geometry_orig)
-        get_summary_reports(grid_cells, attributes)
-
-
-    @property
-    def serialize_attributes(self):
-        attributes = []
-        if self.description:
-            attributes.append({'title': 'Description', 'data': self.description})
-        # attributes.append({'title': 'Area', 'data': '%s sq miles' %format_precision(self.area_in_sq_miles, 2)})
-        self.summary_reports(attributes)
-        return { 'event': 'click', 'attributes': attributes }
-
-    @classmethod
-    def fill_color(self):
-        return '776BAEFD'
-
-    @classmethod
-    def outline_color(self):
-        return '776BAEFD'
-
-    def clip_to_grid(self):
-        geom = self.geometry_orig
-        clipped_shape = clip_to_grid(geom)
-        if clipped_shape:
-            return LargestPolyFromMulti(clipped_shape)
-        else:
-            return clipped_shape
-
-    def save(self, *args, **kwargs):
-        self.geometry_final = self.clip_to_grid()
-        # if self.geometry_final:
-        #     self.geometry_final = clean_geometry(self.geometry_final)
-        super(AOI_Multi, self).save(*args, **kwargs) # Call the "real" save() method
-
-    class Options:
-        verbose_name = 'Area of Interest'
-        icon_url = 'img/aoi.png'
-        export_png = False
-        manipulators = []
-        # manipulators = ['drawing.manipulators.ClipToPlanningGrid']
-        # optional_manipulators = ['clipping.manipulators.ClipToShoreManipulator']
-        form = 'drawing.forms.AOIForm'
-        form_template = 'aoi/form.html'
-        show_template = 'aoi/show.html'
 
 @register
 class Collection(FeatureCollection):
@@ -158,8 +99,7 @@ class Collection(FeatureCollection):
         show_template = 'collection/show.html'
         valid_children = (
             'drawing.models.AOI',
-            'scenarios.models.Scenario',
-            'drawing.models.AOI_Multi'
+            'scenarios.models.Scenario'
         )
 
     def feature_set(self, recurse=False, feature_classes=None):

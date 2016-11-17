@@ -16,34 +16,6 @@ class Migration(DataMigration):
         # here is an attempt to perform the workaround described here:
             # http://stackoverflow.com/questions/21759146/django-genericrelation-fields-not-available-during-south-migration
 
-        for aoi in orm.AOI.objects.all():
-            aoi_multi = orm.AOI_Multi.objects.create(
-                id=aoi.id,
-                user=aoi.user,
-                name=aoi.name,
-                date_created=aoi.date_created,
-                date_modified=aoi.date_modified,
-                content_type=aoi.content_type,
-                object_id=aoi.object_id,
-                manipulators=aoi.manipulators,
-                geometry_orig=aoi.geometry_orig,
-                geometry_final=aoi.geometry_final,
-                description=aoi.description
-            )
-
-            aoi_multi.sharing_groups = aoi.sharing_groups.all()
-
-            aoi_multi.content_type_id = aoi.content_type_id
-            aoi_multi.object_id = aoi.object_id
-
-
-            aoi_multi.save()
-
-        orm.AOI.objects.all().delete()
-
-    def backwards(self, orm):
-        "Write your backwards methods here."
-
         for aoi in orm.AOI_Multi.objects.all():
             aoi_poly = orm.AOI.objects.create(
                 id=aoi.id,
@@ -65,7 +37,31 @@ class Migration(DataMigration):
 
             aoi_poly.save()
 
-        orm.AOI_Multi.objects.all().delete()
+        # orm.AOI_Multi.objects.all().delete()
+
+    def backwards(self, orm):
+        "Write your backwards methods here."
+        for aoi in orm.AOI.objects.all():
+            aoi_multi = orm.AOI_Multi.objects.create(
+                id=aoi.id,
+                user=aoi.user,
+                name=aoi.name,
+                date_created=aoi.date_created,
+                date_modified=aoi.date_modified,
+                content_type=aoi.content_type,
+                object_id=aoi.object_id,
+                manipulators=aoi.manipulators,
+                geometry_orig=aoi.geometry_orig,
+                geometry_final=aoi.geometry_final,
+                description=aoi.description
+            )
+
+            aoi_multi.sharing_groups = aoi.sharing_groups.all()
+
+            aoi_multi.content_type_id = aoi.content_type_id
+            aoi_multi.object_id = aoi.object_id
+
+            aoi_multi.save()
 
     models = {
         u'auth.group': {
@@ -110,8 +106,8 @@ class Migration(DataMigration):
             'date_created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'date_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'geometry_final': ('django.contrib.gis.db.models.fields.PolygonField', [], {'srid': '3857', 'null': 'True', 'blank': 'True'}),
-            'geometry_orig': ('django.contrib.gis.db.models.fields.PolygonField', [], {'srid': '3857', 'null': 'True', 'blank': 'True'}),
+            'geometry_final': ('django.contrib.gis.db.models.fields.GeometryField', [], {'srid': '3857', 'null': 'True', 'blank': 'True'}),
+            'geometry_orig': ('django.contrib.gis.db.models.fields.GeometryField', [], {'srid': '3857', 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'manipulators': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': "'255'"}),

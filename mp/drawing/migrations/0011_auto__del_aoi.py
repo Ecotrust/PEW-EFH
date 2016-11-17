@@ -1,71 +1,46 @@
 # -*- coding: utf-8 -*-
 from south.utils import datetime_utils as datetime
 from south.db import db
-from south.v2 import DataMigration
+from south.v2 import SchemaMigration
 from django.db import models
 
-class Migration(DataMigration):
+
+class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        "Write your forwards methods here."
-        # Note: Don't use "from appname.models import ModelName".
-        # Use orm.ModelName to refer to models in this application,
-        # and orm['appname.ModelName'] for models in other applications.
+        # Deleting model 'AOI'
+        db.delete_table(u'drawing_aoi')
 
-        # generic foreign keys (such as 'collection') are not supported in this version.
-        # here is an attempt to perform the workaround described here:
-            # http://stackoverflow.com/questions/21759146/django-genericrelation-fields-not-available-during-south-migration
+        # Removing M2M table for field sharing_groups on 'AOI'
+        db.delete_table(db.shorten_name(u'drawing_aoi_sharing_groups'))
 
-        for aoi in orm.AOI.objects.all():
-            aoi_multi = orm.AOI_Multi.objects.create(
-                id=aoi.id,
-                user=aoi.user,
-                name=aoi.name,
-                date_created=aoi.date_created,
-                date_modified=aoi.date_modified,
-                content_type=aoi.content_type,
-                object_id=aoi.object_id,
-                manipulators=aoi.manipulators,
-                geometry_orig=aoi.geometry_orig,
-                geometry_final=aoi.geometry_final,
-                description=aoi.description
-            )
-
-            aoi_multi.sharing_groups = aoi.sharing_groups.all()
-
-            aoi_multi.content_type_id = aoi.content_type_id
-            aoi_multi.object_id = aoi.object_id
-
-
-            aoi_multi.save()
-
-        orm.AOI.objects.all().delete()
 
     def backwards(self, orm):
-        "Write your backwards methods here."
+        # Adding model 'AOI'
+        db.create_table(u'drawing_aoi', (
+            ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('manipulators', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'drawing_aoi_related', to=orm['auth.User'])),
+            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'drawing_aoi_related', null=True, to=orm['contenttypes.ContentType'], blank=True)),
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('geometry_orig', self.gf('django.contrib.gis.db.models.fields.PolygonField')(srid=3857, null=True, blank=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length='255')),
+            ('date_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')(null=True, blank=True)),
+            ('date_created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('geometry_final', self.gf('django.contrib.gis.db.models.fields.PolygonField')(srid=3857, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'drawing', ['AOI'])
 
-        for aoi in orm.AOI_Multi.objects.all():
-            aoi_poly = orm.AOI.objects.create(
-                id=aoi.id,
-                user=aoi.user,
-                name=aoi.name,
-                date_created=aoi.date_created,
-                date_modified=aoi.date_modified,
-                content_type=aoi.content_type,
-                object_id=aoi.object_id,
-                manipulators=aoi.manipulators,
-                geometry_orig=aoi.geometry_orig,
-                geometry_final=aoi.geometry_final,
-                description=aoi.description
-            )
-            aoi_poly.sharing_groups = aoi.sharing_groups.all()
+        # Adding M2M table for field sharing_groups on 'AOI'
+        m2m_table_name = db.shorten_name(u'drawing_aoi_sharing_groups')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('aoi', models.ForeignKey(orm[u'drawing.aoi'], null=False)),
+            ('group', models.ForeignKey(orm[u'auth.group'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['aoi_id', 'group_id'])
 
-            aoi_poly.content_type_id = aoi.content_type_id
-            aoi_poly.object_id = aoi.object_id
-
-            aoi_poly.save()
-
-        orm.AOI_Multi.objects.all().delete()
 
     models = {
         u'auth.group': {
@@ -104,21 +79,6 @@ class Migration(DataMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'drawing.aoi': {
-            'Meta': {'object_name': 'AOI'},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'drawing_aoi_related'", 'null': 'True', 'to': u"orm['contenttypes.ContentType']"}),
-            'date_created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'date_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'geometry_final': ('django.contrib.gis.db.models.fields.PolygonField', [], {'srid': '3857', 'null': 'True', 'blank': 'True'}),
-            'geometry_orig': ('django.contrib.gis.db.models.fields.PolygonField', [], {'srid': '3857', 'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'manipulators': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': "'255'"}),
-            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'sharing_groups': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "u'drawing_aoi_related'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Group']"}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'drawing_aoi_related'", 'to': u"orm['auth.User']"})
-        },
         u'drawing.aoi_multi': {
             'Meta': {'object_name': 'AOI_Multi'},
             'content_type': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'drawing_aoi_multi_related'", 'null': 'True', 'to': u"orm['contenttypes.ContentType']"}),
@@ -149,4 +109,3 @@ class Migration(DataMigration):
     }
 
     complete_apps = ['drawing']
-    symmetrical = True
