@@ -44,6 +44,7 @@ function drawingModel(options) {
                 app.viewModel.scenarios.drawingFormModel.showEdit(true);
                 app.viewModel.scenarios.drawingFormModel.hasShape(true);
                 app.viewModel.scenarios.drawingFormModel.startEdit();
+                app.onResize();
             },
             error: function (result) {
                 console.log('error in drawing.js: editDrawing');
@@ -145,9 +146,21 @@ function polygonFormModel(options) {
         function(e) {
             self.completeSketch();
             self.showEdit(true);
-            self.clipToGrid();
+            // self.clipToGrid();
+            self.finishDrawing();
         }
     );
+
+    self.finishDrawing = function() {
+      var format = new OpenLayers.Format.WKT();
+      var wkt = format.write(self.polygonLayer.features[0]);
+      feature = format.read(wkt);
+
+      self.completeEdit();
+      self.clipAttemptFailed(false);
+
+      $('#step-1-instructions').effect("highlight", {}, 1000);
+    };
 
     self.clipToGrid = function() {
         var format = new OpenLayers.Format.WKT();

@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.html import escape
 from madrona.features import register
 from madrona.features.models import PolygonFeature, FeatureCollection, MultiPolygonFeature, SpatialFeature, Feature
-from madrona.common.utils import LargestPolyFromMulti
+from madrona.common.utils import LargestPolyFromMulti, clean_geometry
 from general.utils import sq_meters_to_sq_miles, format_precision
 from ofr_manipulators import clip_to_grid, intersecting_cells
 from reports import get_summary_reports
@@ -71,9 +71,11 @@ class AOI(GeometryFeature):
             return clipped_shape
 
     def save(self, *args, **kwargs):
-        self.geometry_final = self.clip_to_grid()
-        # if self.geometry_final:
-        #     self.geometry_final = clean_geometry(self.geometry_final)
+        # TODO Toggle clipping drawings to grid in settings
+        # self.geometry_final = self.clip_to_grid()
+        self.geometry_final = self.geometry_orig
+        if self.geometry_final:
+            self.geometry_final = clean_geometry(self.geometry_final)
         super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
 
     class Options:
