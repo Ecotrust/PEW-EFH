@@ -12,13 +12,14 @@ class Migration(DataMigration):
         # Use orm.ModelName to refer to models in this application,
         # and orm['appname.ModelName'] for models in other applications.
 
+        orm.AOI_Multi.objects.all().delete()
+
         # generic foreign keys (such as 'collection') are not supported in this version.
         # here is an attempt to perform the workaround described here:
             # http://stackoverflow.com/questions/21759146/django-genericrelation-fields-not-available-during-south-migration
 
         for aoi in orm.AOI.objects.all():
             aoi_multi = orm.AOI_Multi.objects.create(
-                id=aoi.id,
                 user=aoi.user,
                 name=aoi.name,
                 date_created=aoi.date_created,
@@ -43,10 +44,10 @@ class Migration(DataMigration):
 
     def backwards(self, orm):
         "Write your backwards methods here."
+        orm.AOI.objects.all().delete()
 
         for aoi in orm.AOI_Multi.objects.all():
             aoi_poly = orm.AOI.objects.create(
-                id=aoi.id,
                 user=aoi.user,
                 name=aoi.name,
                 date_created=aoi.date_created,

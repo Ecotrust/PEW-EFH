@@ -372,9 +372,6 @@ def unpack_shapefile_upload(request, collection, retval):
         import simplejson
         for geom in layer:
             feature = simplejson.loads(geom.ExportToJson())['geometry']
-            if feature['type'] == 'MultiPolygon':
-                import ipdb
-                ipdb.set_trace()
             geos_geom = GEOSGeometry(simplejson.dumps(feature))
             try:
                 aoi = AOI.objects.create(
