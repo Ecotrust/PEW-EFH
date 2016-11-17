@@ -10,8 +10,8 @@
           </div>
         </div>
         <div class="alert alert-error" data-bind="visible: app.viewModel.scenarios.errorMessage">
-          <strong>Error!</strong> <span data-bind="text: app.viewModel.scenarios.errorMessage"></span>
-          <span>There are no Grid Cells that match the selected criteria.</span>
+          <strong>Error!</strong>
+          <p data-bind="text: app.viewModel.scenarios.errorMessage"></p>
           <div>
             <button class="btn pull-right" data-bind="click: app.viewModel.scenarios.reset">Try Again</button>
             <div class="clearfix"></div>

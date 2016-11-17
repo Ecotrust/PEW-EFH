@@ -107,6 +107,7 @@ var madrona = {
                     app.viewModel.scenarios.addScenarioToMap(null, {uid: result['X-Madrona-Show']});
                     app.viewModel.scenarios.loadingMessage(false);
                     clearInterval(barTimer);
+                    app.viewModel.scenarios.loadCollectionsFromServer();
                 },
                 error: function(result) {
                     app.viewModel.scenarios.loadingMessage(null);
