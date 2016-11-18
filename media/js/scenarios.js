@@ -1195,7 +1195,16 @@ function scenariosModel(options) {
                       style = new OpenLayers.Style(
                         {
                             fillOpacity: scenario.opacity(),
-                            strokeOpacity: scenario.opacity()
+                            strokeOpacity: scenario.opacity(),
+                            fillColor: "#C9BE62",
+                            strokeColor: "#A99E42"
+                        }
+                      );
+                    } else {
+                      var style = new OpenLayers.Style(
+                        {
+                          fillOpacity: opacity,
+                          strokeOpacity: stroke
                         },
                         {
                           rules:[
@@ -1206,8 +1215,8 @@ function scenariosModel(options) {
                                 value: "close"
                               }),
                               symbolizer:{
-                                fillColor: "red",
-                                strokeColor: "red"
+                                fillColor: "#FF5555",
+                                strokeColor: "#DF3535"
                               }
                             }),
                             new OpenLayers.Rule({
@@ -1217,8 +1226,8 @@ function scenariosModel(options) {
                                 value: "reopen"
                               }),
                               symbolizer:{
-                                fillColor: "green",
-                                strokeColor: "green"
+                                fillColor: "#55FF55",
+                                strokeColor: "#35DF35"
                               }
                             }),
                             new OpenLayers.Rule({
@@ -1232,15 +1241,6 @@ function scenariosModel(options) {
                           ]
                         }
                       );
-                    } else {
-                      var style = new OpenLayers.Style(
-                        {
-                          fillColor: "#C9BE62",
-                          strokeColor: "#A99E42",
-                          fillOpacity: opacity,
-                          strokeOpacity: stroke
-                        }
-                      )
                     }
 
                 }
