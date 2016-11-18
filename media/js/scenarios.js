@@ -1162,8 +1162,8 @@ function scenariosModel(options) {
             dataType: 'json',
             success: function(retFeatures) {
                 if ( scenario ) {
-                    opacity = scenario.opacity();
-                    stroke = scenario.opacity();
+                    var opacity = scenario.opacity();
+                    var stroke = scenario.opacity();
                     if (retFeatures.features[0].properties.hasOwnProperty('collection')) {
                       display_name = "[" + retFeatures.features[0].properties.collection.name +"] " + scenario.name;
                     } else {
@@ -1172,8 +1172,6 @@ function scenariosModel(options) {
                     scenario.display_name = display_name;
                 }
                 if ( isDrawingModel ) {
-                    fillColor = "#C9BE62";
-                    strokeColor = "#A99E42";
 
                     for (var featIndex = 0; featIndex < retFeatures.features.length; featIndex++){
                         featureId = retFeatures.features[featIndex].properties.uid;
@@ -1192,19 +1190,66 @@ function scenariosModel(options) {
                             }
                         });
                     }
+
+                    if (scenario.id.indexOf('collection') < 0){
+                      style = new OpenLayers.Style(
+                        {
+                            fillOpacity: scenario.opacity(),
+                            strokeOpacity: scenario.opacity()
+                        },
+                        {
+                          rules:[
+                            new OpenLayers.Rule({
+                              filter: new OpenLayers.Filter.Comparison({
+                                type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                                property: "description",
+                                value: "close"
+                              }),
+                              symbolizer:{
+                                fillColor: "red",
+                                strokeColor: "red"
+                              }
+                            }),
+                            new OpenLayers.Rule({
+                              filter: new OpenLayers.Filter.Comparison({
+                                type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                                property: "description",
+                                value: "reopen"
+                              }),
+                              symbolizer:{
+                                fillColor: "green",
+                                strokeColor: "green"
+                              }
+                            }),
+                            new OpenLayers.Rule({
+                                // apply this rule if no others apply
+                                elseFilter: true,
+                                symbolizer: {
+                                  fillColor: "#C9BE62",
+                                  strokeColor: "#A99E42"
+                                }
+                            })
+                          ]
+                        }
+                      );
+                    } else {
+                      var style = new OpenLayers.Style(
+                        {
+                          fillColor: "#C9BE62",
+                          strokeColor: "#A99E42",
+                          fillOpacity: opacity,
+                          strokeOpacity: stroke
+                        }
+                      )
+                    }
+
                 }
                 var layer = new OpenLayers.Layer.Vector(
                     scenarioId,
                     {
                         projection: new OpenLayers.Projection('EPSG:3857'),
                         displayInLayerSwitcher: false,
-                        styleMap: new OpenLayers.StyleMap({
-                            fillColor: fillColor,
-                            fillOpacity: opacity,
-                            strokeColor: strokeColor,
-                            strokeOpacity: stroke
-                        }),
-                        //style: OpenLayers.Feature.Vector.style['default'],
+                        styleMap: new OpenLayers.StyleMap(style),
                         scenarioModel: scenario
                     }
                 );

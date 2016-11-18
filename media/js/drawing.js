@@ -146,6 +146,7 @@ function polygonFormModel(options) {
         function(e) {
             self.completeSketch();
             self.showEdit(true);
+            // TODO - toggle clipping drawings to grid in settings
             // self.clipToGrid();
             self.finishDrawing();
         }
