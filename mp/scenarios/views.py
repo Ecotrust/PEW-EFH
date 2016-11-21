@@ -24,31 +24,54 @@ def sdc_analysis(request, sdc_id):
 
 '''
 '''
-def copy_design(request, uid):
+def copy_design(request, uid, collection=False):
     try:
         design_obj = get_feature_by_uid(uid)
     except Feature.DoesNotExist:
-        raise Http404
+        if collection:
+            return (False, [])
+        else:
+            raise Http404
 
     #check permissions
     viewable, response = design_obj.is_viewable(request.user)
     if not viewable:
-        return response
+        if collection:
+            return (False, [])
+        else:
+            return response
 
     design_obj.pk = None
-    design_obj.user = request.user
+    if collection:
+        design_obj.user = request.user
+        display_name = "[%s] %s" % (collection.name, design_obj.name)
+    else:
+        design_obj.collection = None
+        if design_obj.user == request.user:
+            design_obj.name = "%s (copy)" % design_obj.name
+        else:
+            design_obj.user = request.user
+        display_name = design_obj.name
     design_obj.save()
+
+    if collection:
+        collection.add(design_obj)
+        collection.save()
 
     json = []
     json.append({
         'id': design_obj.id,
         'uid': design_obj.uid,
         'name': design_obj.name,
+        'display_name': display_name,
         'description': design_obj.description,
         'attributes': design_obj.serialize_attributes
     })
 
-    return HttpResponse(dumps(json), status=200)
+    if collection:
+        return(True, json[0])
+    else:
+        return HttpResponse(dumps(json), status=200)
 
 '''
 '''
@@ -267,9 +290,54 @@ def share_design(request):
     design.share_with(groups, append=False)
     return HttpResponse("", status=200)
 
+
 '''
 '''
 
+def associate_scenario(request):
+
+    from drawing.models import Collection
+    collection_list = request.POST.getlist('collections[]')
+    if len(collection_list) > 0:
+        collections = []
+        for collection in collection_list:
+            if 'drawing_collection' in collection:
+                collections.append(get_feature_by_uid(collection))
+            else:
+                return HttpResponse("Invalid %s given: %s" % (settings.COLLECTION_NAME,str(collection_list)), status=500)
+    else:
+        return HttpResponse("No %s given" % settings.COLLECTION_NAME, status=500)
+
+    scenario_list = request.POST.get('scenario')
+    if 'drawing_aoi' in scenario_list:
+        scenario = get_feature_by_uid(scenario_list)
+    else:
+        return HttpResponse("Invalid %s given: %s." % (settings.SCENARIO_NAME,str(scenario_list)), status=500)
+
+    try:
+        json = []
+        for collection in collections:
+            success, json_ret = copy_design(request, scenario.uid, collection)
+            if success:
+                json.append(json_ret)
+            else:
+                return HttpResponse("Failed to copy %s %s for %s %s." % (
+                    settings.SCENARIO_NAME,
+                    str(scenario.uid),
+                    settings.COLLECTION_NAME,
+                    str(collection.uid)
+                ), status=500)
+    except:
+        return HttpResponse("Failed to copy %s for %s." % (
+            settings.SCENARIO_NAME,
+            settings.COLLECTION_NAME
+        ), status=500)
+
+    return HttpResponse(dumps(json), status=200)
+
+
+'''
+'''
 
 def run_filter_query(filters):
     from collections import OrderedDict

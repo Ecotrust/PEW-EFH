@@ -226,7 +226,7 @@ i.check {
 
 /* the following overrides a 20px margin that was behaving intermittently in conjunction with the hovering of icon-check-empty */
 .accordion {
-  /*margin-bottom: 20px !important;*/
+  margin-bottom: 150px !important;
 }
 
 .btn-layer.not-active:hover i.icon-check-empty {
@@ -609,7 +609,7 @@ a.disabled-link:hover {
 .designs-accordion .dropdown-menu {
   margin-top: 0;
   position: absolute;
-  left: 244px;
+  left: 210px;
   min-width: 100px;
 }
 

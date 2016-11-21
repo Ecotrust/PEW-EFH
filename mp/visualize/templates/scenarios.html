@@ -10,8 +10,8 @@
           </div>
         </div>
         <div class="alert alert-error" data-bind="visible: app.viewModel.scenarios.errorMessage">
-          <strong>Error!</strong> <span data-bind="text: app.viewModel.scenarios.errorMessage"></span>
-          <span>There are no Grid Cells that match the selected criteria.</span>
+          <strong>Error!</strong>
+          <p data-bind="text: app.viewModel.scenarios.errorMessage"></p>
           <div>
             <button class="btn pull-right" data-bind="click: app.viewModel.scenarios.reset">Try Again</button>
             <div class="clearfix"></div>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="form-container" data-bind="visible: ! (app.viewModel.scenarios.loadingMessage() || app.viewModel.scenarios.errorMessage())">
-        <div data-bind="attr:{id:tocid+'-designs-data'}, visible: !app.viewModel.scenarios.scenarioForm() && !app.viewModel.scenarios.drawingForm()" class="designs-data">
+        <div data-bind="attr:{id:tocid+'-designs-data'}, visible: !app.viewModel.scenarios.scenarioForm() && !app.viewModel.scenarios.drawingForm() && !app.viewModel.scenarios.collectionForm()" class="designs-data">
             <!-- <div class="row-fluid">
                 <div class="span12">
                     <div id="create-new-design" class="btn-group pull-left" style="padding-bottom: 10px;">
@@ -102,7 +102,7 @@
                                                         <li><a data-bind="click: $parent.zoomToScenario">Zoom To</a></li>
                                                         <li class="divider"></li>
                                                         <li><a data-bind="visible: ! shared(), click: deleteScenario">Delete</a></li>
-                                                        <li><a data-bind="visible: shared, click: createCopyScenario">Create Copy</a></li>
+                                                        <!-- <li><a data-bind="click: createCopyScenario">Create Copy</a></li> -->
                                                     </ul>
                                                     <!-- style="height: 20px; padding: 4px 12px; border-left-width: 0px" -->
                                                 </div>
@@ -156,7 +156,7 @@
                                                         <i class="icon-info-sign icon-large"></i>
                                                     </a> -->
                                                     <a style="font-weight: normal" class="btn btn-layer" data-bind="css: { 'active': active(), 'not-active': ! active() }, click: toggleActive">
-                                                        <div data-bind="text: name" style="display: inline"></div>
+                                                        <div data-bind="text: display_name" style="display: inline"></div>
                                                         <span rel="tooltip" data-bind="attr: {title: sharedBy}">
                                                             <i class="icon-signin" data-bind="visible: shared" style="padding-left: 10px"></i>
                                                         </span>
@@ -172,7 +172,9 @@
                                                     <ul class="dropdown-menu">
                                                         <li><a data-bind="visible: ! shared(), click: editDrawing">Edit</a></li>
                                                         <li><a data-bind="attr:{id:$parent.tocid+'-share-option'}, visible: ! shared() && app.viewModel.scenarios.hasSharingGroups, click: app.viewModel.scenarios.showSharingModal" class="share-option">Share</a></li>
-                                                        <li><a data-bind="click: $parent.zoomToScenario">Zoom To</a></li>
+                                                        <li><a data-bind="click: app.viewModel.scenarios.zoomToScenario">Zoom To</a></li>
+                                                        <li><a data-bind="click: createCopyDrawing">Copy</a></li>
+                                                        <li><a data-bind="click: app.viewModel.scenarios.showAssociationModal">Add To Scenario</a></li>
                                                         <li class="divider"></li>
                                                         <li><a data-bind="visible: ! shared(), click: deleteDrawing">Delete</a></li>
                                                         <li><a data-bind="visible: shared, click: createCopyDrawing">Create Copy</a></li>
@@ -185,6 +187,76 @@
                             </div>
                         </div>
                         <!-- end drawings -->
+
+                        <!-- Scenarios/Collections -->
+                        <!-- NOTE: Scenarios in this case is the name presented to the users. Scenarios on the back end refer to what is also called "Grid Filtering" -->
+                        {% if user.is_staff %}
+                        <div>
+                            <div class="accordion-group" style="border: 1px solid #e5e5e5;">
+                                <div class="accordion-heading" data-bind="click: app.viewModel.scenarios.toggleCollectionsOpen, css: { 'active': app.viewModel.scenarios.isCollectionsOpen() }">
+                                    <a class="accordion-toggle">
+                                        <span>Scenarios</span>
+                                    </a>
+                                    <a class="create-new-button" data-bind="click: app.viewModel.scenarios.createCollectionScenario, clickBubble: false">
+                                        <i class="icon-plus icon-large"></i>
+                                    </a>
+                                </div>
+                                <div class="accordion-body collapse" data-bind="css: { 'in': app.viewModel.scenarios.isCollectionsOpen() }">
+                                    <div class="accordion-inner">
+
+                                        <div data-bind="visible: !app.viewModel.scenarios.collectionList().length" style="font-weight: normal">
+                                            <div style="padding: 10px;">
+                                                <p>
+                                                    You currently have no collection scenarios.
+                                                </p>
+                                                <p>
+                                                    Click the plus sign (<i class="icon-plus icon-large" style="color: #064669"></i>) above to create a new collection scenario.
+                                                </p>
+                                                <p>
+                                                    Note:  You may, at any time, edit, share, or remove any of the sitings that you have created.
+                                                    Any sitings shared with you can be copied so that they too can be edited, shared, or removed.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <ul class="unstyled list" data-bind="foreach: app.viewModel.scenarios.collectionList ">
+                                            <li class="layer">
+                                                <div class="btn-group btn-group-layer">
+                                                    <!-- <a class="btn btn-info-sign" data-bind="click: toggleDescription, css: { 'active': infoActive() }">
+                                                        <i class="icon-info-sign icon-large"></i>
+                                                    </a> -->
+                                                    <a style="font-weight: normal" class="btn btn-layer" data-bind="css: { 'active': active(), 'not-active': ! active() }, click: toggleActive">
+                                                        <div data-bind="text: name" style="display: inline"></div>
+                                                        <span rel="tooltip" data-bind="attr: {title: sharedBy}">
+                                                            <i class="icon-signin" data-bind="visible: shared" style="padding-left: 10px"></i>
+                                                        </span>
+                                                        <span rel="tooltip" data-bind="attr: {title: sharedWith}">
+                                                            <i class="icon-signout" data-bind="visible: selectedGroups().length" style="padding-left: 10px"></i>
+                                                        </span>
+                                                        <i class="check icon-large icon-check" data-bind="visible: visible()"></i>
+                                                        <i class="check icon-large icon-check-empty" data-bind="visible: active() && ! visible()"></i>
+                                                    </a>
+                                                    <a class="btn btn-group dropdown-toggle"data-toggle="dropdown" href="#">
+                                                        <span class="caret"></span>
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a data-bind="visible: ! shared(), click: editCollection">Edit</a></li>
+                                                        <li><a data-bind="attr:{id:$parent.tocid+'-share-option'}, visible: ! shared() && app.viewModel.scenarios.hasSharingGroups, click: app.viewModel.scenarios.showSharingModal" class="share-option">Share</a></li>
+                                                        <li><a data-bind="click: $data.zoomToScenario">Zoom To</a></li>
+                                                        <li class="divider"></li>
+                                                        <li><a data-bind="visible: ! shared(), click: deleteCollection">Delete</a></li>
+                                                        <li><a data-bind="click: $data.createCopyCollection">Create Copy</a></li>
+                                                    </ul>
+                                                    <!-- style="height: 20px; padding: 4px 12px; border-left-width: 0px" -->
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <!-- end Collection Scenarios -->
 
                     </div>
                 </div>
@@ -201,6 +273,12 @@
         <div style="height: 100%" data-bind="visible: app.viewModel.scenarios.drawingForm">
             <div data-bind="attr:{id:tocid+'-drawing-form'}">
               <div class="drawing-form panel-container"></div>
+            </div>
+        </div>
+
+        <div style="height: 100%" data-bind="visible: app.viewModel.scenarios.collectionForm">
+            <div data-bind="attr:{id:tocid+'-scenario-collection-form'}">
+              <div class="scenario-collection-form panel-container"></div>
             </div>
         </div>
 

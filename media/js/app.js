@@ -18,6 +18,7 @@ app.onResize = function(percent) {
         $(".designs-accordion").height(height - 164 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $("#polygon-design-form").height(height - 244 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $("#wind-design-form").height(height - 244 - (($.browser.msie && $.browser.version < 9)? 130: 96));
+        $("#scenario-collection-form").height(height - 244 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         $(".legend-content").height(height - 200 - (($.browser.msie && $.browser.version < 9)? 130: 96));
         //$("#active").height(height + 20 - (($.browser.msie && $.browser.version < 9)? 130: 96));
     }
@@ -69,7 +70,7 @@ app.viewModel.loadLayersFromServer().done(function() {
 
   // trigger events that depend on the map
   $(document).trigger('map-ready');
-  
+
   $('#'+app.viewModel.currentTocId()+'-tab > a').click();
 
   // if we have the hash state go ahead and load it now
@@ -84,11 +85,11 @@ app.viewModel.loadLayersFromServer().done(function() {
     source: app.typeAheadSource
   });
 
-  if ( ! ($.browser.msie && $.browser.version < 9) && ! app.embeddedMap ) {
-    console.log('set jScrollPane here?');
+  // if ( ! ($.browser.msie && $.browser.version < 9) && ! app.embeddedMap ) {
+    // console.log('set jScrollPane here?');
     // $(".tab-data-accordion").jScrollPane();
     // $('#'+app.viewModel.currentTocId()+'-data > div > .accordion-wrapper').jScrollPane();
-  }
+  // }
     //$("#legend-wrapper").jScrollPane();
   // }
 });
@@ -364,6 +365,7 @@ $(document).ready(function() {
     app.viewModel.startActiveTour();
   });
 
+  // #share-option doesn't exist anymore, only .share-option. Do we still need this?
   $(document).on('click', '#share-option', function() {
     app.viewModel.scenarios.initSharingModal();
   });

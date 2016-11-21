@@ -21,6 +21,10 @@ FEEDBACK_SUBJECT = "PEW Essential Fish Habitat Marine Planner Feedback"
 LOG_FILE = os.path.realpath(os.path.join(os.path.dirname(__file__),
                             '..', 'mp.log'))
 LOG_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), 'logs'))
+UPLOAD_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'mediaroot', 'upload'))
+ZIPFILE_PATH = '/tmp/import_shp.zip'
+UPLOAD_ACTION_ATTR = 'RegAction'
+UPLOAD_NAME_ATTR = 'SiteName'
 
 ADMIN_MEDIA_PATH = "/usr/local/venv/marine-planner/lib/python2.7/site-packages/django/contrib/admin/static/admin/"
 
@@ -54,7 +58,9 @@ ADMINS = (
 )
 HELP_EMAIL = "efhsupport@ecotrust.org"
 
+CONTENT_TYPES = ['image', 'video']
 
+MAX_UPLOAD_SIZE = "5242880"
 
 # FEEDBACK_RECIPIENT = "Marine Planning Team <mp-team@marineplanner.org>"
 # DEFAULT_FROM_EMAIL = "Marine Planning Team <mp-team@marineplanner.org>"
@@ -163,6 +169,9 @@ LOGGING = {
         },
     }
 }
+
+SCENARIO_NAME = 'Drawing'
+COLLECTION_NAME = 'Scenario'  #Confusing choice, I know. RDH
 
 import logging
 logging.getLogger('django.db.backends').setLevel(logging.ERROR)

@@ -131,6 +131,10 @@ app.clickAttributes = (function() {
             attrs.push({'display': 'Area', 'data': toSquareMiles(data['Area_m2'])});
         }
 
+        if ('Shape_Area' in data) {
+            attrs.push({'display': 'Area', 'data': toSquareMiles(data['Shape_Area'])});
+        }
+
 				if ('AreaMi2' in data) {
 						attrs.push({'display': 'Area', 'data': data['AreaMi2'].toLocaleString() + ' mi&sup2;'});
 				}
@@ -204,7 +208,9 @@ app.clickAttributes = (function() {
 						attrs.push({'display': 'Notes', 'data': data['DESCRIPTIO']});
 				}
 
-
+        if ('Proposer' in data) {
+            attrs.push({'display': 'Proposer', 'data': data['Proposer'].toLocaleString()});
+        }
 
         return attrs;
     };

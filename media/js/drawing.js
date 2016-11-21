@@ -44,6 +44,7 @@ function drawingModel(options) {
                 app.viewModel.scenarios.drawingFormModel.showEdit(true);
                 app.viewModel.scenarios.drawingFormModel.hasShape(true);
                 app.viewModel.scenarios.drawingFormModel.startEdit();
+                app.onResize();
             },
             error: function (result) {
                 console.log('error in drawing.js: editDrawing');
@@ -68,6 +69,19 @@ function drawingModel(options) {
             }
         });
     };
+
+    self.selectScenarioForAdd = function () {
+      var drawing = this;
+      //TODO: Trigger scenario selection modal
+
+    }
+
+    self.addToScenario = function() {
+      var drawing = this;
+      //TODO: Trigger this after a scenario is selected from the modal opened by selectScenarioForAdd
+      // * post drawing and collection to server to copy and associate.
+    }
+
     self.deleteDrawing = function() {
         var drawing = this;
 
@@ -86,14 +100,16 @@ function drawingModel(options) {
         $.ajax({
             url: '/drawing/delete_design/' + drawing.uid + '/',
             type: 'POST',
+            success: function (result) {
+                app.viewModel.scenarios.loadScenariosFromServer();
+                app.viewModel.scenarios.loadCollectionsFromServer();
+            },
             error: function (result) {
                 console.log('error in drawing.js: deleteDrawing');
             }
         });
     };
 }
-
-
 
 function polygonFormModel(options) {
     var self = this;
@@ -134,9 +150,22 @@ function polygonFormModel(options) {
         function(e) {
             self.completeSketch();
             self.showEdit(true);
-            self.clipToGrid();
+            // TODO - toggle clipping drawings to grid in settings
+            // self.clipToGrid();
+            self.finishDrawing();
         }
     );
+
+    self.finishDrawing = function() {
+      var format = new OpenLayers.Format.WKT();
+      var wkt = format.write(self.polygonLayer.features[0]);
+      feature = format.read(wkt);
+
+      self.completeEdit();
+      self.clipAttemptFailed(false);
+
+      $('#step-1-instructions').effect("highlight", {}, 1000);
+    };
 
     self.clipToGrid = function() {
         var format = new OpenLayers.Format.WKT();
@@ -268,3 +297,146 @@ function polygonFormModel(options) {
 
     return self;
 } // end polygonFormModel
+
+function collectionModel(options) {
+    var self = this;
+
+    //TODO - get drawing attrs from collection to apply to info box.
+    var ret = scenarioModel.apply(this, arguments);
+
+    self.editCollection = function() {
+      self.collection = this;
+      if (! self.collection.active()) {
+        self.collection.activateLayer;
+      }
+
+      return $.ajax({
+        url: '/features/collection/' + self.collection.uid + '/form/',
+        success: function(data) {
+          app.viewModel.scenarios.collectionForm(true);
+          $('#'+app.viewModel.currentTocId()+'-scenario-collection-form > div').html(data);
+          app.viewModel.scenarios.collectionFormModel = new collectionFormModel();
+          var model = app.viewModel.scenarios.collectionFormModel;
+
+          ko.applyBindings(model, document.getElementById(app.viewModel.currentTocId()+'-scenario-collection-form').children[0]);
+
+          // var parameters = [
+          //     'species',
+          //     'lifestage',
+          //     'mean_fthm',
+          //     'hsall_m2',
+          //     'cnt_cs',
+          //     'cnt_penn'
+          // ];
+          //
+          // for (var i = 0; i < parameters.length; i++) {
+          //     var id = '#id_' + parameters[i];
+          //
+          //     if ($(id).is(':checked')) {
+          //         model.toggleParameter(parameters[i]);
+          //     }
+          // }
+
+        },
+        error: function (result) {
+          console.log('error in drawing.js: editCollection');
+        }
+      });
+    };
+
+    self.deleteCollection = function() {
+      var collection = this;
+
+      //remove from activeLayers
+      app.viewModel.activeLayers.remove(collection);
+      //remove from app.map
+      if (collection.layer) {
+          app.map.removeLayer(collection.layer);
+      }
+      //remove from selectionList
+      app.viewModel.scenarios.collectionList.remove(collection);
+      //update scrollbar
+      app.viewModel.scenarios.updateDesignsScrollBar();
+
+      //remove from server-side db (this should provide error message to the user on fail)
+      $.ajax({
+          url: '/drawing/delete_collection/' + collection.uid + '/',
+          type: 'POST',
+          success: function (result) {
+            app.viewModel.scenarios.loadDrawingsFromServer();
+            app.viewModel.scenarios.loadScenariosFromServer();
+          },
+          error: function (result) {
+              console.log('error in drawing.js: deleteCollection');
+          }
+      });
+
+    };
+
+    self.zoomToScenario = function(collection) {
+        if (!collection.active()) {
+            collection.activateLayer();
+        }
+        // ActivateLayer needs some time to load (50-100ms locally).
+        // This next function checks every 20th of a second for up to 1/2 second
+        //   to see if the layer has loaded and then zooms if appropriate.
+        countdown = 10;
+        zoomToLoadedCollection = function(countdown, collection) {
+          setTimeout( function(){
+              if (collection.layer) {
+                  var layer = collection.layer;
+                  if (layer.features.length > 0) {
+                    app.map.zoomToExtent(layer.getDataExtent());
+                    app.map.zoomOut(); //Sometimes close is too close
+                  } else {
+                      window.alert('No drawings associated with this scenario.');
+                  }
+              } else {
+                  if (countdown > 0) {
+                    zoomToLoadedCollection(countdown-1, collection);
+                  } else {
+                      window.alert('Could not determine the extent of this scenario.');
+                  }
+              }
+            }, 50
+          );
+        };
+        zoomToLoadedCollection(countdown, collection);
+    };
+
+    self.addDrawing = function() {
+
+    };
+
+    self.removeDrawing = function() {
+
+    };
+
+    self.calculateScore = function() {
+
+    };
+
+    self.createCopyCollection = function(collection) {
+      $.ajax({
+          url: '/drawing/copy_collection/' + collection.uid + '/',
+          type: 'POST',
+          dataType: 'json',
+          success: function(data) {
+              // app.viewModel.scenarios.addScenarioToMap(null, {uid: data[0].uid});
+          },
+          error: function (result) {
+              console.log('error in drawing.js: createCopyCollection');
+          }
+      });
+      features = collection.layer.features;
+      // TODO: Open 'edit' view of new collection.
+    };
+
+
+}
+
+function collectionFormModel(options) {
+  var self = this;
+
+  return self;
+}
