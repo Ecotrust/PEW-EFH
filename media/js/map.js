@@ -281,6 +281,7 @@ app.init = function() {
             var text = [],
                 title = layer.name;
 
+            //TODO - populate for collections as well as standalone drawings
             if (layer.scenarioAttributes && layer.scenarioAttributes.length) {
                 attrs = layer.scenarioAttributes;
                 for (var i = 0; i < attrs.length; i++) {
@@ -303,6 +304,24 @@ app.init = function() {
                         });
                     }
                 }
+            } else {
+              var data = $.extend({},e.feature.data);
+              var regAction = data.description=='close'?'close':data.description=='reopen'?'reopen':false;
+              if (regAction) {
+                data.description = layer.description + ' (' + regAction + ')';
+              } else{
+                data.description = layer.description;
+              }
+              var dataProps = Object.getOwnPropertyNames(data)
+              for (i=0; i<dataProps.length; i++){
+                  var key = dataProps[i];
+                  if (['manipulators','user','uid','date_created','date_modified','sharing_groups'].indexOf(key) < 0){
+                      text.push({
+                        'display': key,
+                        'data':data[key]
+                      })
+                  }
+              }
             }
 
             // the following delay prevents the #map click-event-attributes-clearing from taking place after this has occurred

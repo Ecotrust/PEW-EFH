@@ -1191,7 +1191,7 @@ function scenariosModel(options) {
                         });
                     }
 
-                    if (scenario.id.indexOf('collection') < 0){
+                    if (scenario && scenario.id.indexOf('collection') < 0){
                       style = new OpenLayers.Style(
                         {
                             fillOpacity: scenario.opacity(),

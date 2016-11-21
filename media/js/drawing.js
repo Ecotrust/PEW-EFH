@@ -297,6 +297,7 @@ function polygonFormModel(options) {
 function collectionModel(options) {
     var self = this;
 
+    //TODO - get drawing attrs from collection to apply to info box.
     var ret = scenarioModel.apply(this, arguments);
 
     self.editCollection = function() {
