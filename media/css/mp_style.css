@@ -65,7 +65,8 @@ li a {
 
 }
 .tab-data-accordion .jspContainer, .jspPane, .jspScrollable {
-	background: white!important;
+  background: white!important;
+  left: 0px !important;
 }
 
 .navbar {

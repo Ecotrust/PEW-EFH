@@ -651,6 +651,9 @@ function scenarioModel(options) {
                     }
                 }
 
+                app.viewModel.scenarios.loadScenariosFromServer();
+                app.viewModel.scenarios.updateDesignsScrollBar();
+
                 // model.updateFiltersAndLeaseBlocks();
             },
             error: function (result) {
@@ -670,6 +673,8 @@ function scenarioModel(options) {
             success: function(data) {
                 //app.viewModel.scenarios.loadSelectionsFromServer();
                 app.viewModel.scenarios.addScenarioToMap(null, {uid: data[0].uid});
+                app.viewModel.scenarios.loadScenariosFromServer();
+                app.viewModel.scenarios.updateDesignsScrollBar();
             },
             error: function (result) {
                 console.log('error in scenarios.js: createCopyScenario');
@@ -1540,6 +1545,8 @@ function scenariosModel(options) {
         app.viewModel.layerIndex[collection.uid] = collectionViewModel;
       });
       self.collectionList.sort(self.alphabetizeByName);
+      app.viewModel.scenarios.loadDrawingsFromServer();
+      app.viewModel.scenarios.updateDesignsScrollBar();
     };
 
     self.loadLeaseblockLayer = function() {
