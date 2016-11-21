@@ -100,6 +100,10 @@ function drawingModel(options) {
         $.ajax({
             url: '/drawing/delete_design/' + drawing.uid + '/',
             type: 'POST',
+            success: function (result) {
+                app.viewModel.scenarios.loadScenariosFromServer();
+                app.viewModel.scenarios.loadCollectionsFromServer();
+            },
             error: function (result) {
                 console.log('error in drawing.js: deleteDrawing');
             }

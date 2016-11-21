@@ -698,7 +698,11 @@ function scenarioModel(options) {
         $.ajax({
             url: '/scenario/delete_design/' + scenario.uid + '/',
             type: 'POST',
-            error: function (result) {
+            success: function(result){
+              app.viewModel.scenarios.loadScenariosFromServer();
+              app.viewModel.scenarios.loadCollectionsFromServer();
+            },
+            error: function(result) {
                 console.log('error in scenarios.js: deleteScenario');
             }
         });
@@ -1614,6 +1618,7 @@ function scenariosModel(options) {
                 app.viewModel.scenarios.addScenarioToMap(null, {uid: data[data_index].uid});
             }
             self.associatedDrawing().temporarilySelectedScenarios.removeAll();
+            app.viewModel.scenarios.loadCollectionsFromServer();
         },
         error: function(result) {
           console.log('error in scenarios.js: submitAssociate');

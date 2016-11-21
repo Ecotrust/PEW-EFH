@@ -104,9 +104,27 @@ class Collection(FeatureCollection):
             'scenarios.models.Scenario'
         )
 
+    def summary_reports(self, attributes):
+        from itertools import chain
+        grid_cells = False
+        for feature in self.feature_set():
+            if grid_cells:
+                grid_cells = grid_cells | intersecting_cells(feature.geometry_orig)
+            else:
+                grid_cells = intersecting_cells(feature.geometry_orig)
+        if grid_cells:
+            get_summary_reports(grid_cells, attributes)
+
+    @property
+    def serialize_attributes(self):
+        attributes = []
+        if self.description:
+            attributes.append({'title': 'Description', 'data': self.description})
+        # attributes.append({'title': 'Area', 'data': '%s sq miles' %format_precision(self.area_in_sq_miles, 2)})
+        self.summary_reports(attributes)
+        return { 'event': 'click', 'attributes': attributes }
+
     def feature_set(self, recurse=False, feature_classes=None):
-        # import ipdb
-        # ipdb.set_trace()
         return super(Collection, self).feature_set(recurse, feature_classes)
 
     def save(self, rerun=True, *args, **kwargs):

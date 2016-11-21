@@ -206,7 +206,7 @@ def get_collections(request):
                 'uid': collection.uid,
                 'name': collection.name,
                 'description': collection.description,
-                # 'attributes': collection.serialize_attributes,
+                'attributes': collection.serialize_attributes,
                 'sharing_groups': sharing_groups
             })
 
