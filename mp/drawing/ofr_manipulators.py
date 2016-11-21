@@ -15,7 +15,8 @@ def clip_to_grid(geom):
 
 def intersecting_cells(geom):
     intersection = GridCell.objects.filter(centroid__intersects=geom)
-    if len(intersection) > 0:
-	       return intersection
-    else:
-	       return GridCell.objects.filter(geometry__intersects=geom)
+    return intersection
+    # if len(intersection) > 0:
+	#        return intersection
+    # else:
+	#        return GridCell.objects.filter(geometry__intersects=geom)
