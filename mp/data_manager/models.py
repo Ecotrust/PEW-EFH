@@ -23,10 +23,10 @@ class TOCTheme(models.Model):
     # order = models.IntegerField(default=0)
 
     def TOC(self):
-        #import pdb
-        #pdb.set_trace()
+        # import pdb
+        # pdb.set_trace()
         #return self.toc_set.all()[0]
-        return "\n".join([toc.name for toc in self.toc_set.all()])
+        return "\n".join([toc_theme_order.toc.name for toc_theme_order in self.tocthemeorder_set.all()])
 
     def __unicode__(self):
         return unicode('%s' % (self.name))
