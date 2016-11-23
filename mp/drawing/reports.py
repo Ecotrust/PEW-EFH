@@ -37,11 +37,11 @@ def get_value_count(grid_cells, field, value):
 
 
 def get_sum(grid_cells, field):
-    sum = 0
+    sum_val = 0
     for gc in grid_cells:
         if getattr(gc, field):
-            sum += getattr(gc, field)
-    return sum
+            sum_val += getattr(gc, field)
+    return sum_val
 
 
 def get_average(grid_cells, field):
@@ -50,6 +50,20 @@ def get_average(grid_cells, field):
         return 0
     sum = get_sum(grid_cells, field)
     return sum / cell_count
+
+def get_adjusted_average(grid_cells, field):
+    cell_count = grid_cells.count()
+    if cell_count == 0:
+        return 0
+    # sum = get_sum(grid_cells, field)
+    sum_val = 0
+    total_area = 0
+    for gc in grid_cells:
+        if getattr(gc, field):
+            cell_area = gc.geometry.area
+            sum_val += (getattr(gc, field) / cell_area)
+            total_area += cell_area
+    return (sum_val / cell_count) * total_area
 
 
 def get_unique_values(grid_cells, field):
@@ -60,6 +74,96 @@ def get_unique_values(grid_cells, field):
             values.append(value)
     return values
 
+
+def get_drawing_summary_reports(grid_cells, attributes):
+    if grid_cells.count() == 0:
+        return
+
+    # Number of Grid Cells
+    cell_count = grid_cells.count()
+    attributes.append({'title': 'Number of Grid Cells (drawing)', 'data': format(cell_count, ',d')})
+
+    # Total Area
+    total_area = sum([gc.geometry.area for gc in grid_cells])
+    attributes.append({'title': 'Total Area (Drawing)', 'data': str(format_precision(float(total_area) / 2590000.0, 0)) + ' sq mi'})
+
+    # Depth Range
+    min_depth = get_min(grid_cells, 'depth')
+    max_depth = get_max(grid_cells, 'depth')
+    depth_range = '%s to %s fathoms' % (format_precision(float(min_depth), 0), format_precision(float(max_depth), 0))
+    attributes.append({'title': 'Depth Range (Drawing)', 'data': depth_range})
+
+    # Mean Depth
+    title = 'Mean Depth (Drawing)'
+    mean_depth = get_adjusted_average(grid_cells, 'depth', total_area)
+    data = str(format_precision(float(mean_depth), 0)) + ' fathoms'
+    attributes.append({'title': title, 'data': data})
+
+    # Soft Substrate (Area)
+    title = 'Soft Substrate (Drawing)'
+    soft_sub_area = get_sum(grid_cells, 'sft_sub_m2')
+    data = str(format_precision(float(soft_sub_area) /  2590000.0, 0)) + ' sq mi'
+    attributes.append({'title': title, 'data': data})
+
+    # Mixed Substrate (Area)
+    title = 'Mixed Substrate (Drawing)'
+    mixed_sub_area = get_sum(grid_cells, 'mix_sub_m2')
+    data = str(format_precision(float(mixed_sub_area) /  2590000.0, 0)) + ' sq mi'
+    attributes.append({'title': title, 'data': data})
+
+    # Hard Substrate (Area)
+    title = 'Hard Substrate (Drawing)'
+    hard_sub_area = get_sum(grid_cells, 'hrd_sub_m2')
+    data = str(format_precision(float(hard_sub_area) /  2590000.0, 0)) + ' sq mi'
+    attributes.append({'title': title, 'data': data})
+
+    # Inferred Rocky Substrate (Area)
+    title = 'Inferred Rocky Substrate (Drawing)'
+    rock_sub_area = get_sum(grid_cells, 'rck_sub_m2')
+    data = str(format_precision(float(rock_sub_area) / 2590000.0, 0)) + ' sq mi'
+    attributes.append({'title': title, 'data': data})
+
+    # Class 1 Suitable Habitat (All)
+    title = 'Class 1 Suitable Habitat (All) (Drawing)'
+    hsall1_m2 = get_sum(grid_cells, 'hsall1_m2')
+    data = str(format_precision(float(hsall1_m2) / 2590000.0, 0)) + ' sq mi'
+    attributes.append({'title': title, 'data': data})
+
+    # Class 2 Suitable Habitat (All)
+    title = 'Class 2 Suitable Habitat (All) (Drawing)'
+    hsall2_m2 = get_sum(grid_cells, 'hsall2_m2')
+    data = str(format_precision(float(hsall2_m2) / 2590000.0, 0)) + ' sq mi'
+    attributes.append({'title': title, 'data': data})
+
+    # Class 3 Suitable Habitat (All)
+    title = 'Class 3 Suitable Habitat (All) (Drawing)'
+    hsall3_m2 = get_sum(grid_cells, 'hsall3_m2')
+    data = str(format_precision(float(hsall3_m2) / 2590000.0, 0)) + ' sq mi'
+    attributes.append({'title': title, 'data': data})
+
+    # Class 4 Suitable Habitat (All)
+    title = 'Class 4 Suitable Habitat (All) (Drawing)'
+    hsall4_m2 = get_sum(grid_cells, 'hsall4_m2')
+    data = str(format_precision(float(hsall4_m2) / 2590000.0, 0)) + ' sq mi'
+    attributes.append({'title': title, 'data': data})
+
+    # Class 1 Suitable Habitat (Scleractinia)
+    title = 'Class 1 Suitable Habitat (Scleractinia) (Drawing)'
+    hssclr1_m2 = get_sum(grid_cells, 'hssclr1_m2')
+    data = str(format_precision(float(hssclr1_m2) / 2590000.0, 0)) + ' sq mi'
+    attributes.append({'title': title, 'data': data})
+
+    # Class 2 Suitable Habitat (Scleractinia)
+    title = 'Class 2 Suitable Habitat (Scleractinia) (Drawing)'
+    hssclr2_m2 = get_sum(grid_cells, 'hssclr2_m2')
+    data = str(format_precision(float(hssclr2_m2) / 2590000.0, 0)) + ' sq mi'
+    attributes.append({'title': title, 'data': data})
+
+    # Class 3 Suitable Habitat (Scleractinia)
+    title = 'Class 3 Suitable Habitat (Scleractinia) (Drawing)'
+    hssclr3_m2 = get_sum(grid_cells, 'hssclr3_m2')
+    data = str(format_precision(float(hssclr3_m2) / 2590000.0, 0)) + ' sq mi'
+    attributes.append({'title': title, 'data': data})
 
 def get_summary_reports(grid_cells, attributes):
 
