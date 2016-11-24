@@ -1,4 +1,5 @@
 from general.utils import format_precision
+from decimal import Decimal
 
 
 def get_min(grid_cells, field):
@@ -55,15 +56,18 @@ def get_adjusted_average(grid_cells, field):
     cell_count = grid_cells.count()
     if cell_count == 0:
         return 0
-    # sum = get_sum(grid_cells, field)
-    sum_val = 0
-    total_area = 0
+    sum_val = Decimal(0)
+    total_area = Decimal(0)
     for gc in grid_cells:
-        if getattr(gc, field):
+        try:
             cell_area = gc.geometry.area
-            sum_val += (getattr(gc, field) / cell_area)
-            total_area += cell_area
-    return (sum_val / cell_count) * total_area
+            cell_val = getattr(gc, field)
+            sum_val += Decimal(cell_val * Decimal(cell_area))
+            total_area += Decimal(cell_area)
+        except:
+            # In case getattr fails
+            pass
+    return sum_val / total_area
 
 
 def get_unique_values(grid_cells, field):
@@ -95,7 +99,7 @@ def get_drawing_summary_reports(grid_cells, attributes):
 
     # Mean Depth
     title = 'Mean Depth (Drawing)'
-    mean_depth = get_adjusted_average(grid_cells, 'depth', total_area)
+    mean_depth = get_adjusted_average(grid_cells, 'depth')
     data = str(format_precision(float(mean_depth), 0)) + ' fathoms'
     attributes.append({'title': title, 'data': data})
 

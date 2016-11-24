@@ -5,7 +5,7 @@ from madrona.features.models import PolygonFeature, FeatureCollection, MultiPoly
 from madrona.common.utils import LargestPolyFromMulti, clean_geometry
 from general.utils import sq_meters_to_sq_miles, format_precision
 from ofr_manipulators import clip_to_grid, intersecting_cells
-from reports import get_summary_reports
+from reports import get_summary_reports, get_drawing_summary_reports
 import settings
 from django.contrib.gis.db.models import GeometryField, PointField, MultiPolygonField, GeoManager
 
@@ -40,10 +40,13 @@ class AOI(GeometryFeature):
         return sq_meters_to_sq_miles(self.geometry_final.area)
 
     def summary_reports(self, attributes):
+        from ofr_manipulators import intersecting_drawing_cells
         # Call get_summary_reports with intersecting Grid Cells
+        attributes.append({'title': 'Total Area (Drawn)', 'data': str(format_precision(float(self.geometry_orig.area) / 2590000.0, 0)) + ' sq mi'})
         grid_cells = intersecting_cells(self.geometry_orig)
         get_summary_reports(grid_cells, attributes)
-
+        drawing_grid_cells = intersecting_drawing_cells(self.geometry_orig)
+        get_drawing_summary_reports(drawing_grid_cells, attributes)
 
     @property
     def serialize_attributes(self):
@@ -62,9 +65,9 @@ class AOI(GeometryFeature):
     def outline_color(self):
         return '776BAEFD'
 
-    def clip_to_grid(self):
+    def clip_to_grid(self, drawing=False):
         geom = self.geometry_orig
-        clipped_shape = clip_to_grid(geom)
+        clipped_shape = clip_to_grid(geom, drawing)
         if clipped_shape:
             return LargestPolyFromMulti(clipped_shape)
         else:
@@ -76,6 +79,8 @@ class AOI(GeometryFeature):
         self.geometry_final = self.geometry_orig
         if self.geometry_final:
             self.geometry_final = clean_geometry(self.geometry_final)
+        #TODO: Remove this - we want to see orig, but here for drawing PUG testing
+        # self.geometry_final = self.clip_to_grid(True)
         super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
 
     class Options:
