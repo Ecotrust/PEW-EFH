@@ -1,0 +1,21 @@
+{
+  "gridcode": "gridcode",
+  "count_": "count",
+  "sq_mi": "sq_mi",
+  "subt1": "hrd_sub_m2",
+  "subt2": "mix_sub_m2",
+  "subt3": "sft_sub_m2",
+  "subt4": "rck_sub_m2",
+  "depth": "depth",
+  "all1": "hsall1_m2",
+  "all2": "hsall2_m2",
+  "all3": "hsall3_m2",
+  "all4": "hsall4_m2",
+  "sclr1": "hssclr1_m2",
+  "sclr2": "hssclr2_m2",
+  "sclr3": "hssclr3_m2",
+  "flag1": "flag1",
+  "shape_leng": "shape_length",
+  "shape_area": "shape_area",
+  "objectid": "unique_id"
+}
