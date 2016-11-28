@@ -7,7 +7,7 @@ thisdir=`dirname $BASH_SOURCE`
 
 # Variables that change frequently/on every import
 WORKING_DIR="/usr/local/apps/PEW-EFH/docs/layers/planning_unit_layers/drawing"
-SHP="$WORKING_DIR/PU_EFH_Metrics.shp"
+SHP="$WORKING_DIR/PU_EFH_Metrics2.shp"
 FINAL="$WORKING_DIR/PU_EFH_Metrics.sql"
 
 ################################################################################

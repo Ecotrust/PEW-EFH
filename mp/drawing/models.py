@@ -139,17 +139,15 @@ class Collection(FeatureCollection):
 class GridCell(models.Model):
 
     gridcode = models.IntegerField(null=True, blank=True)
-    #TODO: Of what?
-    count = models.IntegerField(null=True, blank=True)
     sq_mi = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
-    #TODO: What unit?
+    # Substrate unit: sq miles
     hrd_sub_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
     mix_sub_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
     sft_sub_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
     rck_sub_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
-    #TODO: mean, min, or max? Unit?
+    # Technically this is the depth of the centroid of the unit, but small enough to treat planning units as discrete
     depth = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
-    #TODO: Unit?
+    # PHS unit: sq miles
     hsall1_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
     hsall2_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
     hsall3_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
@@ -157,11 +155,6 @@ class GridCell(models.Model):
     hssclr1_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
     hssclr2_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
     hssclr3_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
-    #TODO: What is this?
-    flag1 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
-    shape_length = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
-    #TODO: Unit?
-    shape_area = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
     unique_id = models.IntegerField(null=True, blank=True)
 
     centroid = PointField(
