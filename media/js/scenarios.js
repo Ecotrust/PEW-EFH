@@ -558,12 +558,10 @@ function scenarioModel(options) {
     self.type = 'Vector';
 
     self.opacity.subscribe( function(newOpacity) {
-        if ( self.layer ) {
+        if ( self.hasOwnProperty('layer') ) {
             self.layer.styleMap.styles['default'].defaultStyle.strokeOpacity = newOpacity;
             self.layer.styleMap.styles['default'].defaultStyle.fillOpacity = newOpacity;
             self.layer.redraw();
-        } else {
-            console.log('error in scenarios.js: self.opacity.subscribe');
         }
     });
 

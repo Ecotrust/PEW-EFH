@@ -32,17 +32,25 @@ class AOI(GeometryFeature):
     description = models.TextField(null=True,blank=True)
 
     @property
+    def true_area_m2(self):
+        return self.geometry_orig.transform(2163, clone=True).area
+
+    @property
+    def true_area_final_m2(self):
+        return self.geometry_final.transform(2163, clone=True).area
+
+    @property
     def formatted_area(self):
         return int((self.area_in_sq_miles * 10) +.5) / 10.
 
     @property
     def area_in_sq_miles(self):
-        return sq_meters_to_sq_miles(self.geometry_final.area)
+        return sq_meters_to_sq_miles(self.true_area_final_m2)
 
     def summary_reports(self, attributes):
         from ofr_manipulators import intersecting_drawing_cells
         # Call get_summary_reports with intersecting Grid Cells
-        attributes.append({'title': 'Total Area (Drawn)', 'data': str(format_precision(float(self.geometry_orig.area) / 2590000.0, 0)) + ' sq mi'})
+        attributes.append({'title': 'Total Area', 'data': str(format_precision(float(self.true_area_m2) / 2590000.0, 0)) + ' sq mi'})
         grid_cells = intersecting_cells(self.geometry_orig)
         get_summary_reports(grid_cells, attributes)
         drawing_grid_cells = intersecting_drawing_cells(self.geometry_orig)
@@ -53,7 +61,6 @@ class AOI(GeometryFeature):
         attributes = []
         if self.description:
             attributes.append({'title': 'Description', 'data': self.description})
-        # attributes.append({'title': 'Area', 'data': '%s sq miles' %format_precision(self.area_in_sq_miles, 2)})
         self.summary_reports(attributes)
         return { 'event': 'click', 'attributes': attributes }
 
@@ -76,9 +83,11 @@ class AOI(GeometryFeature):
     def save(self, *args, **kwargs):
         # TODO Toggle clipping drawings to grid in settings
         # self.geometry_final = self.clip_to_grid()
+
         self.geometry_final = self.geometry_orig
         if self.geometry_final:
             self.geometry_final = clean_geometry(self.geometry_final)
+
         #TODO: Remove this - we want to see orig, but here for drawing PUG testing
         # self.geometry_final = self.clip_to_grid(True)
         super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
@@ -110,22 +119,33 @@ class Collection(FeatureCollection):
         )
 
     def summary_reports(self, attributes):
-        from itertools import chain
+        from ofr_manipulators import intersecting_drawing_cells
         grid_cells = False
+        drawing_grid_cells = False
+        total_area= 0
         for feature in self.feature_set():
+            total_area += feature.true_area_m2
+            # TODO: can we tune this by just calling each feature's `summary_reports` method?
             if grid_cells:
                 grid_cells = grid_cells | intersecting_cells(feature.geometry_orig)
             else:
                 grid_cells = intersecting_cells(feature.geometry_orig)
+            if drawing_grid_cells:
+                drawing_grid_cells = drawing_grid_cells | intersecting_drawing_cells(feature.geometry_orig)
+            else:
+                drawing_grid_cells = intersecting_drawing_cells(feature.geometry_orig)
+        attributes.append({'title': 'Total Area', 'data': str(format_precision(float(total_area) / 2590000.0, 0)) + ' sq mi'})
         if grid_cells:
             get_summary_reports(grid_cells, attributes)
+        if drawing_grid_cells:
+            get_drawing_summary_reports(drawing_grid_cells, attributes)
 
     @property
     def serialize_attributes(self):
         attributes = []
         if self.description:
             attributes.append({'title': 'Description', 'data': self.description})
-        # attributes.append({'title': 'Area', 'data': '%s sq miles' %format_precision(self.area_in_sq_miles, 2)})
+
         self.summary_reports(attributes)
         return { 'event': 'click', 'attributes': attributes }
 
