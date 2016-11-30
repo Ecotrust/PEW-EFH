@@ -536,15 +536,15 @@ class ScenarioForm(FeatureForm):
         super(FeatureForm, self).clean()
         try:
             if 'hsall_m2_checkboxes' not in self.cleaned_data.keys() and self.cleaned_data['hsall_m2'] == True:
-                checkdata = self.data['hsall_m2_checkboxes']
-                if type(eval(checkdata)) == list:
-                    checklist = [eval(x) for x in eval(checkdata)]
-                    valid = True
-                    for checkitem in checklist:
-                        if checkitem not in [1,2,3,4]:
-                            valid = False
-                    if valid:
-                        self.cleaned_data['hsall_m2_checkboxes'] = self.data['hsall_m2_checkboxes']
+                checkdata = self.data.getlist('hsall_m2_checkboxes')
+                checklist = False
+                for box in checkdata:
+                    if not box == 'False':
+                        checklist = True
+                        self.cleaned_data['hsall_m2_checkboxes'] = unicode([unicode(x) for x in box.split(',')])
+
+                if not checklist:
+                    self.data.__delitem__('hsall_m2_checkboxes')
         except Exception as e:
             print(e)
             pass

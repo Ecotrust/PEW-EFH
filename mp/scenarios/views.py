@@ -423,6 +423,8 @@ def run_filter_query(filters):
             query = query.exclude(rck_sub_m2__gt=0)
 
     if 'hsall_m2' in filters.keys() and filters['hsall_m2'] and 'hsall_m2_checkboxes' in filters.keys():
+        if type(filters['hsall_m2_checkboxes']) == unicode and '[' in filters['hsall_m2_checkboxes'] and type(eval(filters['hsall_m2_checkboxes'])) == list:
+            filters['hsall_m2_checkboxes'] = eval(filters['hsall_m2_checkboxes'])
         if type(filters['hsall_m2_checkboxes']) is list:
             # save and filter submissions are handled differently since
             # not all of these fields exist on the model.
@@ -576,17 +578,3 @@ def get_leaseblocks(request):
             'coral_size': grid_cell.coral_size
         })
     return HttpResponse(dumps(json))
-
-def form_resources(request, uid=None):
-    from madrona.features.views import form_resources as madrona_form_resources
-    from scenarios.models import Scenario
-    if request.method == 'POST':
-        checkbox_val = request.POST.getlist('hsall_m2_checkboxes')
-        if request.POST['hsall_m2'] == 'True':
-            if len(checkbox_val) == 1 and ',' in checkbox_val[0]:
-                checkbox_val = checkbox_val[0].split(',')
-            request.POST['hsall_m2_checkboxes'] = unicode([unicode(x) for x in checkbox_val if not x == 'False'])
-        else:
-            request.POST.__delitem__('hsall_m2_checkboxes')
-
-    return madrona_form_resources(request, Scenario, uid)

@@ -49,7 +49,6 @@ urlpatterns = patterns('',
                                {"document_root": settings.ADMIN_MEDIA_PATH}),
                         #Some dirty form hacks.
                        (r'^features/collection/form/$', drawing.views.form_resources),
-                       (r'^features/scenario/form/$', scenarios.views.form_resources),
                        (r'', include('madrona.common.urls')),
                        )
 
