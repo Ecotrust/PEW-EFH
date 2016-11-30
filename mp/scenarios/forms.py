@@ -525,6 +525,31 @@ class ScenarioForm(FeatureForm):
             fields.append(group)
         return fields
 
+    def is_valid(self, *args, **kwargs):
+        # validation fails because what the model expects, what the form expects, and how we manage these values do not match.
+        if len(self.errors.keys()) == 1 and self.errors.keys()[0] == 'hsall_m2_checkboxes' and len(self.errors['hsall_m2_checkboxes']) == 1 and 'is not one of the available choices.' in self.errors['hsall_m2_checkboxes'][0]:
+            del self._errors['hsall_m2_checkboxes']
+        return super(FeatureForm, self).is_valid()
+
+    def clean(self):
+
+        super(FeatureForm, self).clean()
+        try:
+            if 'hsall_m2_checkboxes' not in self.cleaned_data.keys() and self.cleaned_data['hsall_m2'] == True:
+                checkdata = self.data['hsall_m2_checkboxes']
+                if type(eval(checkdata)) == list:
+                    checklist = [eval(x) for x in eval(checkdata)]
+                    valid = True
+                    for checkitem in checklist:
+                        if checkitem not in [1,2,3,4]:
+                            valid = False
+                    if valid:
+                        self.cleaned_data['hsall_m2_checkboxes'] = self.data['hsall_m2_checkboxes']
+        except Exception as e:
+            print(e)
+            pass
+        return self.cleaned_data
+
     def save(self, commit=True):
         inst = super(FeatureForm, self).save(commit=False)
         if self.data.get('clear_support_file'):

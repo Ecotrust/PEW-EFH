@@ -576,3 +576,17 @@ def get_leaseblocks(request):
             'coral_size': grid_cell.coral_size
         })
     return HttpResponse(dumps(json))
+
+def form_resources(request, uid=None):
+    from madrona.features.views import form_resources as madrona_form_resources
+    from scenarios.models import Scenario
+    if request.method == 'POST':
+        checkbox_val = request.POST.getlist('hsall_m2_checkboxes')
+        if request.POST['hsall_m2'] == 'True':
+            if len(checkbox_val) == 1 and ',' in checkbox_val[0]:
+                checkbox_val = checkbox_val[0].split(',')
+            request.POST['hsall_m2_checkboxes'] = unicode([unicode(x) for x in checkbox_val if not x == 'False'])
+        else:
+            request.POST.__delitem__('hsall_m2_checkboxes')
+
+    return madrona_form_resources(request, Scenario, uid)
