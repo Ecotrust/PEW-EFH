@@ -238,7 +238,7 @@ li label {
     margin-bottom: 0px;
 }
 .parameters .accordion {
-    margin-bottom: 0px;
+    margin-bottom: 0px !important;
 }
 form ul.parameters {
     list-style-type: none;

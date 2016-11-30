@@ -651,6 +651,7 @@ function scenarioModel(options) {
 
                 app.viewModel.scenarios.loadScenariosFromServer();
                 app.viewModel.scenarios.updateDesignsScrollBar();
+                window.dispatchEvent(new Event('resize'));
 
                 // model.updateFiltersAndLeaseBlocks();
             },
