@@ -336,6 +336,35 @@ def associate_scenario(request):
     return HttpResponse(dumps(json), status=200)
 
 
+def compare_scenario(request):
+    from drawing.models import Collection
+    collection_list = request.POST.getlist('collections[]')
+    if len(collection_list) > 0:
+        collections = []
+        for collection in collection_list:
+            if 'drawing_collection' in collection:
+                collections.append(get_feature_by_uid(collection))
+            else:
+                return HttpResponse("Invalid %s given: %s" % (settings.COLLECTION_NAME,str(collection_list)), status=500)
+    else:
+        return HttpResponse("No %s given" % settings.COLLECTION_NAME, status=500)
+
+    try:
+        json = []
+        report_dict = {}
+        for collection in collections:
+            attributes = collection.serialize_attributes['attributes']
+            #TODO: read attribute list into dict for CSV writer
+            report_dict[collection.uid] = {
+                'name': collection.name,
+                'attributes': attributes
+            }
+        json.append(report_dict)
+    except:
+        return HttpResponse("Failed to compare scenarios.", status=500)
+
+    return HttpResponse(dumps(json), status=200)
+
 '''
 '''
 

@@ -109,6 +109,7 @@ function drawingModel(options) {
             }
         });
     };
+
 }
 
 function polygonFormModel(options) {

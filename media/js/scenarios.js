@@ -768,7 +768,17 @@ function scenarioModel(options) {
     return self;
 } // end scenarioModel
 
+/*
+--Scenarios Model
+-- This model manages a vast majority of the 'designs' tab.
+-- These functions are for manipulating scenarios, drawings, and collections.
+-- This is where a good share of the business logic for related modals is
+-- contained as well.
 
+-- This may have also been a bad design decision trying to treat collections
+-- with the name 'sceanarios' even though there's a viewModel for collections
+-- already in drawings.js.
+*/
 function scenariosModel(options) {
     var self = this;
 
@@ -886,8 +896,12 @@ function scenariosModel(options) {
     };
 
     self.toggleScenario = function(obj) {
-      var scenarioId = obj.uid,
-          indexOf = self.associatedDrawing().temporarilySelectedScenarios.indexOf(scenarioId);
+      var scenarioId = obj.uid;
+      if (self.associatedDrawing()) {
+          var indexOf = self.associatedDrawing().temporarilySelectedScenarios.indexOf(scenarioId);
+      } else {
+          var indexOf = -1;
+      }
       if ( indexOf === -1 ) {  //add group to list
           self.associatedDrawing().temporarilySelectedScenarios.push(scenarioId);
       } else { //remove group from list
@@ -898,6 +912,35 @@ function scenariosModel(options) {
     self.scenarioIsSelected = function(scenarioId) {
         if(self.associatedDrawing()) {
             var indexOf = self.associatedDrawing().temporarilySelectedScenarios.indexOf(scenarioId);
+            return indexOf !== -1;
+        }
+        return false;
+    }
+
+    self.comparisonCollection = ko.observable();
+    self.showComparisonModal = function(collection){
+        self.comparisonCollection(collection);
+        self.comparisonCollection().temporarilySelectedScenarios(self.comparisonCollection().selectedScenarios().slice(0));
+        $('#collection-compare-modal').modal('show');
+    };
+
+    self.toggleCompareScenario = function(obj) {
+      var scenarioId = obj.uid;
+      if (self.comparisonCollection()) {
+          var indexOf = self.comparisonCollection().temporarilySelectedScenarios.indexOf(scenarioId);
+      } else {
+          var indexOf = -1;
+      }
+      if ( indexOf === -1 ) {  //add group to list
+          self.comparisonCollection().temporarilySelectedScenarios.push(scenarioId);
+      } else { //remove group from list
+          self.comparisonCollection().temporarilySelectedScenarios.splice(indexOf, 1);
+      }
+    }
+
+    self.compareScenarioIsSelected = function(scenarioId) {
+        if(self.comparisonCollection()) {
+            var indexOf = self.comparisonCollection().temporarilySelectedScenarios.indexOf(scenarioId);
             return indexOf !== -1;
         }
         return false;
@@ -1632,6 +1675,34 @@ function scenariosModel(options) {
           self.associatedDrawing().temporarilySelectedScenarios.removeAll();
         }
       });
+      self.associatedDrawing().temporarilySelectedScenarios.removeAll();
+    };
+
+    self.cancelCompare = function() {
+      self.comparisonCollection().temporarilySelectedScenarios.removeAll();
+    };
+
+    self.submitCompare = function() {
+      console.log('submit compare!');
+      self.comparisonCollection().selectedScenarios(self.comparisonCollection().temporarilySelectedScenarios().slice(0));
+      var data = {
+        'scenario': self.comparisonCollection().uid,
+        'collections': self.comparisonCollection().selectedScenarios()
+      };
+      $.ajax( {
+        url: '/scenario/compare_scenario',
+        data: data,
+        type: 'POST',
+        dataType: 'json',
+        success: function(data) {
+          window.alert(JSON.stringify(data[0]));
+        },
+        error: function(result) {
+          console.log('error in scenarios.js: submitCompare');
+          window.alert(result.responseText);
+        }
+      });
+      self.comparisonCollection().temporarilySelectedScenarios.removeAll();
     };
 
     self.loadDesigns = function() {

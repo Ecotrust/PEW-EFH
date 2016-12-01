@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     url(r'get_leaseblock_features$', get_leaseblock_features),
     url(r'get_filter_count$', get_filter_count),
     url(r'get_filter_results$', get_filter_results),
-    url(r'associate_scenario$', associate_scenario)
+    url(r'associate_scenario$', associate_scenario),
+    url(r'compare_scenario$', compare_scenario)
 )

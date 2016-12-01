@@ -175,9 +175,9 @@
                                                         <li><a data-bind="click: app.viewModel.scenarios.zoomToScenario">Zoom To</a></li>
                                                         <li><a data-bind="click: createCopyDrawing">Copy</a></li>
                                                         <li><a data-bind="click: app.viewModel.scenarios.showAssociationModal">Add To Scenario</a></li>
+                                                        <li><a data-bind="visible: shared, click: createCopyDrawing">Create Copy</a></li>
                                                         <li class="divider"></li>
                                                         <li><a data-bind="visible: ! shared(), click: deleteDrawing">Delete</a></li>
-                                                        <li><a data-bind="visible: shared, click: createCopyDrawing">Create Copy</a></li>
                                                     </ul>
                                                 </div>
                                             </li>
@@ -243,9 +243,10 @@
                                                         <li><a data-bind="visible: ! shared(), click: editCollection">Edit</a></li>
                                                         <li><a data-bind="attr:{id:$parent.tocid+'-share-option'}, visible: ! shared() && app.viewModel.scenarios.hasSharingGroups, click: app.viewModel.scenarios.showSharingModal" class="share-option">Share</a></li>
                                                         <li><a data-bind="click: $data.zoomToScenario">Zoom To</a></li>
+                                                        <li><a data-bind="click: $data.createCopyCollection">Create Copy</a></li>
+                                                        <li><a data-bind="click: app.viewModel.scenarios.showComparisonModal">Compare</a></li>
                                                         <li class="divider"></li>
                                                         <li><a data-bind="visible: ! shared(), click: deleteCollection">Delete</a></li>
-                                                        <li><a data-bind="click: $data.createCopyCollection">Create Copy</a></li>
                                                     </ul>
                                                     <!-- style="height: 20px; padding: 4px 12px; border-left-width: 0px" -->
                                                 </div>
