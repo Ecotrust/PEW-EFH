@@ -185,7 +185,7 @@ def copy_collection(request, uid):
         from scenarios.views import copy_design
         for original_feature in original_collection.feature_set():
             copy_design(request, original_feature.uid, copy)
-        return HttpResponse(dumps(copy), status=200)
+        return HttpResponse(dumps({'success':True, 'copy_id': copy.id, 'copy_uid': copy.uid}), status=200)
     except:
         return HttpResponse('Failed to create collection copy.', status=500)
 

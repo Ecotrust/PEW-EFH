@@ -423,14 +423,15 @@ function collectionModel(options) {
           type: 'POST',
           dataType: 'json',
           success: function(data) {
-              // app.viewModel.scenarios.addScenarioToMap(null, {uid: data[0].uid});
+              app.viewModel.scenarios.loadCollectionsFromServer();
+              app.viewModel.scenarios.addScenarioToMap(null, {uid: data.copy_uid});
           },
           error: function (result) {
               console.log('error in drawing.js: createCopyCollection');
           }
       });
-      features = collection.layer.features;
       // TODO: Open 'edit' view of new collection.
+      // features = collection.layer.features;
     };
 
 
