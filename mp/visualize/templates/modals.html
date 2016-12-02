@@ -279,3 +279,30 @@
         <button type="submit" class="btn-submit btn" data-bind="click: submitCompare" data-dismiss="modal">Compare</button>
     </div>
 </div>
+
+<div id="compare-report-modal" class="modal hide fade" data-bind="with: app.viewModel.scenarios">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Scenario Comparison</h3>
+    </div>
+    <div class="modal-body" style="height: 60vh; text-align: left;">
+        <div class="row-fluid">
+            <table class='comparison-table'>
+              <tbody data-bind="foreach: app.viewModel.scenarios.comparisonReport()">
+                <tr data-bind="foreach: $data">
+                  <!-- ko if: $parentContext.$index()==0 -->
+                  <th data-bind="text:$data" class="collection-report-cell">data cell</th>
+                  <!-- /ko -->
+                  <!-- ko if: $parentContext.$index()!=0 -->
+                  <td data-bind="text:$data" class="collection-report-cell">data cell</td>
+                  <!-- /ko -->
+                </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button href="#" class="btn" data-bind="click: cancelCompare" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn-submit btn" data-bind="click: download_comparison" data-dismiss="modal">Download</button>
+    </div>
+</div>

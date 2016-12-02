@@ -1051,6 +1051,23 @@ body.borderless #map-wrapper {
       z-index: 2020;
 }
 
+/** compare collection report table **/
+td.collection-report-cell {
+    border: solid 1px #CCC;
+    padding: 5px;
+}
+
+th.collection-report-cell {
+    background-color: #DDD;
+    border: solid 1px #444;
+    font-weight: bold;
+    padding: 5px;
+}
+
+th.collection-report-cell:first-letter {
+  text-transform: capitalize;
+}
+
 /*** RESPONSIVE DESIGN ***/
 
 @media (max-width: 767px) {

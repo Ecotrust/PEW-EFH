@@ -336,7 +336,7 @@ def associate_scenario(request):
     return HttpResponse(dumps(json), status=200)
 
 
-def compare_scenario(request):
+def compare_scenario(request,raw=False):
     from drawing.models import Collection
     collection_list = request.POST.getlist('collections[]')
     if len(collection_list) > 0:
@@ -351,18 +351,33 @@ def compare_scenario(request):
 
     try:
         json = []
-        report_dict = {}
-        for collection in collections:
-            attributes = collection.serialize_attributes['attributes']
-            #TODO: read attribute list into dict for CSV writer
-            report_dict[collection.uid] = {
-                'name': collection.name,
-                'attributes': attributes
-            }
+        json.append(settings.COMPARISON_FIELD_LIST)
+        report_dict = compile_comparison_dict(collections)
         json.append(report_dict)
     except:
         return HttpResponse("Failed to compare scenarios.", status=500)
 
+    if raw:
+        return json
+    return HttpResponse(dumps(json), status=200)
+
+
+def compile_comparison_dict(collections):
+    report_dict = {}
+    for collection in collections:
+        report_dict[collection.uid] = {
+            'name': collection.name
+        }
+        attributes = collection.serialize_attributes['attributes']
+        for attribute in attributes:
+            report_dict[collection.uid][attribute['title']] = attribute['data']
+    return report_dict
+
+def download_comparison(request):
+    json = compare_scenario(request,True)
+    attr_list = json[0]
+    data = json[1]
+    #return csv
     return HttpResponse(dumps(json), status=200)
 
 '''

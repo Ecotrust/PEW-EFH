@@ -946,6 +946,27 @@ function scenariosModel(options) {
         return false;
     }
 
+    self.comparisonReport = ko.observableArray();
+    self.comparisonReportCollections = ko.observableArray();
+    self.comparisonReportValues = ko.observableArray();
+    self.showComparisonReportModal = function(array,data) {
+      self.comparisonReportCollections(Object.getOwnPropertyNames(data));
+      self.comparisonReportValues(array);
+      var data_array = [];
+      for (var i=0; i < self.comparisonReportValues().length; i++) {
+        var key = self.comparisonReportValues()[i];
+        var row = [key];
+        for (var j=0; j < self.comparisonReportCollections().length; j++) {
+          collection_name = self.comparisonReportCollections()[j];
+          collection_object = data[collection_name]
+          row.push(collection_object[key]);
+        }
+        data_array.push(row);
+      }
+      self.comparisonReport(data_array);
+      $('#compare-report-modal').modal('show');
+    };
+
     self.zoomToScenario = function(scenario) {
         if (scenario.layer) {
             var layer = scenario.layer;
@@ -1695,10 +1716,34 @@ function scenariosModel(options) {
         type: 'POST',
         dataType: 'json',
         success: function(data) {
-          window.alert(JSON.stringify(data[0]));
+          attr_list = data[0];
+          report_data = data[1];
+          app.viewModel.scenarios.showComparisonReportModal(attr_list,report_data);
         },
         error: function(result) {
           console.log('error in scenarios.js: submitCompare');
+          window.alert(result.responseText);
+        }
+      });
+    };
+
+    self.download_comparison = function() {
+      console.log('download compare!');
+      //TODO: how to get same vals as submitCompare?
+      var data = {
+        'scenario': self.comparisonCollection().uid,
+        'collections': self.comparisonCollection().selectedScenarios()
+      };
+      $.ajax( {
+        url: '/scenario/download_comparison',
+        data: data,
+        type: 'POST',
+        dataType: 'json',
+        success: function(data) {
+          console.log('comparison download success');
+        },
+        error: function(result) {
+          console.log('error in scenarios.js: download_comparison');
           window.alert(result.responseText);
         }
       });

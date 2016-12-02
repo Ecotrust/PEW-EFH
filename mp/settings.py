@@ -173,6 +173,25 @@ LOGGING = {
 SCENARIO_NAME = 'Drawing'
 COLLECTION_NAME = 'Scenario'  #Confusing choice, I know. RDH
 
+COMPARISON_FIELD_LIST = [
+    "name",
+    "Description",
+    "Total Area",
+    "Depth Range",
+    "Mean Depth",
+    "Soft",
+    "Mixed",
+    "Hard",
+    "Inferred Rock",
+    "PHS 1 for all coral and sponges",
+    "PHS 2 for all coral and sponges",
+    "PHS 3 for all coral and sponges",
+    "PHS 4 for all coral and sponges",
+    "PHS 1 for Scleractinia coral",
+    "PHS 2 for Scleractinia coral",
+    "PHS 3 for Scleractinia coral"
+]
+
 import logging
 logging.getLogger('django.db.backends').setLevel(logging.ERROR)
 
