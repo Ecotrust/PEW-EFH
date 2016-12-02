@@ -192,6 +192,9 @@ COMPARISON_FIELD_LIST = [
     "PHS 3 for Scleractinia coral"
 ]
 
+CSV_URL = '/media/csvs/'
+CSV_DIR = './mediaroot/csvs/'
+
 import logging
 logging.getLogger('django.db.backends').setLevel(logging.ERROR)
 

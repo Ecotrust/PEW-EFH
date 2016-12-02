@@ -336,7 +336,7 @@ def associate_scenario(request):
     return HttpResponse(dumps(json), status=200)
 
 
-def compare_scenario(request,raw=False):
+def compare_scenario(request):
     from drawing.models import Collection
     collection_list = request.POST.getlist('collections[]')
     if len(collection_list) > 0:
@@ -357,8 +357,8 @@ def compare_scenario(request,raw=False):
     except:
         return HttpResponse("Failed to compare scenarios.", status=500)
 
-    if raw:
-        return json
+    download_link = get_comparison_download_link(json)
+    json.append(download_link)
     return HttpResponse(dumps(json), status=200)
 
 
@@ -373,12 +373,25 @@ def compile_comparison_dict(collections):
             report_dict[collection.uid][attribute['title']] = attribute['data']
     return report_dict
 
-def download_comparison(request):
-    json = compare_scenario(request,True)
+def get_comparison_download_link(json):
+    import csv, time
+    from slugify import slugify
     attr_list = json[0]
     data = json[1]
-    #return csv
-    return HttpResponse(dumps(json), status=200)
+    uids = data.keys()
+    names = [data[x][settings.COMPARISON_FIELD_LIST[0]] for x in uids]
+    filename = '%s_comparison_%s.csv' % (slugify('_'.join(names)), str(time.time()))
+    try:
+        csv_file = open('%s%s' % (settings.CSV_DIR,filename), 'w')
+    except Exception as e:
+        import ipdb
+        ipdb.set_trace()
+    writer = csv.DictWriter(csv_file, fieldnames=settings.COMPARISON_FIELD_LIST)
+    writer.writeheader()
+    for uid in uids:
+        writer.writerow(data[uid])
+    csv_file.close()
+    return '%s%s' % (settings.CSV_URL,filename)
 
 '''
 '''

@@ -949,9 +949,11 @@ function scenariosModel(options) {
     self.comparisonReport = ko.observableArray();
     self.comparisonReportCollections = ko.observableArray();
     self.comparisonReportValues = ko.observableArray();
-    self.showComparisonReportModal = function(array,data) {
+    self.comparisonDownloadLink = ko.observable();
+    self.showComparisonReportModal = function(array,data,download_link) {
       self.comparisonReportCollections(Object.getOwnPropertyNames(data));
       self.comparisonReportValues(array);
+      self.comparisonDownloadLink(download_link);
       var data_array = [];
       for (var i=0; i < self.comparisonReportValues().length; i++) {
         var key = self.comparisonReportValues()[i];
@@ -1718,36 +1720,14 @@ function scenariosModel(options) {
         success: function(data) {
           attr_list = data[0];
           report_data = data[1];
-          app.viewModel.scenarios.showComparisonReportModal(attr_list,report_data);
+          download_link = data[2];
+          app.viewModel.scenarios.showComparisonReportModal(attr_list,report_data,download_link);
         },
         error: function(result) {
           console.log('error in scenarios.js: submitCompare');
           window.alert(result.responseText);
         }
       });
-    };
-
-    self.download_comparison = function() {
-      console.log('download compare!');
-      //TODO: how to get same vals as submitCompare?
-      var data = {
-        'scenario': self.comparisonCollection().uid,
-        'collections': self.comparisonCollection().selectedScenarios()
-      };
-      $.ajax( {
-        url: '/scenario/download_comparison',
-        data: data,
-        type: 'POST',
-        dataType: 'json',
-        success: function(data) {
-          console.log('comparison download success');
-        },
-        error: function(result) {
-          console.log('error in scenarios.js: download_comparison');
-          window.alert(result.responseText);
-        }
-      });
-      self.comparisonCollection().temporarilySelectedScenarios.removeAll();
     };
 
     self.loadDesigns = function() {
