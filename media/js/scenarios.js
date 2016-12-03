@@ -514,8 +514,8 @@ function scenarioModel(options) {
 
     self.isLayerModel = ko.observable(false);
 
-    self.attributes = [];
-    self.scenarioAttributes = options.attributes ? options.attributes.attributes : [];
+    self.attributes = ko.observable([]);
+    self.scenarioAttributes = ko.observable(options.attributes ? options.attributes.attributes : []);
 
     self.showingLayerAttribution = ko.observable(true);
     self.toggleLayerAttribution = function() {
@@ -533,15 +533,13 @@ function scenarioModel(options) {
 
     //self.overview = self.description || 'no description was provided';
     self.constructInfoText = function() {
-        var attrs = self.scenarioAttributes,
+        var attrs = self.scenarioAttributes(),
             output = '';
 
-        for (var i=0; i< attrs.length; i++) {
-            // if (attrs[i].title === 'Description') {
-            //     output += attrs[i].data + '\n';
-            // } else {
+        if (attrs){
+            for (var i=0; i< attrs.length; i++) {
                 output += attrs[i].title + ': ' + attrs[i].data + '\n';
-            // }
+            }
         }
         return output;
     };
@@ -735,6 +733,9 @@ function scenarioModel(options) {
     app.viewModel.showOverview.subscribe( function() {
         if ( app.viewModel.showOverview() === false ) {
             self.infoActive(false);
+        } else {
+          console.log('show overview');
+          app.viewModel.scenarios.getAttributes(self.uid);
         }
     });
 
@@ -1390,7 +1391,11 @@ function scenariosModel(options) {
                         type: 'GET',
                         dataType: 'json',
                         success: function(result) {
-                            scenario.scenarioAttributes = result.attributes;
+                            if (scenario) {
+                              //TODO: figure out when and why this wouldn't have a scenario (on creating empty collection)
+                              //    and adjust if necessary
+                              scenario.scenarioAttributes(result.attributes);
+                            }
                         },
                         error: function (result) {
                             console.log('error in scenarios.js: addScenarioToMap (get_attributes scenarioId)');
@@ -1532,6 +1537,7 @@ function scenariosModel(options) {
             });
             self.scenarioList.push(scenarioViewModel);
             app.viewModel.layerIndex[scenario.uid] = scenarioViewModel;
+            // self.getAttributes(scenario.uid);
         });
         self.scenarioList.sort(self.alphabetizeByName);
     };
@@ -1570,6 +1576,7 @@ function scenariosModel(options) {
             });
             self.drawingList.push(drawingViewModel);
             app.viewModel.layerIndex[drawing.uid] = drawingViewModel;
+            // self.getAttributes(drawing.uid);
         });
         self.drawingList.sort(self.alphabetizeByName);
     };
@@ -1600,7 +1607,7 @@ function scenariosModel(options) {
           name: collection.name,
           display_name: collection.display_name?collection.display_name:collection.name,
           description: collection.description,
-          attributes: collection.attributes,
+          attributes:  collection.attributes,
           shared: collection.shared,
           sharedByUsername: collection.shared_by_username,
           sharedByName: collection.shared_by_name,
@@ -1608,10 +1615,28 @@ function scenariosModel(options) {
         });
         self.collectionList.push(collectionViewModel);
         app.viewModel.layerIndex[collection.uid] = collectionViewModel;
+        // self.getAttributes(collection.uid);
       });
       self.collectionList.sort(self.alphabetizeByName);
       app.viewModel.scenarios.loadDrawingsFromServer();
       app.viewModel.scenarios.updateDesignsScrollBar();
+    };
+
+    self.getAttributes = function(uid) {
+      uid = uid;
+      $.ajax({
+        url: '/drawing/get_attributes/' + uid,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data){
+          app.viewModel.layerIndex[uid].attributes(data);
+          app.viewModel.layerIndex[uid].scenarioAttributes(data.attributes);
+        },
+        error: function(response){
+          console.log('error in scenarios.js: getAttributes');
+          window.alert(response.responseText);
+        }
+      });
     };
 
     self.loadLeaseblockLayer = function() {

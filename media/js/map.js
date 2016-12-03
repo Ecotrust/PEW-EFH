@@ -282,8 +282,8 @@ app.init = function() {
                 title = layer.name;
 
             //TODO - populate for collections as well as standalone drawings
-            if (layer.scenarioAttributes && layer.scenarioAttributes.length) {
-                attrs = layer.scenarioAttributes;
+            if (layer.scenarioAttributes() && layer.scenarioAttributes().length) {
+                attrs = layer.scenarioAttributes();
                 for (var i = 0; i < attrs.length; i++) {
                     text.push({
                         'display': attrs[i].title,

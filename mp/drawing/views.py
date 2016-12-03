@@ -31,7 +31,8 @@ def get_drawings(request):
                 'name': drawing.name,
                 'display_name': display_name,
                 'description': drawing.description,
-                'attributes': drawing.serialize_attributes,
+                # 'attributes': drawing.serialize_attributes,
+                'attributes': {'attributes':[{'Status': 'Loading...'}], 'event':''},
                 'sharing_groups': sharing_groups
             })
 
@@ -48,7 +49,8 @@ def get_drawings(request):
                     'name': drawing.name,
                     'display_name': display_name,
                     'description': drawing.description,
-                    'attributes': drawing.serialize_attributes,
+                    # 'attributes': drawing.serialize_attributes,
+                    'attributes': {'attributes':[{'Status': 'Loading...'}], 'event':''},
                     'shared': True,
                     'shared_by_username': username,
                     'shared_by_name': actual_name,
@@ -80,7 +82,8 @@ def get_drawings(request):
                     'uid': drawing.uid,
                     'name': drawing.name,
                     'description': drawing.description,
-                    'attributes': drawing.serialize_attributes,
+                    # 'attributes': drawing.serialize_attributes,
+                    'attributes': {'attributes':[{'Status': 'Loading...'}], 'event':''},
                     'shared': True,
                     'shared_by_username': username,
                     'shared_by_name': actual_name,
@@ -206,7 +209,7 @@ def get_collections(request):
                 'uid': collection.uid,
                 'name': collection.name,
                 'description': collection.description,
-                'attributes': collection.serialize_attributes,
+                'attributes': {'attributes':[{'Status': 'Loading...'}], 'event':''},
                 'sharing_groups': sharing_groups
             })
 
@@ -261,6 +264,21 @@ def get_collections(request):
                 })
 
     return HttpResponse(dumps(json))
+
+def get_collection_attributes(request, uid):
+    if request.user.is_authenticated():
+        try:
+            collection = get_feature_by_uid(uid)
+        except Exception as e:
+            return HttpResponse("No collection of this uid: %s" % uid, status=404)
+        (viewable, response) = collection.is_viewable(request.user)
+        if viewable:
+            json={'attributes':collection.serialize_attributes}
+            return HttpResponse(dumps(json), status=200)
+        return HttpResponse("User not authorized to view collection: %s" % uid, status=403)
+    return HttpResponse("User not authenticated", status=401)
+
+
 
 def delete_collection(request, uid):
     try:

@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'copy_collection/(?P<uid>[\w_]+)/$', copy_collection),
 
     url(r'get_collections$', get_collections),
+    url(r'get_collection_attributes/(?P<uid>[\w_]+)/$', get_collection_attributes),
     url(r'delete_collection/(?P<uid>[\w_]+)/$', delete_collection),
 
     #feature reports
