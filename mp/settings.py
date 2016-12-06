@@ -192,6 +192,8 @@ COMPARISON_FIELD_LIST = [
     "PHS 3 for Scleractinia coral"
 ]
 
+SUMMARY_DEFAULT = '[{"title":"Status", "data":"Loading..."}]'
+
 CSV_URL = '/media/csvs/'
 CSV_DIR = './mediaroot/csvs/'
 

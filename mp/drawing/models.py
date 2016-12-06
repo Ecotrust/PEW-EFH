@@ -8,6 +8,7 @@ from ofr_manipulators import clip_to_grid, intersecting_cells
 from reports import get_summary_reports, get_drawing_summary_reports
 import settings
 from django.contrib.gis.db.models import GeometryField, PointField, MultiPolygonField, GeoManager
+import simplejson
 
 class GeometryFeature(SpatialFeature):
     geometry_orig = GeometryField(srid=settings.GEOMETRY_DB_SRID,
@@ -29,7 +30,22 @@ class GeometryFeature(SpatialFeature):
 
 @register
 class AOI(GeometryFeature):
+    import settings
+    ACTION_CHOICES = (
+        ('close', 'Close'),
+        ('reopen', 'Reopen'),
+        ('other', 'Other'),
+        ('none', 'None')
+    )
     description = models.TextField(null=True,blank=True)
+    reg_action = models.CharField(max_length=30, blank=True, null=True, choices=ACTION_CHOICES, default='none')
+    summary = models.TextField(blank=True, null=True, default=settings.SUMMARY_DEFAULT)
+
+    @property
+    def is_loading(self):
+        if self.summary == settings.SUMMARY_DEFAULT:
+            return True
+        return False
 
     @property
     def true_area_m2(self):
@@ -61,7 +77,7 @@ class AOI(GeometryFeature):
         attributes = []
         if self.description:
             attributes.append({'title': 'Description', 'data': self.description})
-        self.summary_reports(attributes)
+        attributes += simplejson.loads(self.summary)
         return { 'event': 'click', 'attributes': attributes }
 
     @classmethod
@@ -92,6 +108,12 @@ class AOI(GeometryFeature):
         # self.geometry_final = self.clip_to_grid(True)
         super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
 
+        attributes = []
+        self.summary_reports(attributes)
+        self.summary = simplejson.dumps(attributes)
+        super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
+
+
     class Options:
         verbose_name = 'Area of Interest'
         icon_url = 'img/aoi.png'
@@ -119,22 +141,39 @@ class Collection(FeatureCollection):
         )
 
     def summary_reports(self, attributes):
+        from datetime import datetime
         from ofr_manipulators import intersecting_drawing_cells
         grid_cells = False
         drawing_grid_cells = False
         total_area= 0
-        for feature in self.feature_set():
+        # print("=======================")
+        # print("Beginning looping though features")
+        feature_set = list(enumerate(self.feature_set(), start=1))
+        count = len(feature_set)
+        for (index, feature) in feature_set:
+            # index = fset[0]
+            # feature = fset[1]
+
+            # print("FEATURE %d of %d: ----------------------------------" % (index, count))
             total_area += feature.true_area_m2
             # TODO: can we tune this by just calling each feature's `summary_reports` method?
+            # now = datetime.now()
+            # print("     getting cells................ %s:%s:%s" % (now.hour, now.minute, now.second))
             if grid_cells:
                 grid_cells = grid_cells | intersecting_cells(feature.geometry_orig)
             else:
                 grid_cells = intersecting_cells(feature.geometry_orig)
+            # now = datetime.now()
+            # print("     aggregating cells............ %s:%s:%s" % (now.hour, now.minute, now.second))
             if drawing_grid_cells:
                 drawing_grid_cells = drawing_grid_cells | intersecting_drawing_cells(feature.geometry_orig)
             else:
                 drawing_grid_cells = intersecting_drawing_cells(feature.geometry_orig)
+            # print("     done......................... %s:%s:%s" % (now.hour, now.minute, now.second))
         attributes.append({'title': 'Total Area', 'data': str(format_precision(float(total_area) / 2590000.0, 0)) + ' sq mi'})
+        # now = datetime.now()
+        # print("Cell count: %s ...........%s:%s:%s" % (str(len(grid_cells)),now.hour, now.minute, now.second))
+        # print("Generating Summary report..... %s:%s:%s" % (now.hour, now.minute, now.second))
         if grid_cells:
             get_summary_reports(grid_cells, attributes)
         if drawing_grid_cells:

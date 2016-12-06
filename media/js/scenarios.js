@@ -597,13 +597,6 @@ function scenarioModel(options) {
 
         app.viewModel.removeFromAggregatedAttributes(scenario.name);
 
-        // //remove the key/value pair from aggregatedAttributes
-        // delete app.viewModel.aggregatedAttributes()[scenario.name];
-        // //if there are no more attributes left to display, then remove the overlay altogether
-        // if ($.isEmptyObject(app.viewModel.aggregatedAttributes())) {
-        //     app.viewModel.aggregatedAttributes(false);
-        // }
-
     };
 
     self.editScenario = function() {
@@ -1622,6 +1615,18 @@ function scenariosModel(options) {
       app.viewModel.scenarios.updateDesignsScrollBar();
     };
 
+    self.aggregateTranslate = function(inObjList) {
+      var outObjList = [];
+      for (var i=0; i < inObjList.length; i++) {
+        var inObj = inObjList[i];
+        var outObj = {};
+        outObj['data'] = inObj['data'];
+        outObj['display'] = inObj['title'];
+        outObjList.push(outObj);
+      }
+      return outObjList;
+    };
+
     self.getAttributes = function(uid) {
       uid = uid;
       $.ajax({
@@ -1631,6 +1636,17 @@ function scenariosModel(options) {
         success: function(data){
           app.viewModel.layerIndex[uid].attributes(data);
           app.viewModel.layerIndex[uid].scenarioAttributes(data.attributes);
+          if (data.attributes.filter(function(obj){return obj.hasOwnProperty('Status');}).length > 0){
+            console.log('data not yet loaded. Retrying...');
+            setTimeout(app.viewModel.scenarios.getAttributes(uid), 5000);
+          } else {
+            console.log('Status not found: ' + JSON.stringify(data.attributes));
+            if (app.viewModel.layerIndex[uid].showingLayerAttribution()){
+              var aggAttrs = {};
+              aggAttrs[app.viewModel.layerIndex[uid].name] = self.aggregateTranslate(data.attributes);
+              app.viewModel.aggregatedAttributes(aggAttrs);
+            }
+          }
         },
         error: function(response){
           console.log('error in scenarios.js: getAttributes');
