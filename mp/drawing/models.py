@@ -140,44 +140,75 @@ class Collection(FeatureCollection):
             'scenarios.models.Scenario'
         )
 
-    def summary_reports(self, attributes):
-        from datetime import datetime
-        from ofr_manipulators import intersecting_drawing_cells
-        grid_cells = False
-        drawing_grid_cells = False
-        total_area= 0
-        # print("=======================")
-        # print("Beginning looping though features")
-        feature_set = list(enumerate(self.feature_set(), start=1))
-        count = len(feature_set)
-        for (index, feature) in feature_set:
-            # index = fset[0]
-            # feature = fset[1]
+    @property
+    def is_loading(self):
+        for feature in self.feature_set():
+            if feature.is_loading:
+                return True
+        return False
 
-            # print("FEATURE %d of %d: ----------------------------------" % (index, count))
-            total_area += feature.true_area_m2
-            # TODO: can we tune this by just calling each feature's `summary_reports` method?
-            # now = datetime.now()
-            # print("     getting cells................ %s:%s:%s" % (now.hour, now.minute, now.second))
-            if grid_cells:
-                grid_cells = grid_cells | intersecting_cells(feature.geometry_orig)
-            else:
-                grid_cells = intersecting_cells(feature.geometry_orig)
-            # now = datetime.now()
-            # print("     aggregating cells............ %s:%s:%s" % (now.hour, now.minute, now.second))
-            if drawing_grid_cells:
-                drawing_grid_cells = drawing_grid_cells | intersecting_drawing_cells(feature.geometry_orig)
-            else:
-                drawing_grid_cells = intersecting_drawing_cells(feature.geometry_orig)
-            # print("     done......................... %s:%s:%s" % (now.hour, now.minute, now.second))
-        attributes.append({'title': 'Total Area', 'data': str(format_precision(float(total_area) / 2590000.0, 0)) + ' sq mi'})
-        # now = datetime.now()
-        # print("Cell count: %s ...........%s:%s:%s" % (str(len(grid_cells)),now.hour, now.minute, now.second))
-        # print("Generating Summary report..... %s:%s:%s" % (now.hour, now.minute, now.second))
-        if grid_cells:
-            get_summary_reports(grid_cells, attributes)
-        if drawing_grid_cells:
-            get_drawing_summary_reports(drawing_grid_cells, attributes)
+
+    def clean_summary_value(self, field, field_map, weight=1):
+        import re
+        method = field_map['aggregate']
+        ret_type = field_map['type']
+        num_val = re.findall(r'\d+',field['data'])
+        if method in ['sum', 'min', 'max']:
+            return ret_type(num_val[0])
+        elif method in ['mean', 'minmax']:
+            if method == 'mean':
+                return (ret_type(num_val[0]), weight)
+            if method == 'minmax':
+                return (ret_type(num_val[0]),ret_type(num_val[1]))
+        else:
+            return (ret_type(num_val),False)
+
+    def aggregate_values(self, val_list, method, text, unit_type):
+        if method == 'sum':
+            return "%s%s" % (str(sum(val_list)), text)
+        if method == 'min':
+            return "%s%s" % (str(min(val_list)), text)
+        if method == 'max':
+            return "%s%s" % (str(max(val_list)), text)
+        if method == 'minmax':
+            min_list = [x for (x,y) in val_list]
+            max_list = [y for (x,y) in val_list]
+            return "%s%s%s%s" % (str(min(min_list)), text[0], str(max(max_list)), text[1])
+        if method == 'mean':
+            total_area = sum([area for (value, area) in val_list])
+            numerator = sum([value*area for (value, area) in val_list])
+            return "%s%s" % (str(unit_type(numerator/total_area)), text)
+
+    def generate_summary_value(self, name, field):
+        data = self.aggregate_values(field['values'], field['aggregate'], field['unit'], field['type'])
+        return {
+            'title': name,
+            'data': data
+        }
+
+    def summary_reports(self, attributes):
+        if not self.is_loading:
+            from datetime import datetime
+            feature_set = list(enumerate(self.feature_set(), start=1))
+            count = len(feature_set)
+            summary_dict = {
+                'name': self.name,
+                'description': self.description
+            }
+            val_collector = {}
+            for field in settings.COMPARISON_FIELD_LOOKUP:
+                val_collector[field['name']] = field
+                val_collector[field['name']]['values'] = []
+            for (index, feature) in feature_set:
+                feature_summary = eval(feature.summary)
+                feature_area = feature.true_area_m2
+                for field in feature_summary:
+                    clean_val = self.clean_summary_value(field, val_collector[field['title']], feature_area)
+                    val_collector[field['title']]['values'].append(clean_val)
+                for key in [x['name'] for x in settings.COMPARISON_FIELD_LOOKUP]:
+                    attributes.append(self.generate_summary_value(key,val_collector[key]))
+        else:
+            attributes = attributes + eval(settings.SUMMARY_DEFAULT)
 
     @property
     def serialize_attributes(self):

@@ -173,24 +173,25 @@ LOGGING = {
 SCENARIO_NAME = 'Drawing'
 COLLECTION_NAME = 'Scenario'  #Confusing choice, I know. RDH
 
-COMPARISON_FIELD_LIST = [
-    "name",
-    "Description",
-    "Total Area",
-    "Depth Range",
-    "Mean Depth",
-    "Soft",
-    "Mixed",
-    "Hard",
-    "Inferred Rock",
-    "PHS 1 for all coral and sponges",
-    "PHS 2 for all coral and sponges",
-    "PHS 3 for all coral and sponges",
-    "PHS 4 for all coral and sponges",
-    "PHS 1 for Scleractinia coral",
-    "PHS 2 for Scleractinia coral",
-    "PHS 3 for Scleractinia coral"
+COMPARISON_FIELD_LOOKUP = [
+    {'name': 'Total Area', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Depth Range', 'type': str, 'aggregate': 'minmax', 'unit': (' to ',' fathoms')},
+    {'name': 'Mean Depth', 'type': int, 'aggregate': 'mean', 'unit': ' fathoms'},
+    {'name': 'Soft', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Mixed', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Hard', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Inferred Rock', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 1 for all coral and sponges', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 2 for all coral and sponges', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 3 for all coral and sponges', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 4 for all coral and sponges', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 1 for Scleractinia coral', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 2 for Scleractinia coral', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 3 for Scleractinia coral', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
 ]
+
+COMPARISON_FIELD_LIST = ['name', 'Description'] + [x['name'] for x in COMPARISON_FIELD_LOOKUP]
+
 
 SUMMARY_DEFAULT = '[{"title":"Status", "data":"Loading..."}]'
 
