@@ -147,7 +147,6 @@ class Collection(FeatureCollection):
                 return True
         return False
 
-
     def clean_summary_value(self, field, field_map, weight=1):
         import re
         method = field_map['aggregate']
