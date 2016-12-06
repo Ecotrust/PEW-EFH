@@ -104,14 +104,13 @@ class AOI(GeometryFeature):
         if self.geometry_final:
             self.geometry_final = clean_geometry(self.geometry_final)
 
-        #TODO: Remove this - we want to see orig, but here for drawing PUG testing
-        # self.geometry_final = self.clip_to_grid(True)
-        super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
-
-        attributes = []
-        self.summary_reports(attributes)
-        self.summary = simplejson.dumps(attributes)
-        super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
+        if not self.id:  #first save - if part of a large import, now is not a good time to calculate the summary
+            super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
+        else:
+            attributes = []
+            self.summary_reports(attributes)
+            self.summary = simplejson.dumps(attributes)
+            super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
 
 
     class Options:
@@ -142,9 +141,11 @@ class Collection(FeatureCollection):
 
     @property
     def is_loading(self):
+        ret_val = False
         for feature in self.feature_set():
             if feature.is_loading:
-                return True
+                feature.save()
+                ret_val = True
         return False
 
     def clean_summary_value(self, field, field_map, weight=1):
@@ -172,18 +173,22 @@ class Collection(FeatureCollection):
         if method == 'minmax':
             min_list = [x for (x,y) in val_list]
             max_list = [y for (x,y) in val_list]
-            return "%s%s%s%s" % (str(min(min_list)), text[0], str(max(max_list)), text[1])
+            if len(min_list) > 0 and len(max_list) > 0:
+                return "%s%s%s%s" % (str(min(min_list)), text[0], str(max(max_list)), text[1])
+            else:
+                return False
         if method == 'mean':
             total_area = sum([area for (value, area) in val_list])
-            numerator = sum([value*area for (value, area) in val_list])
-            return "%s%s" % (str(unit_type(numerator/total_area)), text)
+            numerator_list = [value*area for (value, area) in val_list]
+            if len(numerator_list) > 0:
+                return "%s%s" % (str(unit_type(sum(numerator_list)/total_area)), text)
+            else:
+                return False
 
-    def generate_summary_value(self, name, field):
+    def generate_summary_value(self, attributes, name, field):
         data = self.aggregate_values(field['values'], field['aggregate'], field['unit'], field['type'])
-        return {
-            'title': name,
-            'data': data
-        }
+        if data:
+            attributes.append({'title': name,'data': data})
 
     def summary_reports(self, attributes):
         if not self.is_loading:
@@ -204,17 +209,16 @@ class Collection(FeatureCollection):
                 for field in feature_summary:
                     clean_val = self.clean_summary_value(field, val_collector[field['title']], feature_area)
                     val_collector[field['title']]['values'].append(clean_val)
-                for key in [x['name'] for x in settings.COMPARISON_FIELD_LOOKUP]:
-                    attributes.append(self.generate_summary_value(key,val_collector[key]))
+            for key in [x['name'] for x in settings.COMPARISON_FIELD_LOOKUP]:
+                self.generate_summary_value(attributes,key,val_collector[key])
         else:
-            attributes = attributes + eval(settings.SUMMARY_DEFAULT)
+            attributes.append(eval(settings.SUMMARY_DEFAULT))
 
     @property
     def serialize_attributes(self):
         attributes = []
         if self.description:
             attributes.append({'title': 'Description', 'data': self.description})
-
         self.summary_reports(attributes)
         return { 'event': 'click', 'attributes': attributes }
 
