@@ -1636,11 +1636,14 @@ function scenariosModel(options) {
         success: function(data){
           app.viewModel.layerIndex[uid].attributes(data);
           app.viewModel.layerIndex[uid].scenarioAttributes(data.attributes);
+          var activeLayer = app.viewModel.activeLayers().find(function(obj){return obj.uid == uid;})
+          if (activeLayer) {
+            activeLayer.attributes(data);
+          }
           if (data.attributes.filter(function(obj){return obj.hasOwnProperty('Status');}).length > 0){
             console.log('data not yet loaded. Retrying...');
             setTimeout(app.viewModel.scenarios.getAttributes(uid), 5000);
           } else {
-            console.log('Status not found: ' + JSON.stringify(data.attributes));
             if (app.viewModel.layerIndex[uid].showingLayerAttribution()){
               var aggAttrs = {};
               aggAttrs[app.viewModel.layerIndex[uid].name] = self.aggregateTranslate(data.attributes);
