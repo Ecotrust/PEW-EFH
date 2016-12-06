@@ -77,8 +77,13 @@ class AOI(GeometryFeature):
         attributes = []
         if self.description:
             attributes.append({'title': 'Description', 'data': self.description})
-        attributes += simplejson.loads(self.summary)
-        return { 'event': 'click', 'attributes': attributes }
+        try:
+            attributes += simplejson.loads(self.summary)
+            return { 'event': 'click', 'attributes': attributes }
+        except simplejson.JSONDecodeError as e:
+            print(str(e))
+            self.save()
+            return self.serialize_attributes
 
     @classmethod
     def fill_color(self):
