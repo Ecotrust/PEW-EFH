@@ -564,7 +564,7 @@ function layerModel(options, parent) {
         setTimeout( function() { app.viewModel.updateScrollBars(); }, 200 );
     };
 
-    self.showingLayerAttribution = ko.observable(true);
+    self.showingLayerAttribution = ko.observable(false);
     self.toggleLayerAttribution = function() {
         var layerID = '#' + app.viewModel.convertToSlug(self.name);
         if ( self.showingLayerAttribution() ) {

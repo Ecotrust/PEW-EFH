@@ -274,8 +274,16 @@ app.init = function() {
 
     }; //end utfGridClickHandling
 
+    app.map.events.register("nofeatureclick", null, function(e) {
+      layer_ids = Object.keys(app.viewModel.layerIndex);
+      for (var i=0; i < layer_ids.length; i++) {
+        app.viewModel.layerIndex[layer_ids[i]].showingLayerAttribution(false);
+      }
+    });
+
     app.map.events.register("featureclick", null, function(e) {
         var layer = e.feature.layer.layerModel || e.feature.layer.scenarioModel;
+        layer.showingLayerAttribution(true);
         var attrs;
         if (layer) {
             var text = [],
@@ -312,7 +320,7 @@ app.init = function() {
               } else{
                 data.description = layer.description;
               }
-              var dataProps = Object.getOwnPropertyNames(data)
+              var dataProps = Object.getOwnPropertyNames(data);
               for (i=0; i<dataProps.length; i++){
                   var key = dataProps[i];
                   if (['manipulators','user','uid','date_created','date_modified','sharing_groups'].indexOf(key) < 0){

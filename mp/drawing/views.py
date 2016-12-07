@@ -155,7 +155,7 @@ def get_attributes(request, uid):
         return response
 
     if 'serialize_attributes' in dir(scenario_obj):
-        if scenario_obj.is_loading:
+        if hasattr(scenario_obj,'is_loading') and scenario_obj.is_loading:
             scenario_obj.save()
         return HttpResponse(dumps(scenario_obj.serialize_attributes))
     else:

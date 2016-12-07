@@ -517,7 +517,7 @@ function scenarioModel(options) {
     self.attributes = ko.observable([]);
     self.scenarioAttributes = ko.observable(options.attributes ? options.attributes.attributes : []);
 
-    self.showingLayerAttribution = ko.observable(true);
+    self.showingLayerAttribution = ko.observable(false);
     self.toggleLayerAttribution = function() {
         var layerID = '#' + app.viewModel.convertToSlug(self.name);
         if ( self.showingLayerAttribution() ) {
@@ -1634,7 +1634,9 @@ function scenariosModel(options) {
         type: 'GET',
         dataType: 'json',
         success: function(data){
-          app.viewModel.layerIndex[uid].attributes(data);
+          if (app.viewModel.layerIndex[uid].hasOwnProperty('attributes')){
+            app.viewModel.layerIndex[uid].attributes(data);
+          }
           app.viewModel.layerIndex[uid].scenarioAttributes(data.attributes);
           var activeLayer = app.viewModel.activeLayers().find(function(obj){return obj.uid == uid;})
           if (activeLayer) {
