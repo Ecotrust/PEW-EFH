@@ -26,7 +26,8 @@
 }
 
 .ofr .modal.fade.in {
-	top: 25%;
+  top: 10%;
+  max-height: 80vh;
 }
 
 /*.ofr a:hover, .ofr a:focus {

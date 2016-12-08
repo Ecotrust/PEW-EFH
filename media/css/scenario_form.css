@@ -349,7 +349,7 @@ p.step-text {
     text-align:left;
 }
 p.instructions {
-    margin: 5px 0px 0px 0px;
+    margin: 5px 5px 0px 0px;
     text-align: left;
     /*color: #47556C;*/
     font-size: 14px;
@@ -366,4 +366,10 @@ p.instructions {
 }
 #editing-instructions {
     margin-bottom: 0px;
+}
+#collection-upload-requirements {
+  display: block;
+  text-align: right;
+  cursor: pointer;
+  width: 94%;
 }

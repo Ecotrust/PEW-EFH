@@ -248,6 +248,8 @@
     </div>
 </div>
 
+<!-- Compare two collections Modal -->
+
 <div id="collection-compare-modal" class="modal hide fade" data-bind="with: app.viewModel.scenarios">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -280,6 +282,8 @@
     </div>
 </div>
 
+<!-- Display Scenario Comparison Modal -->
+
 <div id="compare-report-modal" class="modal hide fade" data-bind="with: app.viewModel.scenarios">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -304,5 +308,48 @@
     <div class="modal-footer">
         <a class="btn-submit btn" data-bind="attr:{href:app.viewModel.scenarios.comparisonDownloadLink}, click: function(){ return true }, clickBubble: false">Download</a>
         <button href="#" class="btn" data-bind="click: cancelCompare" data-dismiss="modal">Close</button>
+    </div>
+</div>
+
+<!-- Requirements for collection import Modal -->
+
+<div id="import-guidelines-modal" class="modal hide fade" data-bind="with: app.viewModel.scenarios">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Import File Requirements</h3>
+    </div>
+    <div class="modal-body" style="height: 60vh; text-align: left;">
+        <div class="row-fluid">
+          <p>Uploaded files must be:
+            <ul>
+              <li>A zipped ('.zip') file containing the elements of a valid ESRI shapefile, including files of type:
+                <ul>
+                  <li>.cpg</li>
+                  <li>.dbf</li>
+                  <li>.prj</li>
+                  <li>.qpj</li>
+                  <li>.shp</li>
+                  <li>.shx</li>
+                </ul>
+              </li>
+              <li>Projected into EPSG:3857, aka "WGS 1984 Web Mercator (Auxillary Sphere)"</li>
+              <li>Contain the following attributes:
+                <ul>
+                  <li>'RegAction':
+                    <ul>
+                      <li>The regulatory action to be taken on the area.</li>
+                      <li>Values should be either 'close' or 'reopen'</li>
+                    </ul>
+                  </li>
+                  <li>'SiteName':</li>
+                    <ul>
+                      <li>Name of the area</li>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button href="#" class="btn" data-dismiss="modal">Close</button>
     </div>
 </div>

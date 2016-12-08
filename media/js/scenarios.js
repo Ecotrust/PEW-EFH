@@ -911,6 +911,10 @@ function scenariosModel(options) {
         return false;
     }
 
+    self.showImportRequirementsModal = function(){
+      $('#import-guidelines-modal').modal('show');
+    };
+
     self.comparisonCollection = ko.observable();
     self.showComparisonModal = function(collection){
         self.comparisonCollection(collection);
