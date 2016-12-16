@@ -375,13 +375,14 @@ def compile_comparison_dict(collections):
                 stratum_list = ['all']
             else:
                 stratum_list = settings.STRATA_MAP[strata].keys()
-            for stratum in stratum_list:
+            for stratum_id in stratum_list:
+                stratum = settings.STRATA_MAP[strata][stratum_id]
                 stratum_dict = {}
                 for collection in collections:
                     stratum_dict[collection.uid] = {
                         'name': collection.name
                     }
-                    attributes = collection.serialize_strata_attributes(strata, {stratum : settings.STRATA_MAP[strata][stratum] })['attributes']
+                    attributes = collection.serialize_strata_attributes(strata, {stratum_id : stratum })['attributes']
                     for attribute in attributes:
                         stratum_dict[collection.uid][attribute['title']] = attribute['data']
                 report_dict[strata][stratum] = stratum_dict
