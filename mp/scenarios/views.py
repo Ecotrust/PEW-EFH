@@ -406,16 +406,25 @@ def get_comparison_download_link(json):
         print("Check your settings for CSV_DIR and it's permissions")
         print("CSV_DIR = %s" % settings.CSV_DIR)
     writer = csv.writer(csv_file)
-    for strata_type in strata_data:
-        for stratum in strata_data[strata_type]:
+    strata_type_list = [x for x in strata_data]
+    # Report the overall numbers first
+    all_index = strata_type_list.index('all')
+    strata_type_list.insert(0, strata_type_list.pop(all_index))
+    # ['all','strata_3x3']
+    for strata_type in strata_type_list:
+        strata_list = [x for x in strata_data[strata_type].keys()]
+        strata_list.sort()
+        #['NW','N','NE'...]
+        for stratum_name in strata_list:
             try:
-                if stratum == 'all':
+                if stratum_name == 'all':
                     writer.writerow(['FOR','ENTIRE','PROPOSAL'])
                 else:
-                    writer.writerow(['FOR',stratum,'STRATUM'])
+                    writer.writerow(['FOR',stratum_name,'STRATUM'])
+                # Write headers
                 writer.writerow(settings.COMPARISON_FIELD_LIST)
 
-                data = strata_data[strata_type][stratum]
+                data = strata_data[strata_type][stratum_name]
                 for uid in uids:
                     row_data = []
                     for field_name in settings.COMPARISON_FIELD_LIST:
