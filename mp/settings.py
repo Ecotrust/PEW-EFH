@@ -193,10 +193,58 @@ COMPARISON_FIELD_LOOKUP = [
 COMPARISON_FIELD_LIST = ['name', 'Description'] + [x['name'] for x in COMPARISON_FIELD_LOOKUP]
 
 
-SUMMARY_DEFAULT = '[{"title":"Status", "data":"Loading..."}]'
+SUMMARY_DEFAULT = '{"all": [{"title":"Status", "data":"Loading..."}]}'
 
 CSV_URL = '/media/csvs/'
 CSV_DIR = './mediaroot/csvs/'
+
+# Must be a field on the drawings.models.GridCell model
+# Must be present in STRATA_MAP
+REPORT_STRATA = ['strata_3x3']
+
+STRATA_MAP = {
+    'all':{
+        'all':'all'
+    },
+    'strata_3x3':{
+        '1':'NW',
+        '2':'N',
+        '3':'NE',
+        '4':'W',
+        '5':'Central',
+        '6':'E',
+        '7':'SW',
+        '8':'S',
+        '9':'SE'
+    },
+    'strata_5x5':{
+        '1':'NNWW',
+        '2':'NNW',
+        '3':'NN',
+        '4':'NNE',
+        '5':'NNEE',
+        '6':'NWW',
+        '7':'NW',
+        '8':'N',
+        '9':'NE',
+        '10':'NEE',
+        '11':'WW',
+        '12':'W',
+        '13':'Central',
+        '14':'E',
+        '15':'EE',
+        '16':'SWW',
+        '17':'SW',
+        '18':'S',
+        '19':'SE',
+        '20':'SEE',
+        '21':'SSWW',
+        '22':'SSW',
+        '23':'SS',
+        '24':'SSE',
+        '25':'SSEE'
+    }
+}
 
 import logging
 logging.getLogger('django.db.backends').setLevel(logging.ERROR)

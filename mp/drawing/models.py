@@ -66,11 +66,21 @@ class AOI(GeometryFeature):
     def summary_reports(self, attributes):
         from ofr_manipulators import intersecting_drawing_cells
         # Call get_summary_reports with intersecting Grid Cells
-        attributes.append({'title': 'Total Area', 'data': str(format_precision(float(self.true_area_m2) / 2590000.0, 0)) + ' sq mi'})
+        attributes['all'] = []
+        attributes['all'].append({'title': 'Total Area', 'data': str(format_precision(float(self.true_area_m2) / 2590000.0, 0)) + ' sq mi'})
+        aggregate_attributes = {}
         grid_cells = intersecting_cells(self.geometry_orig)
-        get_summary_reports(grid_cells, attributes)
+        get_summary_reports(grid_cells, attributes['all'])
         drawing_grid_cells = intersecting_drawing_cells(self.geometry_orig)
-        get_drawing_summary_reports(drawing_grid_cells, attributes)
+        get_drawing_summary_reports(drawing_grid_cells, attributes['all'])
+        for (idx, strata) in enumerate(settings.REPORT_STRATA):
+            if strata in settings.STRATA_MAP.keys():
+                attributes[strata] = {}
+                for key in settings.STRATA_MAP[strata].keys():
+                    stratum = settings.STRATA_MAP[strata][key]
+                    attributes[strata][stratum] = []
+                    stratum_cells = drawing_grid_cells.filter(**{strata: key})
+                    get_drawing_summary_reports(stratum_cells, attributes[strata][stratum])
 
     @property
     def serialize_attributes(self):
@@ -78,7 +88,7 @@ class AOI(GeometryFeature):
         if self.description:
             attributes.append({'title': 'Description', 'data': self.description})
         try:
-            attributes += simplejson.loads(self.summary)
+            attributes += simplejson.loads(self.summary)['all']
             return { 'event': 'click', 'attributes': attributes }
         except simplejson.JSONDecodeError as e:
             print(str(e))
@@ -112,7 +122,7 @@ class AOI(GeometryFeature):
         if not self.id:  #first save - if part of a large import, now is not a good time to calculate the summary
             super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
         else:
-            attributes = []
+            attributes = {}
             self.summary_reports(attributes)
             self.summary = simplejson.dumps(attributes)
             super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
@@ -195,7 +205,9 @@ class Collection(FeatureCollection):
         if data:
             attributes.append({'title': name,'data': data})
 
-    def summary_reports(self, attributes):
+    def summary_reports(self, attributes, strata='all', stratum={'all':'all'}):
+        stratum_key = stratum.keys()[0]
+        stratum_name = stratum[stratum_key]
         if not self.is_loading:
             from datetime import datetime
             feature_set = list(enumerate(self.feature_set(), start=1))
@@ -209,11 +221,20 @@ class Collection(FeatureCollection):
                 val_collector[field['name']] = field
                 val_collector[field['name']]['values'] = []
             for (index, feature) in feature_set:
-                feature_summary = eval(feature.summary)
+                if strata == 'all':
+                    feature_summary = eval(feature.summary)[strata]
+                else:
+                    feature_summary = eval(feature.summary)[strata][stratum_name]
                 feature_area = feature.true_area_m2
                 for field in feature_summary:
                     clean_val = self.clean_summary_value(field, val_collector[field['title']], feature_area)
                     val_collector[field['title']]['values'].append(clean_val)
+                try:
+                    for field in feature_summary:
+                        clean_val = self.clean_summary_value(field, val_collector[field['title']], feature_area)
+                        val_collector[field['title']]['values'].append(clean_val)
+                except Exception as e:
+                    print(e)
             for key in [x['name'] for x in settings.COMPARISON_FIELD_LOOKUP]:
                 self.generate_summary_value(attributes,key,val_collector[key])
         else:
@@ -221,10 +242,13 @@ class Collection(FeatureCollection):
 
     @property
     def serialize_attributes(self):
+        return serialize_strata_attributes('all')
+
+    def serialize_strata_attributes(self, strata='all', stratum='all'):
         attributes = []
         if self.description:
             attributes.append({'title': 'Description', 'data': self.description})
-        self.summary_reports(attributes)
+        self.summary_reports(attributes, strata, stratum)
         return { 'event': 'click', 'attributes': attributes }
 
     def feature_set(self, recurse=False, feature_classes=None):
@@ -253,6 +277,8 @@ class GridCell(models.Model):
     hssclr1_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
     hssclr2_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
     hssclr3_m2 = models.DecimalField(null=True, blank=True, decimal_places=11, max_digits=16)
+    strata_3x3 = models.IntegerField(null=True, blank=True)
+    strata_5x5 = models.IntegerField(null=True, blank=True)
     unique_id = models.IntegerField(null=True, blank=True)
 
     centroid = PointField(
