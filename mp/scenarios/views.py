@@ -355,7 +355,7 @@ def compare_scenario(request):
         json.append(settings.COMPARISON_FIELD_LIST)
         CSV_json.append(settings.COMPARISON_FIELD_LIST)
         report_dict = compile_comparison_dict(collections)
-        json.append(report_dict['all'])
+        json.append(report_dict['all']['all'])
         CSV_json.append(report_dict)
     except:
         return HttpResponse("Failed to compare scenarios.", status=500)
