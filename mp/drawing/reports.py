@@ -79,7 +79,14 @@ def get_unique_values(grid_cells, field):
     return values
 
 
-def get_drawing_summary_reports(grid_cells, attributes):
+def format_area(value, raw):
+    if raw:
+        return str(float(value)) + ' sq mi'
+    else:
+        return str(format_precision(float(value), 0)) + ' sq mi'
+
+
+def get_drawing_summary_reports(grid_cells, attributes, raw=False):
     if grid_cells.count() == 0:
         attributes.append({'title': 'Soft', 'data': '0 sq mi'})
         attributes.append({'title': 'Mixed', 'data': '0 sq mi'})
@@ -117,67 +124,78 @@ def get_drawing_summary_reports(grid_cells, attributes):
     # Soft Substrate (Area)
     title = 'Soft'
     soft_sub_area = get_sum(grid_cells, 'sft_sub_m2')
-    data = str(format_precision(float(soft_sub_area), 0)) + ' sq mi'
+    # data = str(format_precision(float(soft_sub_area), 0)) + ' sq mi'
+    data = format_area(soft_sub_area, raw)
     attributes.append({'title': title, 'data': data})
 
     # Mixed Substrate (Area)
     title = 'Mixed'
     mixed_sub_area = get_sum(grid_cells, 'mix_sub_m2')
-    data = str(format_precision(float(mixed_sub_area), 0)) + ' sq mi'
+    # data = str(format_precision(float(mixed_sub_area), 0)) + ' sq mi'
+    data = format_area(mixed_sub_area, raw)
     attributes.append({'title': title, 'data': data})
 
     # Hard Substrate (Area)
     title = 'Hard'
     hard_sub_area = get_sum(grid_cells, 'hrd_sub_m2')
-    data = str(format_precision(float(hard_sub_area), 0)) + ' sq mi'
+    # data = str(format_precision(float(hard_sub_area), 0)) + ' sq mi'
+    data = format_area(hard_sub_area, raw)
     attributes.append({'title': title, 'data': data})
 
     # Inferred Rocky Substrate (Area)
     title = 'Inferred Rock'
     rock_sub_area = get_sum(grid_cells, 'rck_sub_m2')
-    data = str(format_precision(float(rock_sub_area), 0)) + ' sq mi'
+    # data = str(format_precision(float(rock_sub_area), 0)) + ' sq mi'
+    data = format_area(rock_sub_area, raw)
     attributes.append({'title': title, 'data': data})
 
     # Class 1 Suitable Habitat (All)
     title = 'PHS 1 for all coral and sponges'
     hsall1_m2 = get_sum(grid_cells, 'hsall1_m2')
-    data = str(format_precision(float(hsall1_m2), 0)) + ' sq mi'
+    # data = str(format_precision(float(hsall1_m2), 0)) + ' sq mi'
+    data = format_area(hsall1_m2, raw)
     attributes.append({'title': title, 'data': data})
 
     # Class 2 Suitable Habitat (All)
     title = 'PHS 2 for all coral and sponges'
     hsall2_m2 = get_sum(grid_cells, 'hsall2_m2')
-    data = str(format_precision(float(hsall2_m2), 0)) + ' sq mi'
+    # data = str(format_precision(float(hsall2_m2), 0)) + ' sq mi'
+    data = format_area(hsall2_m2, raw)
     attributes.append({'title': title, 'data': data})
 
     # Class 3 Suitable Habitat (All)
     title = 'PHS 3 for all coral and sponges'
     hsall3_m2 = get_sum(grid_cells, 'hsall3_m2')
-    data = str(format_precision(float(hsall3_m2), 0)) + ' sq mi'
+    # data = str(format_precision(float(hsall3_m2), 0)) + ' sq mi'
+    data = format_area(hsall3_m2, raw)
     attributes.append({'title': title, 'data': data})
 
     # Class 4 Suitable Habitat (All)
     title = 'PHS 4 for all coral and sponges'
     hsall4_m2 = get_sum(grid_cells, 'hsall4_m2')
-    data = str(format_precision(float(hsall4_m2), 0)) + ' sq mi'
+    # data = str(format_precision(float(hsall4_m2), 0)) + ' sq mi'
+    data = format_area(hsall4_m2, raw)
     attributes.append({'title': title, 'data': data})
 
     # Class 1 Suitable Habitat (Scleractinia)
     title = 'PHS 1 for Scleractinia coral'
     hssclr1_m2 = get_sum(grid_cells, 'hssclr1_m2')
-    data = str(format_precision(float(hssclr1_m2), 0)) + ' sq mi'
+    # data = str(format_precision(float(hssclr1_m2), 0)) + ' sq mi'
+    data = format_area(hssclr1_m2, raw)
     attributes.append({'title': title, 'data': data})
 
     # Class 2 Suitable Habitat (Scleractinia)
     title = 'PHS 2 for Scleractinia coral'
     hssclr2_m2 = get_sum(grid_cells, 'hssclr2_m2')
-    data = str(format_precision(float(hssclr2_m2), 0)) + ' sq mi'
+    # data = str(format_precision(float(hssclr2_m2), 0)) + ' sq mi'
+    data = format_area(hssclr2_m2, raw)
     attributes.append({'title': title, 'data': data})
 
     # Class 3 Suitable Habitat (Scleractinia)
     title = 'PHS 3 for Scleractinia coral'
     hssclr3_m2 = get_sum(grid_cells, 'hssclr3_m2')
-    data = str(format_precision(float(hssclr3_m2), 0)) + ' sq mi'
+    # data = str(format_precision(float(hssclr3_m2), 0)) + ' sq mi'
+    data = format_area(hssclr3_m2, raw)
     attributes.append({'title': title, 'data': data})
 
 def get_summary_reports(grid_cells, attributes):

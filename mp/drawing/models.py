@@ -80,7 +80,7 @@ class AOI(GeometryFeature):
                     stratum = settings.STRATA_MAP[strata][key]
                     attributes[strata][stratum] = []
                     stratum_cells = drawing_grid_cells.filter(**{strata: key})
-                    get_drawing_summary_reports(stratum_cells, attributes[strata][stratum])
+                    get_drawing_summary_reports(stratum_cells, attributes[strata][stratum], True)
 
     @property
     def serialize_attributes(self):
@@ -229,12 +229,6 @@ class Collection(FeatureCollection):
                 for field in feature_summary:
                     clean_val = self.clean_summary_value(field, val_collector[field['title']], feature_area)
                     val_collector[field['title']]['values'].append(clean_val)
-                try:
-                    for field in feature_summary:
-                        clean_val = self.clean_summary_value(field, val_collector[field['title']], feature_area)
-                        val_collector[field['title']]['values'].append(clean_val)
-                except Exception as e:
-                    print(e)
             for key in [x['name'] for x in settings.COMPARISON_FIELD_LOOKUP]:
                 self.generate_summary_value(attributes,key,val_collector[key])
         else:
@@ -242,9 +236,9 @@ class Collection(FeatureCollection):
 
     @property
     def serialize_attributes(self):
-        return serialize_strata_attributes('all')
+        return self.serialize_strata_attributes('all')
 
-    def serialize_strata_attributes(self, strata='all', stratum='all'):
+    def serialize_strata_attributes(self, strata='all', stratum={'all':'all'}):
         attributes = []
         if self.description:
             attributes.append({'title': 'Description', 'data': self.description})
