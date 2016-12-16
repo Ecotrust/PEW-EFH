@@ -386,7 +386,7 @@ def compile_comparison_dict(collections):
                         stratum_dict[collection.uid][attribute['title']] = attribute['data']
                     report_dict[strata][stratum] = stratum_dict
     except Exception as e:
-        print(e)
+        print("Scenarios views compile_comparison_dict: %s" % e)
     return report_dict
 
 def get_comparison_download_link(json):
@@ -401,7 +401,7 @@ def get_comparison_download_link(json):
     try:
         csv_file = open('%s%s' % (settings.CSV_DIR,filename), 'w')
     except Exception as e:
-        print(e)
+        print("Scenarios views get_comparison_download_link: %s" % e)
         print("Check your settings for CSV_DIR and it's permissions")
         print("CSV_DIR = %s" % settings.CSV_DIR)
     writer = csv.writer(csv_file)
@@ -425,7 +425,7 @@ def get_comparison_download_link(json):
                     writer.writerow(row_data)
                 writer.writerow([])
             except Exception as e:
-                print(e)
+                print("Scenarios views get_comparison_download_link 2: %s" % e)
     csv_file.close()
     return '%s%s' % (settings.CSV_URL,filename)
 

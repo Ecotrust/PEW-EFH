@@ -167,7 +167,7 @@ class Collection(FeatureCollection):
         import re
         method = field_map['aggregate']
         ret_type = field_map['type']
-        num_val = re.findall(r'\d+',field['data'])
+        num_val = re.findall(r"[-+]?\d*\.\d+|\d+",field['data'])
         if method in ['sum', 'min', 'max']:
             return ret_type(num_val[0])
         elif method in ['mean', 'minmax']:
@@ -180,11 +180,20 @@ class Collection(FeatureCollection):
 
     def aggregate_values(self, val_list, method, text, unit_type):
         if method == 'sum':
-            return "%s%s" % (str(sum(val_list)), text)
+            val = sum(val_list)
+            if unit_type == int and type(val) == float:
+                val = int(round(val))
+            return "%s%s" % (str(val), text)
         if method == 'min':
-            return "%s%s" % (str(min(val_list)), text)
+            val = min(val_list)
+            if unit_type == int and type(val) == float:
+                val = int(round(val))
+            return "%s%s" % (str(val), text)
         if method == 'max':
-            return "%s%s" % (str(max(val_list)), text)
+            val = max(val_list)
+            if unit_type == int and type(val) == float:
+                val = int(round(val))
+            return "%s%s" % (str(val), text)
         if method == 'minmax':
             min_list = [x for (x,y) in val_list]
             max_list = [y for (x,y) in val_list]
@@ -220,15 +229,22 @@ class Collection(FeatureCollection):
             for field in settings.COMPARISON_FIELD_LOOKUP:
                 val_collector[field['name']] = field
                 val_collector[field['name']]['values'] = []
+            stratum_fields = {}
+            for field in settings.STRATUM_COMPARISON_FIELD_LOOKUP:
+                stratum_fields[field['name']] = field
             for (index, feature) in feature_set:
                 if strata == 'all':
                     feature_summary = eval(feature.summary)[strata]
+                    feature_area = feature.true_area_m2
+                    for field in feature_summary:
+                        clean_val = self.clean_summary_value(field, val_collector[field['title']], feature_area)
+                        val_collector[field['title']]['values'].append(clean_val)
                 else:
                     feature_summary = eval(feature.summary)[strata][stratum_name]
-                feature_area = feature.true_area_m2
-                for field in feature_summary:
-                    clean_val = self.clean_summary_value(field, val_collector[field['title']], feature_area)
-                    val_collector[field['title']]['values'].append(clean_val)
+                    feature_area = feature.true_area_m2
+                    for field in feature_summary:
+                        clean_val = self.clean_summary_value(field, stratum_fields[field['title']], feature_area)
+                        val_collector[field['title']]['values'].append(clean_val)
             for key in [x['name'] for x in settings.COMPARISON_FIELD_LOOKUP]:
                 self.generate_summary_value(attributes,key,val_collector[key])
         else:

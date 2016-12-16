@@ -190,6 +190,23 @@ COMPARISON_FIELD_LOOKUP = [
     {'name': 'PHS 3 for Scleractinia coral', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
 ]
 
+STRATUM_COMPARISON_FIELD_LOOKUP = [
+    # {'name': 'Total Area', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    # {'name': 'Depth Range', 'type': str, 'aggregate': 'minmax', 'unit': (' to ',' fathoms')},
+    # {'name': 'Mean Depth', 'type': int, 'aggregate': 'mean', 'unit': ' fathoms'},
+    {'name': 'Soft', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Mixed', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Hard', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Inferred Rock', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 1 for all coral and sponges', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 2 for all coral and sponges', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 3 for all coral and sponges', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 4 for all coral and sponges', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 1 for Scleractinia coral', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 2 for Scleractinia coral', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 3 for Scleractinia coral', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+]
+
 COMPARISON_FIELD_LIST = ['name', 'Description'] + [x['name'] for x in COMPARISON_FIELD_LOOKUP]
 
 
