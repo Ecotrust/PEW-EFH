@@ -87,7 +87,9 @@ def format_area(value, raw):
 
 
 def get_drawing_summary_reports(grid_cells, attributes, raw=False):
+    from general.utils import sq_meters_to_sq_miles
     if grid_cells.count() == 0:
+        attributes.append({'title': 'Total Area', 'data': '0 sq mi'})
         attributes.append({'title': 'Soft', 'data': '0 sq mi'})
         attributes.append({'title': 'Mixed', 'data': '0 sq mi'})
         attributes.append({'title': 'Hard', 'data': '0 sq mi'})
@@ -105,6 +107,25 @@ def get_drawing_summary_reports(grid_cells, attributes, raw=False):
     # cell_count = grid_cells.count()
     # attributes.append({'title': 'Number of Grid Cells (drawing)', 'data': format(cell_count, ',d')})
     #
+
+    # Total Area
+    title = 'Total Area'
+    area = sq_meters_to_sq_miles(sum([x.geometry.transform(2163, clone=True).area for x in grid_cells]))
+    data = format_area(area, raw)
+    attributes.append({'title': title, 'data': data})
+
+    # Depth Range
+    title = 'Depth Range'
+    min_depth = get_min(grid_cells, 'depth')
+    max_depth = get_max(grid_cells, 'depth')
+    depth_range = '%s to %s fathoms' % (format_precision(float(min_depth), 0), format_precision(float(max_depth), 0))
+    attributes.append({'title': title, 'data': depth_range})
+
+    # Mean Depth
+    title = 'Mean Depth'
+    mean_depth = get_average(grid_cells, 'depth')
+    data = str(format_precision(float(mean_depth), 0)) + ' fathoms'
+    attributes.append({'title': title, 'data': data})
 
     # Soft Substrate (Area)
     title = 'Soft'

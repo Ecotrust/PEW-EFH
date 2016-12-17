@@ -195,10 +195,12 @@ class Collection(FeatureCollection):
                 val = int(round(val))
             return "%s%s" % (str(val), text)
         if method == 'minmax':
-            min_list = [x for (x,y) in val_list]
-            max_list = [y for (x,y) in val_list]
+            min_list = [float(x) for (x,y) in val_list]
+            max_list = [float(y) for (x,y) in val_list]
+            min_val = unit_type(round(min(min_list)))
+            max_val = unit_type(round(max(max_list)))
             if len(min_list) > 0 and len(max_list) > 0:
-                return "%s%s%s%s" % (str(min(min_list)), text[0], str(max(max_list)), text[1])
+                return "%s%s%s%s" % (str(min_val), text[0], str(max_val), text[1])
             else:
                 return False
         if method == 'mean':
