@@ -470,6 +470,7 @@ function scenarioModel(options) {
     self.uid = options.uid || null;
     self.name = options.name;
     self.display_name = options.display_name?options.display_name:self.name;
+    self.collection = options.collection;
     self.featureAttributionName = self.name;
     self.description = options.description;
     self.shared = ko.observable();
@@ -779,8 +780,11 @@ function scenariosModel(options) {
     self.scenarioList = ko.observableArray();
     self.scenarioForm = ko.observable(false);
 
+    self.drawingCollections = [];
+    self.drawingListCollections = ko.observableArray([]);
     self.drawingList = ko.observableArray();
     self.drawingForm = ko.observable(false);
+    self.drawingsExist = ko.observable();
 
     self.collectionList = ko.observableArray();
     self.collectionForm = ko.observable(false);
@@ -1558,25 +1562,83 @@ function scenariosModel(options) {
     //populates drawingList
     self.loadDrawings = function (drawings) {
         self.drawingList.removeAll();
+        self.drawingListCollections.removeAll();
+        self.drawingCollections = [];
         $.each(drawings, function (i, drawing) {
+            var drawingCollection = self.drawingInCollection(drawing);
             var drawingViewModel = new drawingModel({
                 id: drawing.uid,
                 uid: drawing.uid,
                 name: drawing.name,
                 display_name: drawing.display_name?drawing.display_name:drawing.name,
+                collection: drawingCollection,
                 description: drawing.description,
                 attributes: drawing.attributes,
                 shared: drawing.shared,
                 sharedByUsername: drawing.shared_by_username,
                 sharedByName: drawing.shared_by_name,
-                sharingGroups: drawing.sharing_groups
+                sharingGroups: drawing.sharing_groups,
             });
-            self.drawingList.push(drawingViewModel);
+            self.findDrawingCollections(i, drawingViewModel, drawingCollection);
             app.viewModel.layerIndex[drawing.uid] = drawingViewModel;
             // self.getAttributes(drawing.uid);
         });
+        self.loadDrawingsCollections();
         self.drawingList.sort(self.alphabetizeByName);
     };
+
+    self.drawingInCollection = function(drawing) {
+        var displayName = drawing.display_name;
+        if (displayName.indexOf('[') > -1) {
+            var firstIndex = displayName.indexOf('[') + 1;
+            return displayName.substring( firstIndex, displayName.indexOf(']') ); 
+        } else {
+            return false;
+        }
+    }
+
+    // accordian for collections in drawings menu
+    self.findDrawingCollections = function(i, drawing, collect) {
+        if (!collect) {
+            self.drawingList.push(drawing);
+        } else {
+            var newCollection = true;
+            if (i === 0) {
+                self.pushNewCollection(collect);
+            }
+            self.drawingCollections.forEach(function(e) {
+                if (e.collection.name === collect) {
+                    newCollection = false;
+                    e.collection.drawings.push(drawing);
+                }
+            });
+            if (newCollection) {
+                self.pushNewCollection(collect);
+            }  
+        }
+        
+    }
+
+    self.pushNewCollection = function(collection) {
+        self.drawingCollections.push({
+            collection: {
+                name: collection,
+                isActive: ko.observable(false), // set to toggle 
+                drawings: []
+            }
+        });
+    }
+
+    self.collectionToggleActive = function(data, event) {
+        data.collection.isActive(!data.collection.isActive()); //toggle the isActive value between true/false
+        self.updateDesignsScrollBar();
+    }
+
+    self.loadDrawingsCollections = function() {
+        self.drawingCollections.forEach(function(e) {
+            self.drawingListCollections.push(e);
+        });
+    }
 
     self.loadCollectionsFromServer = function() {
       $.ajax({

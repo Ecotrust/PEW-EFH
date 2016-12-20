@@ -622,6 +622,65 @@ a.disabled-link:hover {
   display: inline-block;
 }
 
+.drawing-collections {
+  margin-bottom: 10px;
+}
+
+.drawing-collections .accordion-group {
+  border: none;
+}
+
+.drawing-collections .accordion-header .accordion-toggle {
+  display: block;
+  margin-bottom: -1px;
+  padding: 7px 15px 6px;
+  position: relative;
+  width: 100%;
+}
+
+.drawing-collections .accordion-header .accordion-toggle div {
+  display: inline-block;
+}
+
+.drawing-collections .accordion-header .accordion-toggle:before {
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
+  border-left: 5px solid #00446D;
+  content: '';
+  left: 4px;
+  position: absolute;
+  top: 12px;
+  transition: .2s transform ease-in-out;
+}
+
+.drawing-collections .accordion-header.active .accordion-toggle:before {
+  transform: rotateZ(90deg);
+}
+
+.drawing-collections.accordion-wrap .btn-group:first-child,
+.drawing-collections .btn-group + .btn-group {
+  margin-left: 0;
+}
+
+.drawing-collections .btn-group-layer .btn-layer {
+  border-left: 1px solid #ccc;
+}
+
+.drawing-collections .collapse.in .accordion-inner,
+.drawing-collections .accordion-header.active {
+  border: 1px solid #efefef;
+  background-color: #fcfeff;
+}
+
+.drawing-collections .collapse.in .accordion-inner {
+  border-top: none;
+}
+
+.drawing-collections .accordion-header.active {
+  border-bottom: none;
+  margin-left: -1px;
+}
+
 #drawing-accordion {
   margin-bottom: 120px;
 }
