@@ -536,6 +536,18 @@ img + h3 {
 	/*border-left: 3px solid #2d8998;*/
 }
 
+.accordion-wrap .accordion-heading {
+  padding: 2px 5px;
+}
+
+.accordion-wrap .accordion-heading.active {
+  background-color: #eaeaea;
+}
+
+.accordion-wrap .btn-group:first-child {
+	margin-left: 5px;
+}
+
 .data-pane .tab-content {
   position: static;
 }

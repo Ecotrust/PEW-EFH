@@ -1,0 +1,47 @@
+<div class="accordion-wrap drawing-collections" data-bind="foreach: app.viewModel.scenarios.drawingListCollections ">
+    <div class="accordion-group">
+        <div class="accordion-header" data-bind="click: app.viewModel.scenarios.collectionToggleActive, css : {'active' : collection.isActive()}">
+            <a class="accordion-toggle"><div data-bind="text: collection.name"></div></a>
+        </div>
+
+        <!-- <a class="btn btn-info-sign" data-bind="click: toggleDescription, css: { 'active': infoActive() }">
+            <i class="icon-info-sign icon-large"></i>
+        </a> -->
+        <div class="accordion-body collapse" data-bind="css: { 'in': collection.isActive() }">
+            <div class="accordion-inner">
+                <ul class="unstyled" data-bind="foreach: collection.drawings">
+                    <div class="btn-group btn-group-layer">
+                        <li class="layer">
+                            <div class="btn-group btn-group-layer">
+                                <a style="font-weight: normal;" class="btn btn-layer" data-bind="css: { 'active': active(), 'not-active': ! active() }, click: toggleActive">
+                                    <div data-bind="text: name" style="display: inline"></div>
+                                    <span rel="tooltip" data-bind="attr: {title: sharedBy}">
+                                        <i class="icon-signin" data-bind="visible: shared" style="padding-left: 10px"></i>
+                                    </span>
+                                    <span rel="tooltip" data-bind="attr: {title: sharedWith}">
+                                        <i class="icon-signout" data-bind="visible: selectedGroups().length" style="padding-left: 10px"></i>
+                                    </span>
+                                    <i class="check icon-large icon-check" data-bind="visible: active() && visible()"></i>
+                                    <i class="check icon-large icon-check-empty" data-bind="visible: active() && ! visible()"></i>
+                                </a>
+                                <a class="btn btn-group dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a data-bind="visible: ! shared(), click: editDrawing">Edit</a></li>
+                                    <li><a data-bind="attr:{id:$parent.tocid+'-share-option'}, visible: ! shared() && app.viewModel.scenarios.hasSharingGroups, click: app.viewModel.scenarios.showSharingModal" class="share-option">Share</a></li>
+                                    <li><a data-bind="click: app.viewModel.scenarios.zoomToScenario">Zoom To</a></li>
+                                    <li><a data-bind="click: createCopyDrawing">Copy</a></li>
+                                    <li><a data-bind="click: app.viewModel.scenarios.showAssociationModal">Add To Scenario</a></li>
+                                    <li><a data-bind="visible: shared, click: createCopyDrawing">Create Copy</a></li>
+                                    <li class="divider"></li>
+                                    <li><a data-bind="visible: ! shared(), click: deleteDrawing">Delete</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

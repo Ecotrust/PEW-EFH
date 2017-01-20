@@ -134,7 +134,7 @@
                                 <div class="accordion-body collapse" data-bind="css: { 'in': app.viewModel.scenarios.isDrawingsOpen() }">
                                     <div class="accordion-inner">
 
-                                        <div data-bind="visible: !app.viewModel.scenarios.drawingList().length" style="font-weight: normal">
+                                        <div data-bind="visible: !app.viewModel.scenarios.drawingListCollections().length && !app.viewModel.scenarios.drawingList().length" style="font-weight: normal">
                                             <div style="padding: 10px;">
                                                 <p>
                                                     You currently have no Drawings.
@@ -149,39 +149,12 @@
                                             </div>
                                         </div>
 
-                                        <ul class="unstyled list" data-bind="foreach: app.viewModel.scenarios.drawingList ">
-                                            <li class="layer">
-                                                <div class="btn-group btn-group-layer">
-                                                    <!-- <a class="btn btn-info-sign" data-bind="click: toggleDescription, css: { 'active': infoActive() }">
-                                                        <i class="icon-info-sign icon-large"></i>
-                                                    </a> -->
-                                                    <a style="font-weight: normal" class="btn btn-layer" data-bind="css: { 'active': active(), 'not-active': ! active() }, click: toggleActive">
-                                                        <div data-bind="text: display_name" style="display: inline"></div>
-                                                        <span rel="tooltip" data-bind="attr: {title: sharedBy}">
-                                                            <i class="icon-signin" data-bind="visible: shared" style="padding-left: 10px"></i>
-                                                        </span>
-                                                        <span rel="tooltip" data-bind="attr: {title: sharedWith}">
-                                                            <i class="icon-signout" data-bind="visible: selectedGroups().length" style="padding-left: 10px"></i>
-                                                        </span>
-                                                        <i class="check icon-large icon-check" data-bind="visible: active() && visible()"></i>
-                                                        <i class="check icon-large icon-check-empty" data-bind="visible: active() && ! visible()"></i>
-                                                    </a>
-                                                    <a class="btn btn-group dropdown-toggle" data-toggle="dropdown" href="#">
-                                                        <span class="caret"></span>
-                                                    </a>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a data-bind="visible: ! shared(), click: editDrawing">Edit</a></li>
-                                                        <li><a data-bind="attr:{id:$parent.tocid+'-share-option'}, visible: ! shared() && app.viewModel.scenarios.hasSharingGroups, click: app.viewModel.scenarios.showSharingModal" class="share-option">Share</a></li>
-                                                        <li><a data-bind="click: app.viewModel.scenarios.zoomToScenario">Zoom To</a></li>
-                                                        <li><a data-bind="click: createCopyDrawing">Copy</a></li>
-                                                        <li><a data-bind="click: app.viewModel.scenarios.showAssociationModal">Add To Scenario</a></li>
-                                                        <li><a data-bind="visible: shared, click: createCopyDrawing">Create Copy</a></li>
-                                                        <li class="divider"></li>
-                                                        <li><a data-bind="visible: ! shared(), click: deleteDrawing">Delete</a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                        <!-- drawings in collection -->
+                                        {% include "drawing-collection.html" %}
+
+                                        <!-- drawings not in a collection -->
+                                        {% include "drawing.html" %}   
+
                                     </div>
                                 </div>
                             </div>
