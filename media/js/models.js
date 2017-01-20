@@ -983,8 +983,13 @@ function viewModel() {
     self.aggregatedAttributesWidth = ko.observable('280px');
     self.aggregatedAttributes.subscribe( function() {
         for (var i=0; i < self.activeLayers().length; i++) {
-          if (self.activeLayers()[i].hasOwnProperty('attributes') && self.activeLayers()[i].attributes().length == 0) {
-            self.scenarios.getAttributes(self.activeLayers()[i].uid)
+          if (self.activeLayers()[i].hasOwnProperty('attributes')) {
+            if (typeof(self.activeLayers()[i].attributes) == "function" && self.activeLayers()[i].attributes().length == 0) {
+              self.scenarios.getAttributes(self.activeLayers()[i].uid);
+            } else if (typeof(self.activeLayers()[i].attributes) == "object" && self.activeLayers()[i].attributes.length == 0 && self.activeLayers()[i].hasOwnProperty('uid')) {
+              //This may not ever happen...
+              self.scenarios.getAttributes(self.activeLayers()[i].uid);
+            }
           }
         }
         self.updateAggregatedAttributesOverlayWidthAndScrollbar();

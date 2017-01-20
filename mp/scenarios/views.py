@@ -351,45 +351,91 @@ def compare_scenario(request):
 
     try:
         json = []
+        CSV_json = []
         json.append(settings.COMPARISON_FIELD_LIST)
+        CSV_json.append(settings.COMPARISON_FIELD_LIST)
         report_dict = compile_comparison_dict(collections)
-        json.append(report_dict)
+        json.append(report_dict['all']['all'])
+        CSV_json.append(report_dict)
     except:
         return HttpResponse("Failed to compare scenarios.", status=500)
 
-    download_link = get_comparison_download_link(json)
+    download_link = get_comparison_download_link(CSV_json)
     json.append(download_link)
     return HttpResponse(dumps(json), status=200)
 
 
 def compile_comparison_dict(collections):
     report_dict = {}
-    for collection in collections:
-        report_dict[collection.uid] = {
-            'name': collection.name
-        }
-        attributes = collection.serialize_attributes['attributes']
-        for attribute in attributes:
-            report_dict[collection.uid][attribute['title']] = attribute['data']
+    strata_list = ['all'] + settings.REPORT_STRATA
+    try:
+        for strata in strata_list:
+            report_dict[strata] = {}
+            if strata == 'all':
+                stratum_list = ['all']
+            else:
+                stratum_list = settings.STRATA_MAP[strata].keys()
+            for stratum_id in stratum_list:
+                stratum = settings.STRATA_MAP[strata][stratum_id]
+                stratum_dict = {}
+                for collection in collections:
+                    stratum_dict[collection.uid] = {
+                        'name': collection.name
+                    }
+                    attributes = collection.serialize_strata_attributes(strata, {stratum_id : stratum })['attributes']
+                    for attribute in attributes:
+                        stratum_dict[collection.uid][attribute['title']] = attribute['data']
+                report_dict[strata][stratum] = stratum_dict
+    except Exception as e:
+        print("Scenarios views compile_comparison_dict: %s" % e)
     return report_dict
 
 def get_comparison_download_link(json):
     import csv, time
     from slugify import slugify
     attr_list = json[0]
-    data = json[1]
-    uids = data.keys()
-    names = [data[x][settings.COMPARISON_FIELD_LIST[0]] for x in uids]
+    strata_data = json[1]
+    base_data = strata_data['all']['all']
+    uids = base_data.keys()
+    names = [base_data[x][settings.COMPARISON_FIELD_LIST[0]] for x in uids]
     filename = '%s_comparison_%s.csv' % (slugify('_'.join(names)), str(time.time()))
     try:
         csv_file = open('%s%s' % (settings.CSV_DIR,filename), 'w')
     except Exception as e:
-        import ipdb
-        ipdb.set_trace()
-    writer = csv.DictWriter(csv_file, fieldnames=settings.COMPARISON_FIELD_LIST)
-    writer.writeheader()
-    for uid in uids:
-        writer.writerow(data[uid])
+        print("Scenarios views get_comparison_download_link: %s" % e)
+        print("Check your settings for CSV_DIR and it's permissions")
+        print("CSV_DIR = %s" % settings.CSV_DIR)
+    writer = csv.writer(csv_file)
+    strata_type_list = [x for x in strata_data]
+    # Report the overall numbers first
+    all_index = strata_type_list.index('all')
+    strata_type_list.insert(0, strata_type_list.pop(all_index))
+    # ['all','strata_3x3']
+    for strata_type in strata_type_list:
+        strata_list = [x for x in strata_data[strata_type].keys()]
+        strata_list.sort()
+        #['NW','N','NE'...]
+        for stratum_name in strata_list:
+            try:
+                if stratum_name == 'all':
+                    writer.writerow(['FOR','ENTIRE','PROPOSAL'])
+                else:
+                    writer.writerow(['FOR',stratum_name,'STRATUM'])
+                # Write headers
+                writer.writerow(settings.COMPARISON_FIELD_LIST)
+
+                data = strata_data[strata_type][stratum_name]
+                for uid in uids:
+                    row_data = []
+                    for field_name in settings.COMPARISON_FIELD_LIST:
+                        if field_name in data[uid].keys():
+                            row_data.append(data[uid][field_name])
+                        else:
+                            row_data.append("")
+                    writer.writerow(row_data)
+                writer.writerow([])
+            except Exception as e:
+                print("Scenarios views get_comparison_download_link 2: %s" % e)
     csv_file.close()
     return '%s%s' % (settings.CSV_URL,filename)
 

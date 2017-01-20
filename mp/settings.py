@@ -190,13 +190,78 @@ COMPARISON_FIELD_LOOKUP = [
     {'name': 'PHS 3 for Scleractinia coral', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
 ]
 
+STRATUM_COMPARISON_FIELD_LOOKUP = [
+    {'name': 'Total Area', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Depth Range', 'type': str, 'aggregate': 'minmax', 'unit': (' to ',' fathoms')},
+    {'name': 'Mean Depth', 'type': float, 'aggregate': 'mean', 'unit': ' fathoms'},
+    {'name': 'Soft', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Mixed', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Hard', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Inferred Rock', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 1 for all coral and sponges', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 2 for all coral and sponges', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 3 for all coral and sponges', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 4 for all coral and sponges', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 1 for Scleractinia coral', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 2 for Scleractinia coral', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'PHS 3 for Scleractinia coral', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+]
+
 COMPARISON_FIELD_LIST = ['name', 'Description'] + [x['name'] for x in COMPARISON_FIELD_LOOKUP]
 
 
-SUMMARY_DEFAULT = '[{"title":"Status", "data":"Loading..."}]'
+SUMMARY_DEFAULT = '{"all": [{"title":"Status", "data":"Loading..."}]}'
 
 CSV_URL = '/media/csvs/'
 CSV_DIR = './mediaroot/csvs/'
+
+# Must be a field on the drawings.models.GridCell model
+# Must be present in STRATA_MAP
+REPORT_STRATA = ['strata_3x3']
+
+STRATA_MAP = {
+    'all':{
+        'all':'all'
+    },
+    'strata_3x3':{
+        '1':'Northern Shelf',
+        '2':'Northern Upper Slope',
+        '3':'Northern Lower Slope',
+        '4':'Central Shelf',
+        '5':'Central Upper Slope',
+        '6':'Central Lower Slope',
+        '7':'Southern Shelf',
+        '8':'Southern Upper Slope',
+        '9':'Southern Lower Slope'
+    },
+    'strata_5x5':{
+        '1':'1 Cape Flattery to Pt Chehalis | 0fm-30fm',
+        '2':'1 Cape Flattery to Pt Chehalis | 30fm-100fm',
+        '3':'1 Cape Flattery to Pt Chehalis | 100fm-150fm',
+        '4':'1 Cape Flattery to Pt Chehalis | 150fm-700fm',
+        '5':'1 Cape Flattery to Pt Chehalis | greater than 700fm',
+        '6':'2 Pt Chehalis to Cape Blanco | 0fm-30fm',
+        '7':'2 Pt Chehalis to Cape Blanco | 30fm-100fm',
+        '8':'2 Pt Chehalis to Cape Blanco | 100fm-150fm',
+        '9':'2 Pt Chehalis to Cape Blanco | 150fm-700fm',
+        '10':'2 Pt Chehalis to Cape Blanco | greater than 700fm',
+        '11':'3 Cape Blanco to Cape Mendocino | 0fm-30fm',
+        '12':'3 Cape Blanco to Cape Mendocino | 30fm-100fm',
+        '13':'3 Cape Blanco to Cape Mendocino | 100fm-150fm',
+        '14':'3 Cape Blanco to Cape Mendocino | 150fm-700fm',
+        '15':'3 Cape Blanco to Cape Mendocino | greater than 700fm',
+        '16':'4 Cape Mendocino to Pt Conception | 0fm-30fm',
+        '17':'4 Cape Mendocino to Pt Conception | 30fm-100fm',
+        '18':'4 Cape Mendocino to Pt Conception | 100fm-150fm',
+        '19':'4 Cape Mendocino to Pt Conception | 150fm-700fm',
+        '20':'4 Cape Mendocino to Pt Conception | greater than 700fm',
+        '21':'5 Pt Conception to US/Mexico Border | 0fm-30fm',
+        '22':'5 Pt Conception to US/Mexico Border | 30fm-100fm',
+        '23':'5 Pt Conception to US/Mexico Border | 100fm-150fm',
+        '24':'5 Pt Conception to US/Mexico Border | 150fm-700fm',
+        '25':'5 Pt Conception to US/Mexico Border | greater than 700fm'
+    }
+}
 
 import logging
 logging.getLogger('django.db.backends').setLevel(logging.ERROR)

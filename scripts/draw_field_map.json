@@ -13,5 +13,7 @@
   "sclr1": "hssclr1_m2",
   "sclr2": "hssclr2_m2",
   "sclr3": "hssclr3_m2",
+  "strata_3x3": "strata_3x3",
+  "strata_5x5": "strata_5x5",
   "objectid": "unique_id"
 }
