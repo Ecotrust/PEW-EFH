@@ -283,9 +283,9 @@ app.init = function() {
 
     app.map.events.register("featureclick", null, function(e) {
         var layer = e.feature.layer.layerModel || e.feature.layer.scenarioModel;
-        layer.showingLayerAttribution(true);
         var attrs;
         if (layer) {
+            layer.showingLayerAttribution(true);
             var text = [],
                 title = layer.name;
 
