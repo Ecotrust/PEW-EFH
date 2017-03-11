@@ -217,7 +217,8 @@ CSV_DIR = './mediaroot/csvs/'
 
 # Must be a field on the drawings.models.GridCell model
 # Must be present in STRATA_MAP
-REPORT_STRATA = ['strata_3x3']
+#REPORT_STRATA = ['strata_3x3']
+REPORT_STRATA = ['strata_5x5']
 
 STRATA_MAP = {
     'all':{

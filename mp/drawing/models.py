@@ -245,6 +245,8 @@ class Collection(FeatureCollection):
                         clean_val = self.clean_summary_value(field, val_collector[field['title']], feature_area)
                         val_collector[field['title']]['values'].append(clean_val)
                 else:
+                    if not strata in eval(feature.summary).keys():
+                        feature.save()
                     feature_summary = eval(feature.summary)[strata][stratum_name]
                     feature_area = feature.true_area_m2
                     for field in feature_summary:
