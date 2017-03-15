@@ -298,7 +298,17 @@
                   <th data-bind="text:$data" class="collection-report-cell">data cell</th>
                   <!-- /ko -->
                   <!-- ko if: $parentContext.$index()!=0 -->
-                  <td data-bind="text:$data" class="collection-report-cell">data cell</td>
+                    <!-- ko if: $data -->
+                      <!-- ko if: $data.hasOwnProperty('label') -->
+                      <td data-bind="text:$data.label" class="collection-report-cell">data cell</td>
+                      <!-- /ko -->
+                      <!-- ko ifnot: $data.hasOwnProperty('label') -->
+                      <td data-bind="text:$data" class="collection-report-cell">data cell</td>
+                      <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko ifnot: $data -->
+                      <td></td>
+                    <!-- /ko -->
                   <!-- /ko -->
                 </tr>
               </tbody>

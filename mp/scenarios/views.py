@@ -429,7 +429,7 @@ def get_comparison_download_link(json):
                     row_data = []
                     for field_name in settings.COMPARISON_FIELD_LIST:
                         if field_name in data[uid].keys():
-                            row_data.append(data[uid][field_name])
+                            row_data.append(data[uid][field_name]['label'])
                         else:
                             row_data.append("")
                     writer.writerow(row_data)

@@ -183,17 +183,29 @@ class Collection(FeatureCollection):
             val = sum(val_list)
             if unit_type == int and type(val) == float:
                 val = int(round(val))
-            return "%s%s" % (str(val), text)
+            return {
+                'label': "%s%s" % (str(val), text),
+                'values': [val],
+                'text': [text]
+            }
         if method == 'min':
             val = min(val_list)
             if unit_type == int and type(val) == float:
                 val = int(round(val))
-            return "%s%s" % (str(val), text)
+            return {
+                'label': "%s%s" % (str(val), text),
+                'values': [val],
+                'text': [text]
+            }
         if method == 'max':
             val = max(val_list)
             if unit_type == int and type(val) == float:
                 val = int(round(val))
-            return "%s%s" % (str(val), text)
+            return {
+                'label': "%s%s" % (str(val), text),
+                'values': [val],
+                'text': [text]
+            }
         if method == 'minmax':
             if len(val_list) > 0:
                 min_list = [float(x) for (x,y) in val_list]
@@ -201,7 +213,11 @@ class Collection(FeatureCollection):
                 min_val = unit_type(round(min(min_list)))
                 max_val = unit_type(round(max(max_list)))
                 if len(min_list) > 0 and len(max_list) > 0:
-                    return "%s%s%s%s" % (str(min_val), text[0], str(max_val), text[1])
+                    return {
+                        'label': "%s%s%s%s" % (str(min_val), text[0], str(max_val), text[1]),
+                        'values': [min_val, max_val],
+                        'text': text
+                    }
                 else:
                     return False
             else:
@@ -210,9 +226,15 @@ class Collection(FeatureCollection):
             total_area = sum([area for (value, area) in val_list])
             numerator_list = [value*area for (value, area) in val_list]
             if len(numerator_list) > 0:
-                return "%s%s" % (str(unit_type(sum(numerator_list)/total_area)), text)
+                val = str(unit_type(sum(numerator_list)/total_area))
+                return {
+                    'label': "%s%s" % (val, text),
+                    'values': [val],
+                    'text': [text]
+                }
             else:
                 return False
+        return False
 
     def generate_summary_value(self, attributes, name, field):
         data = self.aggregate_values(field['values'], field['aggregate'], field['unit'], field['type'])
@@ -226,10 +248,6 @@ class Collection(FeatureCollection):
             from datetime import datetime
             feature_set = list(enumerate(self.feature_set(), start=1))
             count = len(feature_set)
-            summary_dict = {
-                'name': self.name,
-                'description': self.description
-            }
             val_collector = {}
             for field in settings.COMPARISON_FIELD_LOOKUP:
                 val_collector[field['name']] = field
