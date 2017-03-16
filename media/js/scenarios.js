@@ -940,6 +940,10 @@ function scenariosModel(options) {
       }
     }
 
+    self.obsArrayValue = function(obsarray) {
+      return JSON.parse(ko.toJSON(obsarray));
+    }
+
     self.compareScenarioIsSelected = function(scenarioId) {
         if(self.comparisonCollection()) {
             var indexOf = self.comparisonCollection().temporarilySelectedScenarios.indexOf(scenarioId);
@@ -948,6 +952,10 @@ function scenariosModel(options) {
         return false;
     }
 
+    /*
+        Populate Scenario Comparison Report Modal
+    */
+    self.originalComparisonReport = ko.observableArray();
     self.comparisonReport = ko.observableArray();
     self.comparisonReportCollections = ko.observableArray();
     self.comparisonReportValues = ko.observableArray();
@@ -967,8 +975,71 @@ function scenariosModel(options) {
         }
         data_array.push(row);
       }
-      self.comparisonReport(data_array);
+      self.originalComparisonReport(data_array);
+      self.comparisonReport(self.obsArrayValue(self.originalComparisonReport));
       $('#compare-report-modal').modal('show');
+    };
+
+    self.setComparisonReportBaseline = function(baselineIndex) {
+      if (baselineIndex == 0) {
+        self.comparisonReport([]);
+        self.comparisonReport(self.obsArrayValue(self.originalComparisonReport));
+      } else {
+        reportValues = self.obsArrayValue(self.originalComparisonReport);
+        //Loop through fields
+        for(var i=0; i < reportValues.length; i++) {
+          if (
+            typeof(reportValues[i][1]) == 'object' &&
+            reportValues[i][1] != null &&
+            reportValues[i][1].hasOwnProperty('values') &&
+            reportValues[i][1].hasOwnProperty('text') &&
+            typeof(reportValues[i][1]['text']) == 'object'
+          ){
+            //for values in each field (discluding field name at 0)
+            for (var j=1; j<reportValues[i].length; j++) {
+              blValues = reportValues[i][baselineIndex]['values'];
+              //change non-baseline displayed values
+              if (j!=baselineIndex){
+                for (k=0; k < reportValues[i][j]['values'].length; k++){
+                  old_val = reportValues[i][j]['values'][k];
+                  //Determine type of values: int or float
+                  if (old_val%1 == 0) {
+                    //calculate difference (absolute for now, maybe % later)
+                    diff_val = parseInt(old_val) - parseInt(blValues[k]);
+                  } else{
+                    diff_val = parseFloat(old_val) - parseFloat(blValues[k])
+                    // reportValues[i][j]['values'][k] = ().toString();
+                  }
+                  if (diff_val > 0) {
+                    diff_val = "+" + diff_val.toString();
+                  } else {
+                    diff_val = diff_val.toString();
+                  }
+                  reportValues[i][j]['values'][k] = diff_val;
+                  //assemble new label - assumes text & values will alternate
+                  if (reportValues[i][j]['values'].length >= reportValues[i][j]['text'].length) {
+                    big_list = reportValues[i][j]['values'];
+                    small_list = reportValues[i][j]['text'];
+                  } else {
+                    big_list = reportValues[i][j]['text'];
+                    small_list = reportValues[i][j]['values'];
+                  }
+                  label_list = []
+                  for (l = 0; l < big_list.length; l++){
+                    label_list.push(big_list[l]);
+                    if (l < small_list.length){
+                      label_list.push(small_list[l]);
+                    }
+                  }
+                  reportValues[i][j]['label'] = label_list.join(' ');
+                }
+              }
+            }
+          }
+        }
+        self.comparisonReport([]);
+        self.comparisonReport(reportValues);
+      }
     };
 
     self.zoomToScenario = function(scenario) {
@@ -1591,7 +1662,7 @@ function scenariosModel(options) {
         var displayName = drawing.display_name;
         if (displayName.indexOf('[') > -1) {
             var firstIndex = displayName.indexOf('[') + 1;
-            return displayName.substring( firstIndex, displayName.indexOf(']') ); 
+            return displayName.substring( firstIndex, displayName.indexOf(']') );
         } else {
             return false;
         }
@@ -1614,16 +1685,16 @@ function scenariosModel(options) {
             });
             if (newCollection) {
                 self.pushNewCollection(collect);
-            }  
+            }
         }
-        
+
     }
 
     self.pushNewCollection = function(collection) {
         self.drawingCollections.push({
             collection: {
                 name: collection,
-                isActive: ko.observable(false), // set to toggle 
+                isActive: ko.observable(false), // set to toggle
                 drawings: []
             }
         });
@@ -1840,6 +1911,16 @@ function scenariosModel(options) {
           window.alert(result.responseText);
         }
       });
+    };
+
+    self.setBaseLine = function(col_id, data) {
+      // Update observable value array with relative comparison values
+      app.viewModel.scenarios.setComparisonReportBaseline(col_id);
+      $('td.collection-report-cell').removeClass('active');
+      if (col_id !== 0) {
+        column = col_id + 1;
+        $('td:nth-of-type('+ column + ').collection-report-cell').addClass('active');
+      }
     };
 
     self.loadDesigns = function() {

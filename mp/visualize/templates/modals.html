@@ -293,6 +293,21 @@
         <div class="row-fluid">
             <table class='comparison-table'>
               <tbody data-bind="foreach: app.viewModel.scenarios.comparisonReport()">
+                <!-- ko if: $index()==0 -->
+                <tr data-bind="foreach: $data">
+                  <td>
+                    <!-- ko if: $index()==0 -->
+                    <button data-bind="click: app.viewModel.scenarios.setBaseLine.bind($data, $index())">Reset</button>
+                    <!-- /ko -->
+                    <!-- ko ifnot: $index()==0 -->
+                    <button data-bind="click: app.viewModel.scenarios.setBaseLine.bind($data, $index())">Set As Baseline</button>
+                    <!-- /ko -->
+                  </td>
+                </tr>
+                <!-- /ko -->
+
+
+
                 <tr data-bind="foreach: $data">
                   <!-- ko if: $parentContext.$index()==0 -->
                   <th data-bind="text:$data" class="collection-report-cell">data cell</th>
@@ -307,7 +322,7 @@
                       <!-- /ko -->
                     <!-- /ko -->
                     <!-- ko ifnot: $data -->
-                      <td></td>
+                      <td class="collection-report-cell"></td>
                     <!-- /ko -->
                   <!-- /ko -->
                 </tr>

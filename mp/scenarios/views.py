@@ -429,7 +429,11 @@ def get_comparison_download_link(json):
                     row_data = []
                     for field_name in settings.COMPARISON_FIELD_LIST:
                         if field_name in data[uid].keys():
-                            row_data.append(data[uid][field_name]['label'])
+                            # to facilitate baseline comparison, the type may vary
+                            if type(data[uid][field_name]) == dict:
+                                row_data.append(data[uid][field_name]['label'])
+                            elif type(data[uid][field_name]) == unicode:
+                                row_data.append(data[uid][field_name])
                         else:
                             row_data.append("")
                     writer.writerow(row_data)

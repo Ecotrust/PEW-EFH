@@ -1080,6 +1080,10 @@ th.collection-report-cell:first-letter {
   text-transform: capitalize;
 }
 
+td.collection-report-cell.active {
+  background-color: yellow;
+}
+
 /*** RESPONSIVE DESIGN ***/
 
 @media (max-width: 767px) {
