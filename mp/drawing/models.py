@@ -33,9 +33,15 @@ class AOI(GeometryFeature):
     import settings
     ACTION_CHOICES = (
         ('close', 'Close'),
+        ('close', 'close'),
         ('reopen', 'Reopen'),
+        ('reopen', 'reopen'),
+        ('reopen', 'open'),
+        ('reopen', 'Open'),
         ('other', 'Other'),
-        ('none', 'None')
+        ('other', 'other'),
+        ('none', 'None'),
+        ('none', 'none')
     )
     description = models.TextField(null=True,blank=True)
     reg_action = models.CharField(max_length=30, blank=True, null=True, choices=ACTION_CHOICES, default='none')
@@ -85,6 +91,8 @@ class AOI(GeometryFeature):
     @property
     def serialize_attributes(self):
         attributes = []
+        if self.reg_action and not self.reg_action == 'none':
+            attributes.append({'title': 'Regulatory Action', 'data': self.reg_action})
         if self.description:
             attributes.append({'title': 'Description', 'data': self.description})
         try:

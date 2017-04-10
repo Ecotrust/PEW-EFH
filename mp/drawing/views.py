@@ -384,16 +384,25 @@ def unpack_shapefile_upload(request, collection, retval):
                 return fail_upload_check(retval, error_message)
 
         #6 convert to AOIs
-        # import ipdb; ipdb.set_trace()
         from django.contrib.gis.geos import GEOSGeometry
         import simplejson
         for geom in layer:
             feature = simplejson.loads(geom.ExportToJson())['geometry']
             geos_geom = GEOSGeometry(simplejson.dumps(feature))
+            if settings.UPLOAD_ACTION_ATTR in geom.keys():
+                reg_action=geom[settings.UPLOAD_ACTION_ATTR]
+            else:
+                reg_action='none'
+            if settings.UPLOAD_DESCRIPTION_ATTR in geom.keys():
+                description=geom[settings.UPLOAD_DESCRIPTION_ATTR]
+            else:
+                description=None
+
             try:
                 aoi = AOI.objects.create(
                     name=geom[settings.UPLOAD_NAME_ATTR],
-                    description=geom[settings.UPLOAD_ACTION_ATTR],
+                    reg_action=reg_action,
+                    description=description,
                     geometry_orig=geos_geom,
                     geometry_final=geos_geom,
                     user_id=request.user.id
@@ -401,8 +410,6 @@ def unpack_shapefile_upload(request, collection, retval):
                 aoi.add_to_collection(collection)
             except Exception as e:
                 print("================%s=================" % e)
-                # import ipdb
-                # ipdb.set_trace()
                 pass
         #   6A polygon and multipolygon
         #7 associate AOIs with collection

@@ -25,6 +25,7 @@ UPLOAD_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'med
 ZIPFILE_PATH = '/tmp/import_shp.zip'
 UPLOAD_ACTION_ATTR = 'RegAction'
 UPLOAD_NAME_ATTR = 'SiteName'
+UPLOAD_DESCRIPTION_ATTR = 'Desc'
 
 ADMIN_MEDIA_PATH = "/usr/local/venv/marine-planner/lib/python2.7/site-packages/django/contrib/admin/static/admin/"
 

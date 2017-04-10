@@ -1311,7 +1311,7 @@ function scenariosModel(options) {
                 if ( scenario ) {
                     var opacity = scenario.opacity();
                     var stroke = scenario.opacity();
-                    if (retFeatures.features[0].properties.hasOwnProperty('collection')) {
+                    if (retFeatures.features.length > 0 && retFeatures.features[0].properties.hasOwnProperty('collection')) {
                       display_name = "[" + retFeatures.features[0].properties.collection.name +"] " + scenario.name;
                     } else {
                       display_name = scenario.name;
@@ -1358,7 +1358,7 @@ function scenariosModel(options) {
                             new OpenLayers.Rule({
                               filter: new OpenLayers.Filter.Comparison({
                                 type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                                property: "description",
+                                property: "reg_action",
                                 value: "close"
                               }),
                               symbolizer:{
@@ -1369,7 +1369,7 @@ function scenariosModel(options) {
                             new OpenLayers.Rule({
                               filter: new OpenLayers.Filter.Comparison({
                                 type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                                property: "description",
+                                property: "reg_action",
                                 value: "Close"
                               }),
                               symbolizer:{
@@ -1380,7 +1380,7 @@ function scenariosModel(options) {
                             new OpenLayers.Rule({
                               filter: new OpenLayers.Filter.Comparison({
                                 type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                                property: "description",
+                                property: "reg_action",
                                 value: "reopen"
                               }),
                               symbolizer:{
@@ -1391,7 +1391,7 @@ function scenariosModel(options) {
                             new OpenLayers.Rule({
                               filter: new OpenLayers.Filter.Comparison({
                                 type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                                property: "description",
+                                property: "reg_action",
                                 value: "Reopen"
                               }),
                               symbolizer:{
