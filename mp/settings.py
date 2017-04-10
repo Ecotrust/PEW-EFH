@@ -176,6 +176,8 @@ COLLECTION_NAME = 'Scenario'  #Confusing choice, I know. RDH
 
 COMPARISON_FIELD_LOOKUP = [
     {'name': 'Total Area', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Total Area Closed', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Total Area Reopened', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
     {'name': 'Depth Range', 'type': str, 'aggregate': 'minmax', 'unit': (' to ',' fathoms')},
     {'name': 'Mean Depth', 'type': int, 'aggregate': 'mean', 'unit': ' fathoms'},
     {'name': 'Soft', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
@@ -193,6 +195,8 @@ COMPARISON_FIELD_LOOKUP = [
 
 STRATUM_COMPARISON_FIELD_LOOKUP = [
     {'name': 'Total Area', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Total Area Closed', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
+    {'name': 'Total Area Reopened', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
     {'name': 'Depth Range', 'type': str, 'aggregate': 'minmax', 'unit': (' to ',' fathoms')},
     {'name': 'Mean Depth', 'type': float, 'aggregate': 'mean', 'unit': ' fathoms'},
     {'name': 'Soft', 'type': float, 'aggregate': 'sum', 'unit': ' sq mi'},

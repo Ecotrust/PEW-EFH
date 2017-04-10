@@ -90,6 +90,8 @@ def get_drawing_summary_reports(grid_cells, attributes, raw=False):
     from general.utils import sq_meters_to_sq_miles
     if grid_cells.count() == 0:
         attributes.append({'title': 'Total Area', 'data': '0 sq mi'})
+        attributes.append({'title': 'Total Area Closed', 'data': '0 sq mi'})
+        attributes.append({'title': 'Total Area Reopened', 'data': '0 sq mi'})
         attributes.append({'title': 'Soft', 'data': '0 sq mi'})
         attributes.append({'title': 'Mixed', 'data': '0 sq mi'})
         attributes.append({'title': 'Hard', 'data': '0 sq mi'})
@@ -111,6 +113,20 @@ def get_drawing_summary_reports(grid_cells, attributes, raw=False):
     # Total Area
     if not any(x['title'] == 'Total Area' for x in attributes):
         title = 'Total Area'
+        area = sq_meters_to_sq_miles(sum([x.geometry.transform(2163, clone=True).area for x in grid_cells]))
+        data = format_area(area, raw)
+        attributes.append({'title': title, 'data': data})
+
+    # Total Area Closed
+    if not any(x['title'] == 'Total Area Closed' for x in attributes):
+        title = 'Total Area Closed'
+        area = sq_meters_to_sq_miles(sum([x.geometry.transform(2163, clone=True).area for x in grid_cells]))
+        data = format_area(area, raw)
+        attributes.append({'title': title, 'data': data})
+
+    # Total Area Reopened
+    if not any(x['title'] == 'Total Area Reopened' for x in attributes):
+        title = 'Total Area Reopened'
         area = sq_meters_to_sq_miles(sum([x.geometry.transform(2163, clone=True).area for x in grid_cells]))
         data = format_area(area, raw)
         attributes.append({'title': title, 'data': data})

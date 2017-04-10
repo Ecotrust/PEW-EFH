@@ -180,7 +180,12 @@
                     <span class="help-inline">The <b>Name</b> field is required.</span>
                 </div>
             </div>
-            <p class="instructions">Optionally, you may add a <b>Description</b> <!--and/or attach a file--> </p>
+            <p class="instructions">What kind of regulatory action does this represent?</p>
+            <div class="step3-param">
+                {{ form.reg_action.errors }}
+                {{ form.reg_action }}
+            </div>
+            <p class="instructions">Optionally, you may add a <b>Description</b></p>
             <div class="step3-param">
                 {{ form.description.errors }}
                 {{ form.description }}

@@ -1692,6 +1692,7 @@ function scenariosModel(options) {
 
     // accordian for collections in drawings menu
     self.findDrawingCollections = function(i, drawing, collect) {
+        // If drawing is not associated with a collection, add it to general list
         if (!collect) {
             self.drawingList.push(drawing);
         } else {
@@ -1707,6 +1708,11 @@ function scenariosModel(options) {
             });
             if (newCollection) {
                 self.pushNewCollection(collect);
+                self.drawingCollections.forEach(function(e) {
+                    if (e.collection.name === collect) {
+                        e.collection.drawings.push(drawing);
+                    }
+                });
             }
         }
 

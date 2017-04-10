@@ -270,6 +270,21 @@ class Collection(FeatureCollection):
                     for field in feature_summary:
                         clean_val = self.clean_summary_value(field, val_collector[field['title']], feature_area)
                         val_collector[field['title']]['values'].append(clean_val)
+                        if field['title'] == 'Total Area':
+                            if feature.reg_action == 'close':
+                                action_val = self.clean_summary_value(
+                                    {'data': field['data'], 'title': 'Total Area Closed'},
+                                    val_collector['Total Area Closed'],
+                                    feature_area
+                                )
+                                val_collector['Total Area Closed']['values'].append(action_val)
+                            elif feature.reg_action == 'reopen':
+                                action_val = self.clean_summary_value(
+                                    {'data': field['data'], 'title': 'Total Area Reopened'},
+                                    val_collector['Total Area Reopened'],
+                                    feature_area
+                                )
+                                val_collector['Total Area Reopened']['values'].append(action_val)
                 else:
                     if not strata in eval(feature.summary).keys():
                         feature.save()

@@ -288,6 +288,7 @@ img.info {
 
 
 .panel > form textarea,
+.panel > form select[name="reg_action"],
 .panel > form input[name="name"] {
     width: 90%;
 }
