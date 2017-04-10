@@ -1370,7 +1370,29 @@ function scenariosModel(options) {
                               filter: new OpenLayers.Filter.Comparison({
                                 type: OpenLayers.Filter.Comparison.EQUAL_TO,
                                 property: "description",
+                                value: "Close"
+                              }),
+                              symbolizer:{
+                                fillColor: "#FF5555",
+                                strokeColor: "#DF3535"
+                              }
+                            }),
+                            new OpenLayers.Rule({
+                              filter: new OpenLayers.Filter.Comparison({
+                                type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                                property: "description",
                                 value: "reopen"
+                              }),
+                              symbolizer:{
+                                fillColor: "#55FF55",
+                                strokeColor: "#35DF35"
+                              }
+                            }),
+                            new OpenLayers.Rule({
+                              filter: new OpenLayers.Filter.Comparison({
+                                type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                                property: "description",
+                                value: "Reopen"
                               }),
                               symbolizer:{
                                 fillColor: "#55FF55",
