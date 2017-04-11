@@ -993,7 +993,17 @@ function viewModel() {
           }
         }
         self.updateAggregatedAttributesOverlayWidthAndScrollbar();
-        self.showFeatureAttribution( self.featureAttribution() && !($.isEmptyObject(self.aggregatedAttributes())) );
+
+        //Wait until summary has been interpreted to show:
+        if (self.aggregatedAttributes()) {
+          collection_name = Object.keys(self.aggregatedAttributes())[0];
+          if ( collection_name && self.aggregatedAttributes()[collection_name].filter(function (x) { return x.display == 'Summary';}).length == 0) {
+            self.showFeatureAttribution( self.featureAttribution() && !($.isEmptyObject(self.aggregatedAttributes())) );
+          } else {
+            console.log('Summary found.');
+          }
+        }
+
     });
     self.removeFromAggregatedAttributes = function(layerName) {
         delete app.viewModel.aggregatedAttributes()[layerName];
