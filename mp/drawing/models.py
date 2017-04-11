@@ -266,33 +266,22 @@ class Collection(FeatureCollection):
             for (index, feature) in feature_set:
                 if strata == 'all':
                     feature_summary = eval(feature.summary)[strata]
-                    feature_area = feature.true_area_m2
-                    for field in feature_summary:
-                        clean_val = self.clean_summary_value(field, val_collector[field['title']], feature_area)
-                        val_collector[field['title']]['values'].append(clean_val)
-                        if field['title'] == 'Total Area':
-                            if feature.reg_action == 'close':
-                                action_val = self.clean_summary_value(
-                                    {'data': field['data'], 'title': 'Total Area Closed'},
-                                    val_collector['Total Area Closed'],
-                                    feature_area
-                                )
-                                val_collector['Total Area Closed']['values'].append(action_val)
-                            elif feature.reg_action == 'reopen':
-                                action_val = self.clean_summary_value(
-                                    {'data': field['data'], 'title': 'Total Area Reopened'},
-                                    val_collector['Total Area Reopened'],
-                                    feature_area
-                                )
-                                val_collector['Total Area Reopened']['values'].append(action_val)
                 else:
                     if not strata in eval(feature.summary).keys():
                         feature.save()
                     feature_summary = eval(feature.summary)[strata][stratum_name]
-                    feature_area = feature.true_area_m2
-                    for field in feature_summary:
+                feature_area = feature.true_area_m2
+                for field in feature_summary:
+                    if strata == 'all':
+                        clean_val = self.clean_summary_value(field, val_collector[field['title']], feature_area)
+                    else:
                         clean_val = self.clean_summary_value(field, stratum_fields[field['title']], feature_area)
-                        val_collector[field['title']]['values'].append(clean_val)
+                    if field['title'] == 'Total Area':
+                        if feature.reg_action == 'close':
+                            val_collector['Total Area Closed']['values'].append(clean_val)
+                        elif feature.reg_action == 'reopen':
+                            val_collector['Total Area Reopened']['values'].append(clean_val)
+                    val_collector[field['title']]['values'].append(clean_val)
             for key in [x['name'] for x in settings.COMPARISON_FIELD_LOOKUP]:
                 self.generate_summary_value(attributes,key,val_collector[key])
         else:
