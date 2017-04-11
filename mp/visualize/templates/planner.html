@@ -259,11 +259,16 @@
                                                                             <!-- /ko -->
 
                                                                             <span data-bind="text: display"></span><span data-bind="visible: display && data ? true : data===0">:</span>
-                                                                            <!-- ko if: typeof(data) == "string" -->
-                                                                              <span style="font-weight: bold; float:right; margin-right:4px" data-bind="html: data"></span>
+                                                                            <!-- ko ifnot: display == 'summary' -->
+                                                                              <!-- ko if: typeof(data) == "string" -->
+                                                                                <span style="font-weight: bold; float:right; margin-right:4px" data-bind="html: data"></span>
+                                                                              <!-- /ko -->
+                                                                              <!-- ko if: typeof(data) == "object" -->
+                                                                                <span style="font-weight: bold; float: right; margin-right:4px" data-bind="html: data.label"></span>
+                                                                              <!-- /ko -->
                                                                             <!-- /ko -->
-                                                                            <!-- ko if: typeof(data) == "object" -->
-                                                                              <span style="font-weight: bold; float: right; margin-right:4px" data-bind="html: data.label"></span>
+                                                                            <!-- ko if: display == 'summary' -->
+                                                                            <span><a class="btn" data-bind="click: app.viewModel.refreshAggregatedAttributes">Refresh</a></span>
                                                                             <!-- /ko -->
                                                                         </dt>
                                                                     </dl>

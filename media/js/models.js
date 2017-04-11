@@ -997,7 +997,7 @@ function viewModel() {
         //Wait until summary has been interpreted to show:
         if (self.aggregatedAttributes()) {
           collection_name = Object.keys(self.aggregatedAttributes())[0];
-          if ( collection_name && self.aggregatedAttributes()[collection_name].filter(function (x) { return x.display == 'Summary';}).length == 0) {
+          if ( collection_name && self.aggregatedAttributes()[collection_name].filter(function (x) { return x.display == 'summary';}).length == 0) {
             self.showFeatureAttribution( self.featureAttribution() && !($.isEmptyObject(self.aggregatedAttributes())) );
           } else {
             console.log('Summary found.');
@@ -1005,6 +1005,15 @@ function viewModel() {
         }
 
     });
+
+    self.refreshAggregatedAttributes = function() {
+      aggregated_layer_name = Object.keys(app.viewModel.aggregatedAttributes())[0];
+      aggregated_layer = app.viewModel.activeLayers().filter( function (x) { return x.name == aggregated_layer_name;})[0];
+      // aggregated_layer_id = aggregated_layer.id.replace( /^\D+/g, '' );
+      // app.viewModel.scenarios.getAttributes(parseInt(aggregated_layer_id));
+      app.viewModel.scenarios.getAttributes(aggregated_layer.id);
+    }
+
     self.removeFromAggregatedAttributes = function(layerName) {
         delete app.viewModel.aggregatedAttributes()[layerName];
         //if there are no more attributes left to display, then remove the overlay altogether

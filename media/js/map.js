@@ -323,11 +323,18 @@ app.init = function() {
               var dataProps = Object.getOwnPropertyNames(data);
               for (i=0; i<dataProps.length; i++){
                   var key = dataProps[i];
-                  if (['manipulators','user','uid','date_created','date_modified','sharing_groups'].indexOf(key) < 0){
+                  if (['manipulators','user','uid','date_created','date_modified','sharing_groups','summary'].indexOf(key) < 0){
                       text.push({
                         'display': key,
                         'data':data[key]
                       })
+                  }
+                  if (key == 'summary'){
+                    summary_obj = JSON.parse(data[key]);
+                    summary_keys = Object.keys(summary_obj);
+                    for (j=0; j<summary_keys.length; j++){
+                      text.push(summary_keys[j]);
+                    }
                   }
               }
             }
