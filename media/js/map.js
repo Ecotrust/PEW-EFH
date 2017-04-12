@@ -330,15 +330,11 @@ app.init = function() {
                       })
                   }
                   if (key == 'summary'){
-                    summary_obj = JSON.parse(data[key]);
-                    if (Object.keys(summary_obj).indexOf('all') > 0) {
-                      summary_keys = Object.keys(summary_obj['all']);
-                      for (j=0; j<summary_keys.length; j++){
-                        summary_item = summary_obj['all'][summary_keys[j]];
-                        summary_item.display = summary_item.title;
-                        text.push(summary_item);
-                      }
-                    }
+                    summary_item = {
+                      'display': 'Report',
+                      'data': 'Loading...'
+                    };
+                    text.push(summary_item);
                   }
               }
             }
