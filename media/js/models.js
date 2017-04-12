@@ -999,9 +999,11 @@ function viewModel() {
           collection_name = Object.keys(self.aggregatedAttributes())[0];
           if ( collection_name && self.aggregatedAttributes()[collection_name].filter(function (x) { return x.display == 'summary';}).length == 0) {
             self.showFeatureAttribution( self.featureAttribution() && !($.isEmptyObject(self.aggregatedAttributes())) );
-          } else {
-            console.log('Summary found.');
           }
+        }
+
+        if (! self.featureAttribution() || $.isEmptyObject(self.aggregatedAttributes())) {
+          self.closeAttribution();
         }
 
     });

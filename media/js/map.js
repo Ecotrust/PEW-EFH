@@ -275,9 +275,9 @@ app.init = function() {
     }; //end utfGridClickHandling
 
     app.map.events.register("nofeatureclick", null, function(e) {
-      layer_ids = Object.keys(app.viewModel.layerIndex);
-      for (var i=0; i < layer_ids.length; i++) {
-        app.viewModel.layerIndex[layer_ids[i]].showingLayerAttribution(false);
+      layer_name = e.layer.name;
+      if (Object.keys(app.viewModel.layerIndex).indexOf(layer_name) >= 0) {
+        app.viewModel.layerIndex[layer_name].showingLayerAttribution(false);
       }
     });
 
