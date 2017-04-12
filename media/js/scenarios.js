@@ -1926,6 +1926,7 @@ function scenariosModel(options) {
         'scenario': self.comparisonCollection().uid,
         'collections': self.comparisonCollection().selectedScenarios()
       };
+      $('#loading-modal').modal('show');
       $.ajax( {
         url: '/scenario/compare_scenario',
         data: data,
@@ -1936,8 +1937,10 @@ function scenariosModel(options) {
           report_data = data[1];
           download_link = data[2];
           app.viewModel.scenarios.showComparisonReportModal(attr_list,report_data,download_link);
+          $('#loading-modal').modal('hide');
         },
         error: function(result) {
+          $('#loading-modal').modal('hide');
           console.log('error in scenarios.js: submitCompare');
           window.alert(result.responseText);
         }
