@@ -1301,6 +1301,7 @@ function scenariosModel(options) {
             isScenarioModel = true;
         }
 
+        $('#loading-modal').modal('show');
         //perhaps much of this is not necessary once a scenario has been added to app.map.layers initially...?
         //(add check for scenario.layer, reset the style and move on?)
         $.ajax( {
@@ -1479,7 +1480,6 @@ function scenariosModel(options) {
                       scenario.visible(true);
                     }
 
-                    //get attributes
                     $.ajax( {
                         url: '/drawing/get_attributes/' + scenarioId + '/',
                         type: 'GET',
@@ -1490,8 +1490,10 @@ function scenariosModel(options) {
                               //    and adjust if necessary
                               scenario.scenarioAttributes(result.attributes);
                             }
+                            $('#loading-modal').modal('hide');
                         },
                         error: function (result) {
+                            $('#loading-modal').modal('hide');
                             console.log('error in scenarios.js: addScenarioToMap (get_attributes scenarioId)');
                         }
 
@@ -1549,11 +1551,12 @@ function scenariosModel(options) {
                         self.zoomToScenario(scenario);
                     }
                 }
-
+                $('#loading-modal').modal('hide');
             },
             error: function(result) {
                 console.log('error in scenarios.js: addScenarioToMap (geojson scenarioId)');
                 app.viewModel.scenarios.errorMessage(result.responseText.split('\n\n')[0]);
+                $('#loading-modal').modal('hide');
             }
         });
     }; // end addScenarioToMap

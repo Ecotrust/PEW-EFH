@@ -763,6 +763,18 @@ img + h3 {
 #sign-in-form {
     margin: 0;
 }
+
+#loading-modal {
+  width: 200px;
+  text-align: center;
+  overflow: hidden;
+  margin-left: -70px !important;
+}
+#loading-modal .modal-body {
+  background:url(../../img/ajax-loader.gif) no-repeat center center;
+  height: 200px;
+}
+
 #sign-in-modal .other-links {
     padding: 15px;
     margin-top: -60px;
