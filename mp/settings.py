@@ -121,13 +121,13 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'console':{
-            'level': 'DEBUG',
+            'level': 'ERROR',
             # 'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
             'formatter': 'main_formatter',
         },
         'production_file':{
-            'level' : 'INFO',
+            'level' : 'ERROR',
             'class' : 'logging.handlers.RotatingFileHandler',
             'filename' : os.path.join(LOG_DIR, 'main.log'),
             'maxBytes': 1024*1024*5, # 5 MB
@@ -136,7 +136,7 @@ LOGGING = {
             # 'filters': ['require_debug_false'],
         },
         'debug_file':{
-            'level' : 'DEBUG',
+            'level' : 'ERROR',
             'class' : 'logging.handlers.RotatingFileHandler',
             'filename' : os.path.join(LOG_DIR, 'main_debug.log'),
             'maxBytes': 1024*1024*5, # 5 MB
@@ -162,11 +162,11 @@ LOGGING = {
         },
         'apps': {
             'handlers': ['console', 'production_file', 'debug_file'],
-            'level': "DEBUG",
+            'level': "ERROR",
         },
         'tracekit': {
             'handlers': ['console', 'production_file', 'debug_file'],
-            'level': "DEBUG",
+            'level': "ERROR",
         },
     }
 }
