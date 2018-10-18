@@ -50,8 +50,8 @@ app.viewModel.loadLayers = function(data) {
   			}
 
   		});
-          //sort by name
-          theme.layers.sort( function(a,b) { return a.name.toUpperCase().localeCompare(b.name.toUpperCase()); } );
+      //sort by name
+      theme.layers.sort( function(a,b) { return a.name.toUpperCase().localeCompare(b.name.toUpperCase()); } );
 
   		self.themes.push(theme);
       if (!toc.hasOwnProperty('themeObjects')){
@@ -59,6 +59,9 @@ app.viewModel.loadLayers = function(data) {
       }
       toc.themeObjects.push(theme);
   	});
+    if (!toc.hasOwnProperty('themeObjects')){
+      toc.themeObjects = [];
+    }
     self.tocs.push(toc);
     //fixes a problem in which the data accordion scrollbar was reinitialized before the app switched back to the data tab
     //causing the data tab to appear empty

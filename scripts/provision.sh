@@ -16,7 +16,7 @@ PIP_DOWNLOAD_CACHE=/home/ubuntu/.pip_download_cache
 USER="ubuntu"
 
 # see https://docs.google.com/a/pointnineseven.com/document/d/1MbPbDp-Om1iIRb6bqhaKELqyU6x6E2KZ3Wm04tYAxak/edit#
-cat << EOF | su - $APP_DB_USER -c psql 
+cat << EOF | su - $APP_DB_USER -c psql
 CREATE DATABASE $APP_DB_NAME;
 \connect $APP_DB_NAME
 CREATE EXTENSION postgis;
@@ -55,7 +55,7 @@ FUNCTION        7        geometry_gist_same_2d (geom1 geometry, geom2 geometry, 
 
 EOF
 
-apt-get install python-gdal
+apt-get install python-gdal -y
 
 # Virtualenv setup for project
 bash -c "/usr/bin/virtualenv --system-site-packages $VIRTUALENV_DIR && \
@@ -69,7 +69,7 @@ echo "workon $PROJECT_NAME" >> /home/$USER/.bashrc
 bash -c "$PYTHON $PROJECT_DIR/manage.py syncdb"
 bash -c "$PYTHON $PROJECT_DIR/manage.py migrate --noinput"
 bash -c "$PYTHON $PROJECT_DIR/manage.py install_media"
-bash -c "$PYTHON $PROJECT_DIR/manage.py enable_sharing"
+bash -c "$PYTHON $PROJECT_DIR/manage.py enable_sharing --all"
 
 # Add a couple of aliases to manage.py into .bashrc
 cat << EOF >> /home/$USER/.bashrc
