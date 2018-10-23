@@ -71,22 +71,43 @@ class AOI(GeometryFeature):
 
     def summary_reports(self, attributes):
         from ofr_manipulators import intersecting_drawing_cells
+
+        def m2_to_mi2(area_m2):
+            return format_precision(float(area_m2) / 2590000.0, 0)
+
+        def get_total_area(geoqs):
+            area_m2 = 0
+            for result in geoqs:
+                area_m2 += result.geometry.transform(2163, clone=True).area
+            return m2_to_mi2(area_m2)
+
+        def within_max_percent(val1, val2):
+            ratio = float(val1)/float(val2)
+            if ratio > (1-settings.MAX_DETAIL_REPORT_AREA_VARIANCE) and ratio < (1 + settings.MAX_DETAIL_REPORT_AREA_VARIANCE):
+                return True
+            else:
+                return False
+
         # Call get_summary_reports with intersecting Grid Cells
         attributes['all'] = []
-        attributes['all'].append({'title': 'Total Area', 'data': str(format_precision(float(self.true_area_m2) / 2590000.0, 0)) + ' sq mi'})
-        aggregate_attributes = {}
-        grid_cells = intersecting_cells(self.geometry_orig)
-        get_summary_reports(grid_cells, attributes['all'])
-        drawing_grid_cells = intersecting_drawing_cells(self.geometry_orig)
-        get_drawing_summary_reports(drawing_grid_cells, attributes['all'])
-        for (idx, strata) in enumerate(settings.REPORT_STRATA):
-            if strata in settings.STRATA_MAP.keys():
-                attributes[strata] = {}
-                for key in settings.STRATA_MAP[strata].keys():
-                    stratum = settings.STRATA_MAP[strata][key]
-                    attributes[strata][stratum] = []
-                    stratum_cells = drawing_grid_cells.filter(**{strata: key})
-                    get_drawing_summary_reports(stratum_cells, attributes[strata][stratum], True)
+        total_area_sq_mi = m2_to_mi2(self.true_area_m2)
+        attributes['all'].append({'title': 'Total Area', 'data': '%s sq mi' % total_area_sq_mi})
+        if total_area_sq_mi < settings.MAX_DETAIL_REPORT_AREA_SQMI:
+            aggregate_attributes = {}
+            grid_cells = intersecting_cells(self.geometry_orig)
+            drawing_grid_cells = intersecting_drawing_cells(self.geometry_orig)
+            if drawing_grid_cells.count() > 0 and drawing_grid_cells.count() < settings.MAX_INTERSECTING_CELLS:
+                if within_max_percent(get_total_area(drawing_grid_cells), total_area_sq_mi):
+                    get_summary_reports(grid_cells, attributes['all'])
+                    get_drawing_summary_reports(drawing_grid_cells, attributes['all'])
+                    for (idx, strata) in enumerate(settings.REPORT_STRATA):
+                        if strata in settings.STRATA_MAP.keys():
+                            attributes[strata] = {}
+                            for key in settings.STRATA_MAP[strata].keys():
+                                stratum = settings.STRATA_MAP[strata][key]
+                                attributes[strata][stratum] = []
+                                stratum_cells = drawing_grid_cells.filter(**{strata: key})
+                                get_drawing_summary_reports(stratum_cells, attributes[strata][stratum], True)
 
     @property
     def serialize_attributes(self):
@@ -129,11 +150,11 @@ class AOI(GeometryFeature):
 
         if not self.id:  #first save - if part of a large import, now is not a good time to calculate the summary
             super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
-        else:
-            attributes = {}
-            self.summary_reports(attributes)
-            self.summary = simplejson.dumps(attributes)
-            super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
+
+        attributes = {}
+        self.summary_reports(attributes)
+        self.summary = simplejson.dumps(attributes)
+        super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
 
 
     class Options:

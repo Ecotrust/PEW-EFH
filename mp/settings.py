@@ -174,6 +174,11 @@ LOGGING = {
 SCENARIO_NAME = 'Drawing'
 COLLECTION_NAME = 'Scenario'  #Confusing choice, I know. RDH
 
+MAX_DETAIL_REPORT_AREA_SQMI = 50000     #Southern CA Bight is 16,250 sq mi
+MAX_INTERSECTING_CELLS = 400000         #Southern CA Bight is 101,466
+MAX_DETAIL_REPORT_AREA_VARIANCE = 0.3   #False or 1 to ignore, otherwise float between 0 and 1
+
+
 COMPARISON_FIELD_LOOKUP = [
     {'name': 'Total Area', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
     {'name': 'Total Area Closed', 'type': int, 'aggregate': 'sum', 'unit': ' sq mi'},
