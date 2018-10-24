@@ -16,6 +16,39 @@ def get_json(request, project=None):
         else:
             activeSettings = MarinePlannerSettings.objects.get(active=True)
 
+        # Add "Imported" Theme and Layers
+        if request.user.is_authenticated():
+            # get "Imported" Layers
+            import_layers = ImportLayer.objects.filter(user=request.user)
+            # Get unique IDs for "Imported" Layers
+            try:
+                max_layer_id = Layer.objects.latest('pk').pk + 1000
+            except:
+                max_layer_id = 1000
+                pass
+            try:
+                max_theme_id = Theme.objects.latest('pk').pk + 1000
+            except:
+                max_theme_id = 1000
+                pass
+            uploaded_layer_ids = []
+            uploaded_layers = []
+            for layer in import_layers:
+                max_layer_id += 1
+                layer_dict = layer.toDict()
+                layer_dict['id'] = int(max_layer_id)
+                # Add "Imported" Layers to {'layers': [...],}
+                uploaded_layers.append(layer_dict)
+                uploaded_layer_ids.append(layer_dict['id'])
+            # create "Imported" Theme
+            uploaded_theme_dict = {
+                'layers': uploaded_layer_ids,
+                'is_toc_theme': True,
+                'display_name': "Imported",
+                'id': max_theme_id,
+                'description': 'User uploaded layers.'
+            }
+
         toc_list = []
 
         for toc in activeSettings.table_of_contents.all().order_by('order'):
@@ -24,12 +57,18 @@ def get_json(request, project=None):
                 theme = themeOrdering.theme
                 for layer in theme.layers.all().order_by('name'):
                     layer_list.append(layer.toDict)
+
+
+            theme_list = [themeOrder.theme.toDict for themeOrder in TOCThemeOrder.objects.filter(toc=toc).order_by('order')]
+            if request.user.is_authenticated():
+                    layer_list = layer_list + uploaded_layers
+                    theme_list.append(uploaded_theme_dict)
             toc_list.append({
                 "tocid": toc.id,
                 "name": toc.name,
                 "order": toc.order,
                 "layers": layer_list,
-                "themes": [themeOrder.theme.toDict for themeOrder in TOCThemeOrder.objects.filter(toc=toc).order_by('order')]
+                "themes": theme_list
             })
         json = {
             "state": { "activeLayers": [] },

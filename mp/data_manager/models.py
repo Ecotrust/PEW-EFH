@@ -2,6 +2,7 @@ from django.db import models
 from utils import get_domain
 from django.template.defaultfilters import slugify
 #from sorl.thumbnail import ImageField
+from madrona.features.models import FeatureCollection
 
 class TOCThemeOrder(models.Model):
     theme = models.ForeignKey("TOCTheme")
@@ -343,6 +344,31 @@ class Layer(models.Model):
     def save(self, *args, **kwargs):
         self.slug_name = self.slug
         super(Layer, self).save(*args, **kwargs)
+
+class ImportLayer(FeatureCollection):
+    # name = models.CharField(max_length=244)
+    # legend = models.CharField(max_length=255, blank=True, null=True, default=None, help_text="Path to Legend Image file (http://somewhere.com/legend.png)")
+    # legend_title = models.CharField(max_length=255, blank=True, null=True, default=None, help_text="If no value is entered, the layer name will be used as the Legend Title")
+    description = models.TextField(blank=True, null=True, default=None)
+
+    def __unicode__(self):
+        return unicode(self.name)
+
+    def to_dict(self):
+        layer_dict = {
+            'name': self.name,
+            'type': 'Vector',
+            # 'url': ???,
+            'proj': 'EPSG:3857',
+            'sublayers': [],
+            'description': self.description,
+            'color': settings.DEFAULT_UPLOAD_LAYER_COLOR_HEX,
+            'fill_opacity': 1,
+            'opacity': 0.6
+        }
+        return layer_dict
+
+
 
 class AttributeInfo(models.Model):
     display_name = models.CharField(max_length=255, blank=True, null=True)

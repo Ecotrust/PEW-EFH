@@ -21,6 +21,7 @@
         <link href="{{MEDIA_URL}}/assets/openlayers/scalebar-thin.css" rel="stylesheet">
         <link href="{{MEDIA_URL}}/css/style.css" rel="stylesheet">
         <link href="{{MEDIA_URL}}/css/scenario_form.css" rel="stylesheet">
+        <link href="{{MEDIA_URL}}/css/import_layer.css" rel="stylesheet">
         <!-- <link href="{{MEDIA_URL}}/assets/pageguide/pageguide.css" rel="stylesheet"> -->
 
         <link href="{{MEDIA_URL}}/assets/smoothness/jquery-ui-1.9.1.custom.css" rel="stylesheet">
@@ -503,8 +504,14 @@
                                                               <div class="accordion-heading" data-bind="click: setOpenTheme, css: { 'active': isOpenTheme() }">
                                                                   <div>
                                                                       <a class="accordion-toggle"> <!--event: {'hover': showDescription}-->
-                                                                          <span data-bind="text: name">Themes</span></a>
+                                                                          <span data-bind="text: name">Themes</span>
+                                                                      </a>
                                                                   </div>
+                                                                  {% if user.is_authenticated %}
+                                                                  <!-- ko if: name == "Imported" -->
+                                                                  <button data-bind="click: initImport" class="import-btn">+ Import Layer</button>
+                                                                  <!-- /ko -->
+                                                                  {% endif %}
                                                               </div>
                                                               <div class="accordion-body collapse" data-bind="css: { 'in': isOpenTheme() }">
                                                                   <div class="accordion-inner">
@@ -808,6 +815,7 @@
         <!-- <script src="{{MEDIA_URL}}/js/pageguide.js"></script> -->
         <script src="{{MEDIA_URL}}/js/simple-statistics.js"></script>
         <script src="{{MEDIA_URL}}/js/clickAttributes.js"></script>
+        <script src="{{MEDIA_URL}}/js/importLayer.js"></script>
 
         <!--[if gt IE 8]><!-->
         <script src="{{MEDIA_URL}}/assets/jquery/jquery.mousewheel.min.js"></script>
