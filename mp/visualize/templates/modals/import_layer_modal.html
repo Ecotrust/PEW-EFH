@@ -1,0 +1,62 @@
+<div id="import-layer-modal" class="modal hide fade">
+    <div class="modal-header" style="min-height: 20px;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="row-fluid">
+        <div class="span12" style="text-align: center">
+          <h4>Import Data Layer</h4>
+        </div>
+      </div>
+      <form id="import-layer-form" action="/data_manager/import_layer/">
+        <div class="row-fluid">
+          <div class="span12">
+            <div class="row-fluid">
+              <div class="span4">
+                <span>Layer Name</span>
+              </div>
+              <div class="span8">
+                <input id="import-layer-form-name" maxlength="255" name="name" type="text">
+                <div id="import-invalid-name-message" class="control-group error" style="display: none; margin-top: -10px; margin-left: -5px;">
+                    <span class="help-inline">The <b>Name</b> field is required.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row-fluid">
+              <div class="span4">
+                <span>Layer Shapefile (zipped)</span>
+              </div>
+              <div class="span8">
+                <input id="import-layer-form-file" name="import_file" type="file">
+                <a id="collection-upload-requirements" data-bind="click: app.viewModel.scenarios.showImportRequirementsModal">View Requirements</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- STATUS ALERTS -->
+      <div class="row-fluid">
+          <div class="alert alert-info" id="import-layer-form-info" style="display: none">
+            <strong>Importing...</strong>
+            <div class="progress progress-striped active">
+              <div id="import-layer-progress-bar" class="bar" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="alert alert-success" id="import-layer-form-success" style="display: none">
+            <strong>Success!</strong> <span>Refresh the page to see your imported layer!</span>
+            <p><button onclick="location.reload();">Refresh Page</button></p>
+          </div>
+          <div class="alert alert-error" id="import-layer-form-error" style="display: none">
+            <strong>Error!</strong>
+            <p id="import-modal-error-text"></p>
+          </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+        <!-- <button href="#" class="btn" data-dismiss="modal">Close</button> -->
+        <button href="#" type="button" class="btn" id="import-layer-form-submit" disabled>Submit</button>
+    </div>
+</div>

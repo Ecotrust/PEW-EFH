@@ -200,5 +200,10 @@ def load_config(request):
     return HttpResponse('layers and themes successfully loaded into WA_CMSP TOC object', status=200)
 
 def import_layer(request):
-    import ipdb; ipdb.set_trace()
-    return True
+
+    json = {
+        "message": 'Layer failed to successfully upload.',
+        "success": False
+    }
+    return HttpResponse(simplejson.dumps(json))
+    # return HttpResponse("Precondition Failure", 412)
