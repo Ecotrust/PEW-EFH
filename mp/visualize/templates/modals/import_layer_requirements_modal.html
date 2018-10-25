@@ -1,0 +1,27 @@
+<div id="import-layer-requirements-modal" class="modal hide fade" data-bind="with: app.viewModel.scenarios">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Import File Requirements</h3>
+    </div>
+    <div class="modal-body" style="height: 60vh; text-align: left;">
+        <div class="row-fluid">
+          <p>Uploaded files must be:
+            <ul>
+              <li>A zipped ('.zip') file containing the elements of a valid ESRI shapefile, including files of type:
+                <ul>
+                  <li>.cpg</li>
+                  <li>.dbf</li>
+                  <li>.prj</li>
+                  <li>.shp</li>
+                  <li>.shx</li>
+                </ul>
+              </li>
+              <li>Projected into EPSG:3857, aka "WGS 1984 Web Mercator (Auxillary Sphere)"</li>
+            </ul>
+          </p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button href="#" class="btn" data-dismiss="modal">Close</button>
+    </div>
+</div>

@@ -1,13 +1,9 @@
 <div id="import-layer-modal" class="modal hide fade">
     <div class="modal-header" style="min-height: 20px;">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Import Data Layer</h3>
     </div>
     <div class="modal-body">
-      <div class="row-fluid">
-        <div class="span12" style="text-align: center">
-          <h4>Import Data Layer</h4>
-        </div>
-      </div>
       <form id="import-layer-form" action="/data_manager/import_layer/">
         <div class="row-fluid">
           <div class="span12">
@@ -29,7 +25,7 @@
               </div>
               <div class="span8">
                 <input id="import-layer-form-file" name="import_file" type="file">
-                <a id="collection-upload-requirements" data-bind="click: app.viewModel.scenarios.showImportRequirementsModal">View Requirements</a>
+                <a href="#import-layer-requirements-modal" class="btn" data-toggle="modal">View Requirements</a>
               </div>
             </div>
           </div>
