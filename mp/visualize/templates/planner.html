@@ -509,7 +509,9 @@
                                                                   </div>
                                                                   {% if user.is_authenticated %}
                                                                   <!-- ko if: name == "Imported" -->
-                                                                  <button data-bind="click: initImport" class="import-btn">+ Import Layer</button>
+                                                                  <a class="create-new-button import-btn" data-bind="click: initImport, clickBubble: false">
+                                                                      <i class="icon-plus icon-large"></i>
+                                                                  </a>
                                                                   <!-- /ko -->
                                                                   {% endif %}
                                                               </div>
