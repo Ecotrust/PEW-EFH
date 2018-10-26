@@ -22,10 +22,12 @@ LOG_FILE = os.path.realpath(os.path.join(os.path.dirname(__file__),
                             '..', 'mp.log'))
 LOG_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), 'logs'))
 UPLOAD_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'mediaroot', 'upload'))
-ZIPFILE_PATH = '/tmp/import_shp.zip'
+ZIPFILE_DIR = '/tmp'
+ZIPFILE_PATH = os.path.realpath(os.path.join(ZIPFILE_DIR, 'import_shp.zip'))
 UPLOAD_ACTION_ATTR = 'RegAction'
 UPLOAD_NAME_ATTR = 'SiteName'
 UPLOAD_DESCRIPTION_ATTR = 'Desc'
+DEFAULT_UPLOAD_LAYER_COLOR_HEX = '#FF4'
 
 ADMIN_MEDIA_PATH = "/usr/local/venv/marine-planner/lib/python2.7/site-packages/django/contrib/admin/static/admin/"
 

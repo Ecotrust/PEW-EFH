@@ -30,7 +30,6 @@ class GeometryFeature(SpatialFeature):
 
 @register
 class AOI(GeometryFeature):
-    import settings
     ACTION_CHOICES = (
         ('close', 'Close'),
         ('close', 'close'),

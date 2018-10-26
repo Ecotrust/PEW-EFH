@@ -2,7 +2,10 @@ from django.db import models
 from utils import get_domain
 from django.template.defaultfilters import slugify
 #from sorl.thumbnail import ImageField
-from madrona.features.models import FeatureCollection
+from madrona.features.models import FeatureCollection, SpatialFeature, Feature
+from madrona.features import register
+from django.contrib.gis.db.models import GeometryField
+from django.conf import settings
 
 class TOCThemeOrder(models.Model):
     theme = models.ForeignKey("TOCTheme")
@@ -345,6 +348,7 @@ class Layer(models.Model):
         self.slug_name = self.slug
         super(Layer, self).save(*args, **kwargs)
 
+# @register
 class ImportLayer(FeatureCollection):
     # name = models.CharField(max_length=244)
     # legend = models.CharField(max_length=255, blank=True, null=True, default=None, help_text="Path to Legend Image file (http://somewhere.com/legend.png)")
@@ -368,6 +372,49 @@ class ImportLayer(FeatureCollection):
         }
         return layer_dict
 
+    class Options:
+        verbose_name = 'Imported Layer'
+        # icon_url = 'img/aoi.png'
+        export_png = False
+        manipulators = []
+        # manipulators = ['drawing.manipulators.ClipToPlanningGrid']
+        # optional_manipulators = ['clipping.manipulators.ClipToShoreManipulator']
+        # form = 'drawing.forms.AOIForm'
+        # form_template = 'aoi/form.html'
+        # show_template = 'aoi/show.html'
+
+class GeometryFeature(SpatialFeature):
+    geometry_orig = GeometryField(srid=settings.GEOMETRY_DB_SRID,
+            null=True, blank=True, verbose_name="Original Polygon Geometry")
+    geometry_final = GeometryField(srid=settings.GEOMETRY_DB_SRID,
+            null=True, blank=True, verbose_name="Final Polygon Geometry")
+
+    @property
+    def centroid_kml(self):
+        """
+        KML geometry representation of the centroid of the polygon
+        """
+        geom = self.geometry_final.point_on_surface.transform(settings.GEOMETRY_CLIENT_SRID, clone=True)
+        return geom.kml
+
+
+    class Meta(Feature.Meta):
+        abstract = True
+
+# @register
+class ImportFeature(GeometryFeature):
+    summary = models.TextField(blank=True, null=True, default=settings.SUMMARY_DEFAULT)
+
+    class Options:
+        verbose_name = 'Imported Feature'
+        # icon_url = 'img/aoi.png'
+        export_png = False
+        manipulators = []
+        # manipulators = ['drawing.manipulators.ClipToPlanningGrid']
+        # optional_manipulators = ['clipping.manipulators.ClipToShoreManipulator']
+        # form = 'drawing.forms.AOIForm'
+        # form_template = 'aoi/form.html'
+        # show_template = 'aoi/show.html'
 
 
 class AttributeInfo(models.Model):

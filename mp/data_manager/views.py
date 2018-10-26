@@ -200,6 +200,177 @@ def load_config(request):
     return HttpResponse('layers and themes successfully loaded into WA_CMSP TOC object', status=200)
 
 def import_layer(request):
+    import os, shutil, simplejson
+    from datetime import datetime
+    from django.conf import settings
+    from drawing.views import is_3857
+    if request.method == 'POST':
+        if len(request.FILES) > 0:
+            files = []
+            for key in request.FILES.keys():
+                #at this point, file uploads only occur in one place, we don't care what they're named
+                for post_file in request.FILES.getlist(key):
+                    files.append(post_file)
+            for f in files:
+                filename = '%s_%s.zip' % (str(request.user.pk), key)
+                import_file = os.path.join(settings.ZIPFILE_DIR, filename)
+                with open(import_file, 'wb+') as destination:
+                    for chunk in f.chunks():
+                        destination.write(chunk)
+                # validate file
+                #  is it a zip?
+                import zipfile
+                try:
+                    zip_ref = zipfile.ZipFile(import_file, 'r')
+                except Exception as e:
+                    os.remove(import_file)
+                    json_response = {
+                        "message": 'Uploaded file is not recognizable as a zipfile.',
+                        "success": False
+                    }
+                    return HttpResponse(simplejson.dumps(json_response))
+                # does it have the correct pieces?
+                required_exts = ['dbf','shp', 'cpg', 'prj', 'shx']
+                namelist = zip_ref.namelist()
+                for ext in required_exts:
+                    # if not any(ext in x for x in namelist):
+                    ext_count = len([x for x in namelist if x.lower().endswith(ext)])
+                    if not ext_count == 1:
+                        json_response = {
+                            "success": False
+                        }
+                        if ext_count > 1:
+                            json_response['message'] = "Zipfile contains more than one file of filetype: %s" % ext
+                        if ext_count < 1:
+                            json_response['message'] = "No %s file in zipped file. Required filetypes: .cpg, .dbf, .prj, .shp, .shx" % ext
+                        return HttpResponse(simplejson.dumps(json_response))
+                shapefile_shp = [x for x in namelist if ".shp" in x.lower()][0]
+
+                # unzip it
+                unzip_dir_name = '%s_%s' % (str(request.user.pk), key)
+                unzip_dir = os.path.join(settings.UPLOAD_DIR, unzip_dir_name)
+                try:
+                    if os.path.exists(unzip_dir):
+                        if os.path.isdir(unzip_dir):
+                            shutil.rmtree(unzip_dir)
+                            os.remove(unzip_dir)
+                        else:
+                            os.remove(unzip_dir)
+                except OSError:
+                    pass
+
+                os.mkdir(unzip_dir)
+                try:
+                    zip_ref.extractall(unzip_dir)
+                except OSError:
+                    zip_ref.close()
+                    shutil.rmtree(unzip_dir)
+                    json_response = {
+                        "message": "Error Unzipping file",
+                        "success": False
+                    }
+                    return HttpResponse(simplejson.dumps(json_response))
+
+                zip_ref.close()
+
+                # remove obsolete zip file
+                os.remove(import_file)
+
+                # open shapefile
+                from osgeo import ogr
+                driver = ogr.GetDriverByName('ESRI Shapefile')
+                dataset = driver.Open(os.path.join(unzip_dir, shapefile_shp))
+                layer = dataset.GetLayer()
+                spatialRef = layer.GetSpatialRef()
+
+                # is it in the correct projection?
+                if not is_3857(spatialRef):
+                    shutil.rmtree(unzip_dir)
+                    json_response = {
+                        "message": "Imported shapefile is not projected as EPSG:3857 or as ArcGIS:'WGS 1984 Web Mercator (Auxiliary Sphere)'",
+                        "success": False
+                    }
+                    return HttpResponse(simplejson.dumps(json_response))
+
+                from data_manager.models import ImportLayer, ImportFeature
+                now = datetime.now()
+
+                # create Layer Object
+                if 'name' in request.POST.keys():
+                    layer_name = request.POST['name']
+                else:
+                    layer_name = 'Imported Layer %s' % now.strftime("%h %m, %Y")
+                if 'description' in request.POST.keys():
+                    layer_description = request.POST['description']
+                else:
+                    layer_description = "Imported %s" % now.strftime("%-I:%M %p on %h %m, %Y")
+                try:
+                    import_layer = ImportLayer.objects.create(user=request.user, description=layer_description, name=layer_name)
+                except:
+                    shutil.rmtree(unzip_dir)
+                    json_response = {
+                        "message": "Unknown error: unable to create imported layer.",
+                        "success": False
+                    }
+                    return HttpResponse(simplejson.dumps(json_response))
+
+                from django.contrib.gis.geos import GEOSGeometry
+                # Create Feature Object
+                import ipdb; ipdb.set_trace()
+                for geom in layer:
+                    feature = simplejson.loads(geom.ExportToJson())['geometry']
+                    geos_geom = GEOSGeometry(simplejson.dumps(feature))
+                    # Store attributes (as a JSON blob for now)
+                    feature_attributes = {}
+                    for key in geom.keys():
+                        feature_attributes[key] = geom[key]
+                    feature_attribute_blob = simplejson.dumps(feature_attributes)
+                    try:
+                        feat = ImportFeature.objects.create(
+                            # name=geom[settings.UPLOAD_NAME_ATTR],
+                            geometry_orig=geos_geom,
+                            geometry_final=geos_geom,
+                            user_id=request.user.id,
+                            summary=feature_attribute_blob
+                        )
+                        # associate feature with layer
+                        feat.add_to_collection(import_layer)
+                    except Exception as e:
+                        shutil.rmtree(unzip_dir)
+                        #TODO: get all features belonging to import_layer and delete them!
+                        import_layer.delete()
+                        json_response = {
+                            "message": "Unknown error: %s" % e,
+                            "success": False
+                        }
+                        return HttpResponse(simplejson.dumps(json_response))
+
+                shutil.rmtree(unzip_dir)
+            json_response = {
+                "message": "Layer created",
+                "success": True
+            }
+        else: # No files
+            json_response = {
+                "message": "No file uploaded",
+                "success": False
+            }
+    else: # not POST
+        json_response = {
+            "message": "Invalid request method: Only POST accepted",
+            "success": False
+            # "status": 405
+        }
+    return HttpResponse(simplejson.dumps(json_response))
+
+
+
+
+
+
+
+    # TODO: If any errors:
+    #     Delete layer and all associated features
 
     json = {
         "message": 'Layer failed to successfully upload.',
