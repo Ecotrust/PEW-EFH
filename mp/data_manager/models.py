@@ -98,7 +98,7 @@ class Layer(models.Model):
     name = models.CharField(max_length=244)
     slug_name = models.CharField(max_length=244, blank=True, null=True)
     layer_type = models.CharField(max_length=50, choices=TYPE_CHOICES)
-    url = models.CharField(max_length=255, blank=True, null=True)
+    url = models.TextField(blank=True, null=True, default=None)
     shareable_url = models.BooleanField(default=True, help_text="Shareable (non-vector) layers will offer a Tiles link")
     proxy_url = models.BooleanField(default=False, help_text="proxy layer url through marine planner")
     arcgis_layers = models.CharField(max_length=255, blank=True, null=True, help_text="IDs separated by commas (no spaces)")
@@ -219,7 +219,10 @@ class Layer(models.Model):
         if self.is_sublayer:
             return self.parent.metadata_link
         if self.layer_type == 'ArcRest':
-            return self.url.replace('/export', '/info/metadata')
+            try:
+                return self.url.replace('/export', '/info/metadata')
+            except AttributeError as e:
+                pass
         return None
 
     @property
@@ -348,7 +351,7 @@ class Layer(models.Model):
         self.slug_name = self.slug
         super(Layer, self).save(*args, **kwargs)
 
-# @register
+@register
 class ImportLayer(FeatureCollection):
     # name = models.CharField(max_length=244)
     # legend = models.CharField(max_length=255, blank=True, null=True, default=None, help_text="Path to Legend Image file (http://somewhere.com/legend.png)")
@@ -358,7 +361,7 @@ class ImportLayer(FeatureCollection):
     def __unicode__(self):
         return unicode(self.name)
 
-    def to_dict(self):
+    def toDict(self):
         layer_dict = {
             'name': self.name,
             'type': 'Vector',
@@ -368,7 +371,8 @@ class ImportLayer(FeatureCollection):
             'description': self.description,
             'color': settings.DEFAULT_UPLOAD_LAYER_COLOR_HEX,
             'fill_opacity': 1,
-            'opacity': 0.6
+            'opacity': 0.6,
+            'url': 'http://localhost:8000/media/vector_layers/vector_control_1.json'
         }
         return layer_dict
 
@@ -379,9 +383,13 @@ class ImportLayer(FeatureCollection):
         manipulators = []
         # manipulators = ['drawing.manipulators.ClipToPlanningGrid']
         # optional_manipulators = ['clipping.manipulators.ClipToShoreManipulator']
-        # form = 'drawing.forms.AOIForm'
+        form = 'data_manager.forms.ImportLayerForm'
         # form_template = 'aoi/form.html'
         # show_template = 'aoi/show.html'
+        valid_children = (
+            'data_manager.models.ImportFeature',
+            # 'scenarios.models.Scenario'
+        )
 
 class GeometryFeature(SpatialFeature):
     geometry_orig = GeometryField(srid=settings.GEOMETRY_DB_SRID,
@@ -401,7 +409,7 @@ class GeometryFeature(SpatialFeature):
     class Meta(Feature.Meta):
         abstract = True
 
-# @register
+@register
 class ImportFeature(GeometryFeature):
     summary = models.TextField(blank=True, null=True, default=settings.SUMMARY_DEFAULT)
 
@@ -412,7 +420,7 @@ class ImportFeature(GeometryFeature):
         manipulators = []
         # manipulators = ['drawing.manipulators.ClipToPlanningGrid']
         # optional_manipulators = ['clipping.manipulators.ClipToShoreManipulator']
-        # form = 'drawing.forms.AOIForm'
+        form = 'data_manager.forms.ImportFeatureForm'
         # form_template = 'aoi/form.html'
         # show_template = 'aoi/show.html'
 

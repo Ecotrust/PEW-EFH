@@ -27,7 +27,7 @@ def get_json(request, project=None):
                 max_layer_id = 1000
                 pass
             try:
-                max_theme_id = Theme.objects.latest('pk').pk + 1000
+                max_theme_id = TOCTheme.objects.latest('pk').pk + 1000
             except:
                 max_theme_id = 1000
                 pass
@@ -76,7 +76,8 @@ def get_json(request, project=None):
             "success": True
         }
         return HttpResponse(simplejson.dumps(json))
-    except:
+    except Exception as e:
+        print("========= %s ==========" % str(e))
         pass
     json = {
         "state": { "activeLayers": [] },
@@ -249,22 +250,31 @@ def import_layer(request):
                 # unzip it
                 unzip_dir_name = '%s_%s' % (str(request.user.pk), key)
                 unzip_dir = os.path.join(settings.UPLOAD_DIR, unzip_dir_name)
+                if os.path.exists(unzip_dir):
+                    if os.path.isdir(unzip_dir):
+                        try:
+                            shutil.rmtree(unzip_dir, ignore_errors=True)
+                        except Exception as e:
+                            print("======== %s =========" % str(e))
+                            pass
+                    else:
+                        os.remove(unzip_dir)
+
                 try:
-                    if os.path.exists(unzip_dir):
-                        if os.path.isdir(unzip_dir):
-                            shutil.rmtree(unzip_dir)
-                            os.remove(unzip_dir)
-                        else:
-                            os.remove(unzip_dir)
-                except OSError:
+                    os.mkdir(unzip_dir)
+                except Exception as e:
+                    print("======== %s =========" % str(e))
                     pass
 
-                os.mkdir(unzip_dir)
                 try:
                     zip_ref.extractall(unzip_dir)
-                except OSError:
-                    zip_ref.close()
-                    shutil.rmtree(unzip_dir)
+                except OSError as e:
+                    print("======== %s =========" % str(e))
+                    try:
+                        zip_ref.close()
+                        shutil.rmtree(unzip_dir, ignore_errors=True)
+                    except:
+                        pass
                     json_response = {
                         "message": "Error Unzipping file",
                         "success": False
@@ -279,13 +289,24 @@ def import_layer(request):
                 # open shapefile
                 from osgeo import ogr
                 driver = ogr.GetDriverByName('ESRI Shapefile')
-                dataset = driver.Open(os.path.join(unzip_dir, shapefile_shp))
-                layer = dataset.GetLayer()
-                spatialRef = layer.GetSpatialRef()
+                try:
+                    dataset = driver.Open(os.path.join(unzip_dir, shapefile_shp))
+                    layer = dataset.GetLayer()
+                    spatialRef = layer.GetSpatialRef()
+                except Exception as e:
+                    print("======== %s =========" % str(e))
+                    import ipdb; ipdb.set_trace()
+                    shutil.rmtree(unzip_dir, ignore_errors=True)
+                    json_response = {
+                        "message": str(e),
+                        "success": False
+                    }
+                    return HttpResponse(simplejson.dumps(json_response))
+
 
                 # is it in the correct projection?
                 if not is_3857(spatialRef):
-                    shutil.rmtree(unzip_dir)
+                    shutil.rmtree(unzip_dir, ignore_errors=True)
                     json_response = {
                         "message": "Imported shapefile is not projected as EPSG:3857 or as ArcGIS:'WGS 1984 Web Mercator (Auxiliary Sphere)'",
                         "success": False
@@ -307,7 +328,7 @@ def import_layer(request):
                 try:
                     import_layer = ImportLayer.objects.create(user=request.user, description=layer_description, name=layer_name)
                 except:
-                    shutil.rmtree(unzip_dir)
+                    shutil.rmtree(unzip_dir, ignore_errors=True)
                     json_response = {
                         "message": "Unknown error: unable to create imported layer.",
                         "success": False
@@ -316,7 +337,6 @@ def import_layer(request):
 
                 from django.contrib.gis.geos import GEOSGeometry
                 # Create Feature Object
-                import ipdb; ipdb.set_trace()
                 for geom in layer:
                     feature = simplejson.loads(geom.ExportToJson())['geometry']
                     geos_geom = GEOSGeometry(simplejson.dumps(feature))
@@ -336,16 +356,23 @@ def import_layer(request):
                         # associate feature with layer
                         feat.add_to_collection(import_layer)
                     except Exception as e:
-                        shutil.rmtree(unzip_dir)
-                        #TODO: get all features belonging to import_layer and delete them!
-                        import_layer.delete()
+                        print("======== %s =========" % str(e))
+                        try:
+                            shutil.rmtree(unzip_dir, ignore_errors=True)
+                            #TODO: get all features belonging to import_layer and delete them!
+                            # import ipdb; ipdb.set_trace()
+                            import_layer.full_clean() # ??? maybe this does it?
+                            import_layer.delete()
+                        except Exception as e2:
+                            print("======== %s =========" % str(e2))
+                            pass
                         json_response = {
                             "message": "Unknown error: %s" % e,
                             "success": False
                         }
                         return HttpResponse(simplejson.dumps(json_response))
 
-                shutil.rmtree(unzip_dir)
+                shutil.rmtree(unzip_dir, ignore_errors=True)
             json_response = {
                 "message": "Layer created",
                 "success": True
