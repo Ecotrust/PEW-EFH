@@ -390,18 +390,7 @@ def import_layer(request):
         }
     return HttpResponse(simplejson.dumps(json_response))
 
-
-
-
-
-
-
-    # TODO: If any errors:
-    #     Delete layer and all associated features
-
-    json = {
-        "message": 'Layer failed to successfully upload.',
-        "success": False
-    }
-    return HttpResponse(simplejson.dumps(json))
-    # return HttpResponse("Precondition Failure", 412)
+def get_import_layer_json(request, uid):
+    from madrona.features import get_feature_by_uid
+    import_layer = get_feature_by_uid(uid)
+    return HttpResponse(import_layer.geojson())

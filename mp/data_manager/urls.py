@@ -6,5 +6,6 @@ urlpatterns = patterns('',
     (r'^layer', create_layer),
     (r'^wa_config', load_config),
     (r'^get_json/([\w-]*)', get_json),
-    (r'^import_layer/?$', import_layer)
+    (r'^import_layer/?$', import_layer),
+    (r'import_layer/(?P<uid>[\w_]+)/json/$', get_import_layer_json),
 )

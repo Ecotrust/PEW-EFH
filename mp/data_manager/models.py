@@ -376,6 +376,40 @@ class ImportLayer(FeatureCollection):
         }
         return layer_dict
 
+    def geojson(self):
+        import simplejson
+        geojson_dict = {
+            'name': self.name,
+            'type': "FeatureCollection",
+            'crs': {
+                'type': "name",
+                'properties': {
+                    "name": "EPSG:3857"
+                }
+            },
+            'features': []
+        }
+        for feat in self.feature_set():
+            try:
+                geom = simplejson.loads(feat.geometry_final.geojson)
+            except Exception as e:
+                print("======== %s ========" % str(e))
+                geom = simplejson.loads(feat.geometry_orig.geojson)
+                pass
+            try:
+                properties = simplejson.loads(feat.summary)
+            except Exception as e:
+                print("======== %s ========" % str(e))
+                properties = {}
+                pass
+            feature_dict = {
+                "type": "Feature",
+                'geometry': geom,
+                'properties': properties
+            }
+            geojson_dict['features'].append(feature_dict)
+        return simplejson.dumps(geojson_dict)
+
     class Options:
         verbose_name = 'Imported Layer'
         # icon_url = 'img/aoi.png'
