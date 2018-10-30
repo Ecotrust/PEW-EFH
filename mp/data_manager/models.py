@@ -362,17 +362,17 @@ class ImportLayer(FeatureCollection):
         return unicode(self.name)
 
     def toDict(self):
+        url = '/data_manager/import_layer/%s/json/' % self.uid
         layer_dict = {
             'name': self.name,
             'type': 'Vector',
-            # 'url': ???,
+            'url': url,
             'proj': 'EPSG:3857',
             'sublayers': [],
             'description': self.description,
             'color': settings.DEFAULT_UPLOAD_LAYER_COLOR_HEX,
             'fill_opacity': 1,
             'opacity': 0.6,
-            'url': 'http://localhost:8000/media/vector_layers/vector_control_1.json'
         }
         return layer_dict
 
