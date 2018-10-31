@@ -22,6 +22,7 @@ portal/*.sql
 /docs/mockups/assets
 /docs/mockups/SDC_WireFrames_updated.pdf
 /docs/mockups
+/docs
 /mp/reports/fixtures/artificialreefs.json
 /mp/reports/fixtures/awchubs.json
 /mp/reports/fixtures/bathymetry.json
@@ -100,3 +101,13 @@ mp/scenarios/fixtures/grid_cells_2b.json
 mp/scenarios/fixtures/archive/grid_cells.json.zip
 
 cronjobs/survey_results_unsummarized.json
+
+wireframes
+MBTilesWork
+Phase_III_Docs
+notes
+notes*
+pew-env
+pg_dump*
+typescript
+ubuntu-*

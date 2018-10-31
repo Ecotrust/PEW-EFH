@@ -20,12 +20,6 @@ def get_json(request, project=None):
         if request.user.is_authenticated():
             # get "Imported" Layers
             import_layers = ImportLayer.objects.filter(user=request.user)
-            # Get unique IDs for "Imported" Layers
-            try:
-                max_layer_id = Layer.objects.latest('pk').pk + 1000
-            except:
-                max_layer_id = 1000
-                pass
             try:
                 max_theme_id = TOCTheme.objects.latest('pk').pk + 1000
             except:
@@ -34,9 +28,7 @@ def get_json(request, project=None):
             uploaded_layer_ids = []
             uploaded_layers = []
             for layer in import_layers:
-                max_layer_id += 1
                 layer_dict = layer.toDict()
-                layer_dict['id'] = int(max_layer_id)
                 # Add "Imported" Layers to {'layers': [...],}
                 uploaded_layers.append(layer_dict)
                 uploaded_layer_ids.append(layer_dict['id'])
@@ -201,7 +193,7 @@ def load_config(request):
     return HttpResponse('layers and themes successfully loaded into WA_CMSP TOC object', status=200)
 
 def import_layer(request):
-    import os, shutil, simplejson
+    import os, shutil
     from datetime import datetime
     from django.conf import settings
     from drawing.views import is_3857
@@ -394,3 +386,29 @@ def get_import_layer_json(request, uid):
     from madrona.features import get_feature_by_uid
     import_layer = get_feature_by_uid(uid)
     return HttpResponse(import_layer.geojson())
+
+def delete_import_layer(request, layer_id):
+    if request.user.is_authenticated():
+        try:
+            importLayer = ImportLayer.objects.get(pk=layer_id)
+            importLayer.delete()
+        except Exception as e:
+            json_response = {
+                "message": "No layer matching given ID",
+                "success": False,
+                "status": 400
+            }
+            return HttpResponse(simplejson.dumps(json_response))
+        json_response = {
+            "message": "Layer deleted.",
+            "success": True,
+            "status": 200
+        }
+        return HttpResponse(simplejson.dumps(json_response))
+    else:
+        json_response = {
+            "message": "Not authorized.",
+            "success": False,
+            "status": 401
+        }
+        return HttpResponse(simplejson.dumps(json_response))

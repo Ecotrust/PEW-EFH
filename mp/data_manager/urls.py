@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     (r'^get_json/([\w-]*)', get_json),
     (r'^import_layer/?$', import_layer),
     (r'import_layer/(?P<uid>[\w_]+)/json/$', get_import_layer_json),
+    (r'import_layer/(?P<layer_id>[\w_]+)/delete/$', delete_import_layer),
 )

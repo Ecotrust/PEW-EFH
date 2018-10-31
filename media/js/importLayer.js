@@ -88,3 +88,42 @@ validateImportForm = function() {
     $('#import-layer-form-submit').unbind("click");
   }
 };
+
+editImport = function(id) {
+  //TODO: get the form and load it into a modal
+};
+
+removeDeletedLayer = function(layer) {
+  setTimeout(function(){
+    $('#layer_' + layer.id).empty();
+    $('#layer_' + layer.id).remove();
+    $('#layer_' + layer.id).hide();
+    $('#import-layer-delete-modal').modal('hide');
+  }, 200);
+};
+
+deleteImportLayer = function(e) {
+  e.stopPropagation();
+  e.preventDefault();
+  $.ajax( {
+      url: "/data_manager/import_layer/" + app.deleteLayerId + "/delete/",
+      type: 'POST',
+      success: function(result) {
+        removeDeletedLayer(app.deleteLayer);
+        $('#import-layer-delete').modal('hide');
+      },
+      error: function(result) {
+        window.alert("Unable to complete request. Error deleting imported layer.")
+      }
+  });
+};
+
+deleteImportInit = function(layer, e) {
+  e.stopPropagation();
+  e.preventDefault();
+  app.deleteLayer = layer;
+  app.deleteLayerId = parseInt(layer.id.split('il')[1]);
+  $('#import-layer-delete-button').unbind('click');
+  $('#import-layer-delete-button').on('click', deleteImportLayer);
+  $('#import-layer-delete-modal').modal('show');
+};

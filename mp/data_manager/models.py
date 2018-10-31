@@ -373,6 +373,7 @@ class ImportLayer(FeatureCollection):
             'color': settings.DEFAULT_UPLOAD_LAYER_COLOR_HEX,
             'fill_opacity': 1,
             'opacity': 0.6,
+            'id': 'il%s' % self.id
         }
         return layer_dict
 
