@@ -382,6 +382,7 @@ def import_layer(request):
         }
     return HttpResponse(simplejson.dumps(json_response))
 
+@cache_page(60 * 60 * 24, key_prefix="data_manager_import_layer_json")
 def get_import_layer_json(request, uid):
     from madrona.features import get_feature_by_uid
     import_layer = get_feature_by_uid(uid)
