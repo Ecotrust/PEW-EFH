@@ -519,28 +519,28 @@
                                                                                   </a>
 
                                                                                   <!-- ko if: $parent.name != "Imported" -->
-                                                                                  <a class="btn btn-layer" data-bind="css: { 'active': active(), 'not-active': ! active() }, click: toggleActive">
-                                                                                      <div style="font-weight: normal">
-                                                                                          <span style="padding-left: 5px;" data-bind="text: name"></span>
-                                                                                          <span class="caret" style="display:none" data-bind="visible: subLayers.length > 0"></span>
-                                                                                          <i class="check icon-large icon-check" data-bind="visible: active() && visible()"></i>
-                                                                                          <i class="check icon-large icon-check-empty" data-bind="visible: active() && ! visible()"></i>
-                                                                                      </div>
-                                                                                  </a>
-                                                                                  <!-- ko if: subLayers.length > 0 -->
-                                                                                  <!-- ko if: !isCheckBoxLayer() -->
-                                                                                  <ul class="dropdown-menu layer-menu" data-bind="event: { mouseleave: closeMenu }">
-                                                                                      <li data-bind="foreach: subLayers">
-                                                                                          <a data-bind="click: toggleActive">
-                                                                                              <!--<span data-bind="style: {visibility: active() ? 'visible': 'hidden' }">• </span>-->
-                                                                                              <!--<span style="margin-left: -10px" data-bind="style: {visibility: active() ? 'visible': 'hidden' }">
-                                                                                                  <i class="icon-ok-circle"></i>
-                                                                                              </span>-->
-                                                                                              <i class="icon-ok" data-bind="style: {visibility: active() ? 'visible': 'hidden' }"></i>
-                                                                                              <span data-bind="text: name"></span>
-                                                                                          </a>
-                                                                                      </li>
-                                                                                  </ul>
+                                                                                    <a class="btn btn-layer" data-bind="css: { 'active': active(), 'not-active': ! active() }, click: toggleActive">
+                                                                                        <div style="font-weight: normal">
+                                                                                            <span style="padding-left: 5px;" data-bind="text: name"></span>
+                                                                                            <span class="caret" style="display:none" data-bind="visible: subLayers.length > 0"></span>
+                                                                                            <i class="check icon-large icon-check" data-bind="visible: active() && visible()"></i>
+                                                                                            <i class="check icon-large icon-check-empty" data-bind="visible: active() && ! visible()"></i>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                    <!-- ko if: subLayers.length > 0 -->
+                                                                                    <!-- ko if: !isCheckBoxLayer() -->
+                                                                                    <ul class="dropdown-menu layer-menu" data-bind="event: { mouseleave: closeMenu }">
+                                                                                        <li data-bind="foreach: subLayers">
+                                                                                            <a data-bind="click: toggleActive">
+                                                                                                <!--<span data-bind="style: {visibility: active() ? 'visible': 'hidden' }">• </span>-->
+                                                                                                <!--<span style="margin-left: -10px" data-bind="style: {visibility: active() ? 'visible': 'hidden' }">
+                                                                                                    <i class="icon-ok-circle"></i>
+                                                                                                </span>-->
+                                                                                                <i class="icon-ok" data-bind="style: {visibility: active() ? 'visible': 'hidden' }"></i>
+                                                                                                <span data-bind="text: name"></span>
+                                                                                            </a>
+                                                                                        </li>
+                                                                                    </ul>
                                                                                   <!-- /ko -->
                                                                                   <!-- ko if: isCheckBoxLayer() -->
                                                                                   <ul class="dropdown-menu layer-menu" data-bind="event: { mouseleave: closeMenu }">
@@ -571,7 +571,7 @@
                                                                                   </a>
                                                                                   <ul class="dropdown-menu import-layer-dropdown">
                                                                                       <!-- <li><a data-bind="visible: ! shared(), click: editLayer">Edit</a></li> -->
-                                                                                      <!-- <li><a data-bind="attr:{id:$parent.tocid+'-share-option'}, visible: ! shared() && app.viewModel.scenarios.hasSharingGroups, click: app.viewModel.scenarios.showSharingModal" class="share-option">Share</a></li> -->
+                                                                                      <li><a data-bind="click: shareImportInit">Sharing</a></li>
                                                                                       <!-- <li><a data-bind="visible: ! shared(), click: deleteDrawing">Delete</a></li> -->
                                                                                       <li><a data-bind="click: deleteImportInit">Delete</a></li>
                                                                                   </ul>
@@ -597,7 +597,7 @@
 
                                       <!-- ACTIVE TAB -->
                                       <div class="tab-pane fade tab-active" data-bind="attr: {'id': tocid + '-active' }" style="background-color: white; height: 100%">
-                                      <!-- <div class="tab-pane fade" style="background-color: white; height: 100%" id="active"> -->
+                                        <!-- <div class="tab-pane fade" style="background-color: white; height: 100%" id="active"> -->
                                           <div class="row-fluid" style="height: 100%">
                                               <div data-bind="attr: {'id': tocid + '-active-content' }" class="span12 tab-active-content" style="height: 100%;">
                                               <!-- <div class="span12" style="height: 100%;" id="active-content"> -->
@@ -640,11 +640,11 @@
 
                                       <!-- LEGEND TAB -->
                                       <div class="tab-pane fade legend" data-bind="attr: {'id': tocid + '-legend' }" style="background-color: white; height: 100%">
-                                      <!-- <div class="tab-pane fade" style="background-color: white; height: 100%" id="legend"> -->
+                                        <!-- <div class="tab-pane fade" style="background-color: white; height: 100%" id="legend"> -->
                                           <div class="row-fluid" style="height: 100%">
 
                                               <div data-bind="attr: {'id': tocid + '-legend-content' }" class="accordion legend-content">
-                                              <!-- <div class="accordion" id="legend-content"> -->
+                                                <!-- <div class="accordion" id="legend-content"> -->
                                                 <div data-bind="visible: app.viewModel.activeLegendLayers().length == 0">
                                                   Activate data layers and their legends will appear here in the Legend tab.
                                                 </div>
@@ -688,9 +688,9 @@
                                                       </div>
                                                   </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                              </div>
+                                          </div>
+                                      </div>
                                 <!-- END LEGEND TAB -->
 
                                 </div>

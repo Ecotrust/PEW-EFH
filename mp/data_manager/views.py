@@ -413,3 +413,22 @@ def delete_import_layer(request, layer_id):
             "status": 401
         }
         return HttpResponse(simplejson.dumps(json_response))
+
+'''
+'''
+def share_import_layer(request):
+    from django.contrib.auth.models import Group
+    from madrona.features import get_feature_by_uid
+    group_names = request.POST.getlist('groups[]')
+    layer_uid = request.POST['import-layer']
+    layer = get_feature_by_uid(layer_uid)
+    viewable, response = layer.is_viewable(request.user)
+    if not viewable:
+        return response
+    #remove previously shared with groups, before sharing with new list
+    layer.share_with(None)
+    groups = []
+    for group_name in group_names:
+        groups.append(Group.objects.get(name=group_name))
+    layer.share_with(groups, append=False)
+    return HttpResponse("", status=200)

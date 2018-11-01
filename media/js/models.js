@@ -31,6 +31,15 @@ function layerModel(options, parent) {
     self.defaultOpacity = options.opacity || 0.5;
     self.opacity = ko.observable(self.defaultOpacity);
     self.graphic = options.graphic || null;
+    self.selectedGroups = ko.observableArray();
+    self.temporarilySelectedGroups = ko.observableArray();
+    if (options.hasOwnProperty('selected_groups')) {
+      for (var i = 0; i < options.selected_groups.length; i++) {
+        self.selectedGroups.push(options.selected_groups[i]);
+        self.temporarilySelectedGroups.push(options.selected_groups[i]);
+      }
+    }
+    self.sharingGroups = ko.observableArray();
 
     self.sharedBy = ko.observable(false);
     self.shared = ko.observable(false);
@@ -44,7 +53,7 @@ function layerModel(options, parent) {
         self.featureAttributionName = 'Party & Charter Boat Trips';
     }
 
-    if (app.surveyResults.surveyLayerNames.indexOf(self.name) !== -1) { // is Survey Results layer
+    if (app.hasOwnProperty('surveyResults') && app.surveyResults.hasOwnProperty('surveyLayerNames') && app.surveyResults.surveyLayerNames.indexOf(self.name) !== -1) { // is Survey Results layer
         if (!self.legend) {
             self.legend = app.surveyResults.legendColors;
         }
@@ -178,11 +187,13 @@ function layerModel(options, parent) {
 
     // is description active
     self.infoActive = ko.observable(false);
-    app.viewModel.showOverview.subscribe( function() {
+    if (app.hasOwnProperty('viewModel') && app.viewModel.hasOwnProperty('showOverview')) {
+      app.viewModel.showOverview.subscribe( function() {
         if ( app.viewModel.showOverview() === false ) {
-            self.infoActive(false);
+          self.infoActive(false);
         }
-    });
+      });
+    }
 
     // is the layer a checkbox layer
     self.isCheckBoxLayer = ko.observable(false);
@@ -665,8 +676,81 @@ function layerModel(options, parent) {
         layer.showSublayers(false);
     };
 
+    self.groupIsSelected = function(groupName) {
+        if (self.temporarilySelectedGroups()) {
+            var indexOf = self.temporarilySelectedGroups().indexOf(groupName);
+            return indexOf !== -1;
+        }
+        return false;
+    };
+
+    self.groupMembers = function(groupName) {
+        var memberList = "";
+        for (var i=0; i<self.selectedGroups().length; i++) {
+            var group = self.selectedGroups()[i];
+            if (group.group_name === groupName) {
+                for (var m=0; m<group.members.length; m++) {
+                    var member = group.members[m];
+                    memberList += member + '<br>';
+                }
+            }
+        }
+        return memberList;
+    };
+
+    self.toggleGroup = function(obj) {
+        var groupName = obj.group_name,
+            indexOf = self.temporarilySelectedGroups().indexOf(groupName);
+        if ( indexOf === -1 ) {  //add group to list
+            self.temporarilySelectedGroups().push(groupName);
+        } else { //remove group from list
+            self.temporarilySelectedGroups().splice(indexOf, 1);
+        }
+    };
+
+    //SHARING ImportLayers
+    self.submitShareLayer = function() {
+        id_split = self.id.split('il');
+        if (id_split.length > 1) {
+          uid = 'data_manager_importlayer_' + id_split[1];
+        } else {
+          uid = self.id;
+        }
+        var data = { 'import-layer': uid, 'groups': self.temporarilySelectedGroups() };
+        $.ajax( {
+            url: '/data_manager/import_layer/share_import_layer/',
+            data: data,
+            type: 'POST',
+            dataType: 'json',
+            success: function(result) {
+              self.selectedGroups(self.temporarilySelectedGroups().slice(0));
+              $('#import-layer-share-modal').modal('hide');
+            },
+            error: function(result, error) {
+                window.alert('Error sharing layer: ' + error);
+            }
+        });
+    };
+
+    // get sharing groups for this user
+    self.getSharingGroups = function() {
+        $.ajax({
+            url: '/visualize/get_sharing_groups',
+            type: 'GET',
+            dataType: 'json',
+            success: function (groups) {
+                self.sharingGroups(groups);
+            },
+            error: function (result) {
+                console.log('error in layerModel.getSharingGroups()');
+            }
+        });
+    };
+
     return self;
 } // end layerModel
+
+;
 
 function themeModel(options) {
     var self = this;
@@ -848,7 +932,6 @@ function mapLinksModel() {
 
     return self;
 } // end of mapLinks Model
-
 
 function viewModel() {
     var self = this;
@@ -1947,3 +2030,4 @@ function viewModel() {
 
 app.OVERVIEW_OVERLAY_HEIGHT = 186;
 app.viewModel = new viewModel();
+app.currentLayerModel = ko.observable(new layerModel({}));

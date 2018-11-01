@@ -270,11 +270,8 @@ li a {
     text-decoration: none;
 }
 
-#sharing-groups i.check {
-    position: relative;
-    top: 0px;
-}
-
+#layer-sharing-groups i.check,
+#sharing-groups i.check,
 #bookmark-sharing-groups i.check {
     position: relative;
     top: 0px;

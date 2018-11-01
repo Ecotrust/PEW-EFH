@@ -363,6 +363,7 @@ class ImportLayer(FeatureCollection):
 
     def toDict(self):
         url = '/data_manager/import_layer/%s/json/' % self.uid
+        groups = [x.name for x in self.sharing_groups.all()]
         layer_dict = {
             'name': self.name,
             'type': 'Vector',
@@ -373,7 +374,8 @@ class ImportLayer(FeatureCollection):
             'color': settings.DEFAULT_UPLOAD_LAYER_COLOR_HEX,
             'fill_opacity': 1,
             'opacity': 0.6,
-            'id': 'il%s' % self.id
+            'id': 'il%s' % self.id,
+            'selected_groups': groups
         }
         return layer_dict
 

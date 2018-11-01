@@ -127,3 +127,14 @@ deleteImportInit = function(layer, e) {
   $('#import-layer-delete-button').on('click', deleteImportLayer);
   $('#import-layer-delete-modal').modal('show');
 };
+
+shareImportInit = function(layer, e) {
+  e.stopPropagation();
+  e.preventDefault();
+  app.currentLayerModel(layer);
+  if (layer.sharingGroups().length == 0) {
+    layer.getSharingGroups();
+  }
+  layer.temporarilySelectedGroups(layer.selectedGroups().slice(0));
+  $('#import-layer-share-modal').modal('show');
+}
