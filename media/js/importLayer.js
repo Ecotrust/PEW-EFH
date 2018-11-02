@@ -131,10 +131,5 @@ deleteImportInit = function(layer, e) {
 shareImportInit = function(layer, e) {
   e.stopPropagation();
   e.preventDefault();
-  app.currentLayerModel(layer);
-  if (layer.sharingGroups().length == 0) {
-    layer.getSharingGroups();
-  }
-  layer.temporarilySelectedGroups(layer.selectedGroups().slice(0));
-  $('#import-layer-share-modal').modal('show');
+  layer.showSharingModal(layer);
 }

@@ -676,9 +676,20 @@ function layerModel(options, parent) {
         layer.showSublayers(false);
     };
 
+    self.sharingLayer = ko.observable();
+    self.showSharingModal = function(layer) {
+        self.sharingLayer(layer);
+        self.sharingLayer().temporarilySelectedGroups(self.sharingLayer().selectedGroups().slice(0));
+        if (layer.sharingGroups().length == 0) {
+          layer.getSharingGroups();
+        }
+        app.currentLayerModel(layer);
+        $('#import-layer-share-modal').modal('show');
+    };
+
     self.groupIsSelected = function(groupName) {
-        if (self.temporarilySelectedGroups()) {
-            var indexOf = self.temporarilySelectedGroups().indexOf(groupName);
+        if (self.sharingLayer()) {
+            var indexOf = self.sharingLayer().temporarilySelectedGroups.indexOf(groupName);
             return indexOf !== -1;
         }
         return false;
@@ -700,13 +711,17 @@ function layerModel(options, parent) {
 
     self.toggleGroup = function(obj) {
         var groupName = obj.group_name,
-            indexOf = self.temporarilySelectedGroups().indexOf(groupName);
+            indexOf = self.sharingLayer().temporarilySelectedGroups.indexOf(groupName);
         if ( indexOf === -1 ) {  //add group to list
-            self.temporarilySelectedGroups().push(groupName);
+            self.sharingLayer().temporarilySelectedGroups.push(groupName);
         } else { //remove group from list
-            self.temporarilySelectedGroups().splice(indexOf, 1);
+            self.sharingLayer().temporarilySelectedGroups.splice(indexOf, 1);
         }
     };
+
+    self.cancelShare = function() {
+      self.sharingLayer().temporarilySelectedGroups.removeAll();
+    }
 
     //SHARING ImportLayers
     self.submitShareLayer = function() {
@@ -716,14 +731,14 @@ function layerModel(options, parent) {
         } else {
           uid = self.id;
         }
-        var data = { 'import-layer': uid, 'groups': self.temporarilySelectedGroups() };
+        var data = { 'import-layer': uid, 'groups': self.sharingLayer().temporarilySelectedGroups() };
         $.ajax( {
             url: '/data_manager/import_layer/share_import_layer/',
             data: data,
             type: 'POST',
             dataType: 'json',
             success: function(result) {
-              self.selectedGroups(self.temporarilySelectedGroups().slice(0));
+              self.sharingLayer().selectedGroups(self.sharingLayer().temporarilySelectedGroups().slice(0));
               $('#import-layer-share-modal').modal('hide');
             },
             error: function(result, error) {
