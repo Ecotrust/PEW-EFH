@@ -497,11 +497,7 @@ function scenarioModel(options) {
     self.sharedWith = ko.observable();
     self.updateSharedWith = function() {
         if (self.selectedGroups().length) {
-            var groupNames = "Shared with " + self.selectedGroups()[0];
-            for(var i=1; i<self.selectedGroups().length; i+=1) {
-                groupNames += ", " + self.selectedGroups()[i];
-            }
-            self.sharedWith(groupNames);
+            self.sharedWith(self.selectedGroups().join(', '));
         }
     };
     self.updateSharedWith();

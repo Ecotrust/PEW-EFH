@@ -44,6 +44,34 @@ function layerModel(options, parent) {
     self.sharedBy = ko.observable(false);
     self.shared = ko.observable(false);
 
+    self.sharedByName = options.sharedByName || null;
+    self.sharedByUsername = options.sharedByUsername;
+    if (self.sharedByName && $.trim(self.sharedByName) !== '') {
+        self.sharedByWho = self.sharedByName + ' (' + self.sharedByUsername + ')';
+    } else {
+        self.sharedByWho = self.sharedByUsername;
+    }
+
+    self.sharedBy = ko.observable();
+    if (options.shared) {
+        self.shared(true);
+        self.sharedBy('Shared by ' + self.sharedByWho);
+    } else {
+        self.shared(false);
+        self.sharedBy(false);
+    }
+
+    self.sharedWith = ko.observable();
+    self.updateSharedWith = function() {
+        if (self.selectedGroups().length) {
+            self.sharedWith(self.selectedGroups().join(', '));
+        }
+    };
+    self.updateSharedWith();
+    self.selectedGroups.subscribe( function() {
+        self.updateSharedWith();
+    });
+
     self.isLayerModel = ko.observable(true);
 
 

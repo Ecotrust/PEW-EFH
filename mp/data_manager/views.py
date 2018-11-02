@@ -16,15 +16,26 @@ def get_json(request, project=None):
         else:
             activeSettings = MarinePlannerSettings.objects.get(active=True)
 
+        from django.contrib.auth.models import Group
+        public_groups = Group.objects.filter(name='Share with Public')
+        if len(public_groups) != 1:
+            public_group = False
+        else:
+            public_group = public_groups[0]
+
+
+        shared_layers = []
+        shared_layer_ids = []
+
+        try:
+            max_theme_id = TOCTheme.objects.latest('pk').pk + 1000
+        except:
+            max_theme_id = 1000
+            pass
         # Add "Imported" Theme and Layers
         if request.user.is_authenticated():
             # get "Imported" Layers
             import_layers = ImportLayer.objects.filter(user=request.user)
-            try:
-                max_theme_id = TOCTheme.objects.latest('pk').pk + 1000
-            except:
-                max_theme_id = 1000
-                pass
             uploaded_layer_ids = []
             uploaded_layers = []
             for layer in import_layers:
@@ -41,6 +52,32 @@ def get_json(request, project=None):
                 'description': 'User uploaded layers.'
             }
 
+            # Add "Shared" Layers
+            for shared_layer in ImportLayer.objects.shared_with_user(request.user).exclude(user=request.user):
+                shared_layer_dict = shared_layer.toDict()
+                shared_layers.append(shared_layer_dict)
+                shared_layer_ids.append(shared_layer_dict['id'])
+        else:
+            # Add "Shared" Layers
+            if public_group:
+                for shared_layer in ImportLayer.objects.all():
+                    if public_group in shared_layer.shared_with.all():
+                        shared_layer_dict = shared_layer.toDict()
+                        shared_layers.append(shared_layer_dict)
+                        shared_layer_ids.append(shared_layer_dict['id'])
+
+        # Add "Shared" Theme
+        if len(shared_layer_ids) > 0:
+            shared_theme_dict = {
+                'layers': shared_layer_ids,
+                'is_toc_theme': True,
+                'display_name': "Shared",
+                'id': max_theme_id+1,
+                'description': 'Shared user uploaded layers.'
+            }
+        else:
+            shared_theme_dict = False
+
         toc_list = []
 
         for toc in activeSettings.table_of_contents.all().order_by('order'):
@@ -55,6 +92,9 @@ def get_json(request, project=None):
             if request.user.is_authenticated():
                     layer_list = layer_list + uploaded_layers
                     theme_list.append(uploaded_theme_dict)
+            if shared_theme_dict:
+                    layer_list = layer_list + shared_layers
+                    theme_list.append(shared_theme_dict)
             toc_list.append({
                 "tocid": toc.id,
                 "name": toc.name,

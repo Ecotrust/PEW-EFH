@@ -364,6 +364,14 @@ class ImportLayer(FeatureCollection):
     def toDict(self):
         url = '/data_manager/import_layer/%s/json/' % self.uid
         groups = [x.name for x in self.sharing_groups.all()]
+        if len(groups) > 0:
+            shared = True
+            sharedByName = self.user.get_full_name()
+            sharedByUsername = self.user.username
+        else:
+            shared = False
+            sharedByName = None
+            sharedByUsername = None
         layer_dict = {
             'name': self.name,
             'type': 'Vector',
@@ -375,7 +383,10 @@ class ImportLayer(FeatureCollection):
             'fill_opacity': 1,
             'opacity': 0.6,
             'id': 'il%s' % self.id,
-            'selected_groups': groups
+            'selected_groups': groups,
+            'shared': shared,
+            'sharedByName': sharedByName,
+            'sharedByUsername': sharedByUsername,
         }
         return layer_dict
 
