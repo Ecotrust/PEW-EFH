@@ -61,7 +61,7 @@ def get_json(request, project=None):
             # Add "Shared" Layers
             if public_group:
                 for shared_layer in ImportLayer.objects.all():
-                    if public_group in shared_layer.shared_with.all():
+                    if public_group in shared_layer.sharing_groups.all():
                         shared_layer_dict = shared_layer.toDict()
                         shared_layers.append(shared_layer_dict)
                         shared_layer_ids.append(shared_layer_dict['id'])
