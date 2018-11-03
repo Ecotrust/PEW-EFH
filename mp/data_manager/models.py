@@ -387,6 +387,7 @@ class ImportLayer(FeatureCollection):
             'shared': shared,
             'sharedByName': sharedByName,
             'sharedByUsername': sharedByUsername,
+            'uid': self.uid,
         }
         return layer_dict
 

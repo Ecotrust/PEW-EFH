@@ -89,8 +89,24 @@ validateImportForm = function() {
   }
 };
 
-editImport = function(id) {
-  //TODO: get the form and load it into a modal
+editImportLayerInit = function(data, e) {
+  e.stopPropagation();
+  e.preventDefault();
+  $.ajax( {
+    url: '/features/importlayer/' + data.uid + '/form/',
+    type: 'GET',
+    success: function(result) {
+      $('#import-layer-edit-form').empty();
+      $('#import-layer-edit-form').append(result);
+      $('#import-layer-edit-modal').modal('show');
+      // $('#edit-import-layer-form-name').unbind('input');
+      // $('#edit-import-layer-form-name').on('input', validateImportForm);
+    },
+    error: function(result) {
+      window.alert("Unable to retrieve edit form for this layer.")
+    }
+  });
+
 };
 
 removeDeletedLayer = function(layer) {

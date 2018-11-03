@@ -4,6 +4,7 @@ function layerModel(options, parent) {
 
     // properties
     self.id = options.id || null;
+    self.uid = options.uid || null;
     self.name = options.name || null;
     self.featureAttributionName = self.name;
     self.url = options.url || null;
