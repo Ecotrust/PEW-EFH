@@ -19,3 +19,7 @@
 #import-layer-delete-button {
   color: white;
 }
+
+#import-layer-edit-form div form {
+  width: auto;
+}
