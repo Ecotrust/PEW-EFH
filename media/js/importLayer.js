@@ -92,20 +92,95 @@ validateImportForm = function() {
 editImportLayerInit = function(data, e) {
   e.stopPropagation();
   e.preventDefault();
+  app.currentLayerModel(data);
   $.ajax( {
     url: '/features/importlayer/' + data.uid + '/form/',
     type: 'GET',
     success: function(result) {
       $('#import-layer-edit-form').empty();
       $('#import-layer-edit-form').append(result);
+      // Remove file import field
+      $('#id_import_file').parent().remove();
+      // Remove default submit button
+      $('#import-layer-edit-form div #featureform').find("[type='submit']").parent().remove();
+      $('.wizard_nav').next().remove();
+      $('.wizard_nav').remove();
+      // $('.wizard_control').remove();
+      $('#import-layer-edit-form-submit').unbind("click");
+      $('#import-layer-edit-form-submit').on("click", submitEditImportLayer);
       $('#import-layer-edit-modal').modal('show');
-      // $('#edit-import-layer-form-name').unbind('input');
-      // $('#edit-import-layer-form-name').on('input', validateImportForm);
     },
     error: function(result) {
       window.alert("Unable to retrieve edit form for this layer.")
     }
   });
+};
+
+submitEditImportLayer = function(data) {
+  var $form = $('#import-layer-edit-form div #featureform');
+  var url = $form.attr('action'),
+      $bar = $('#import-layer-edit-progress-bar'),
+      data = new FormData(),
+      barTimer;
+
+  //progress bar
+  barTimer = setInterval(function () {
+      var width = parseInt($bar.css('width').replace('px', ''), 10) + 5,
+          barWidth = parseInt($bar.parent().css('width').replace('px',''), 10);
+
+      if (width < barWidth) {
+          $bar.css('width', width + "px");
+      } else {
+          clearInterval(barTimer);
+      }
+  }, 500);
+
+  $form.find('input,select,textarea').each( function(index, input) {
+      var $input = $(input);
+
+      if ($input.attr('type') == 'file') {
+          $.each($input[0].files, function(i, file) {
+              data.append('file-'+i, file);
+          });
+      } else {
+          data.append($input.attr('name'), $input.val());
+      }
+
+  });
+
+  $.ajax( {
+      url: url,
+      data: data,
+      cache: false,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      traditional: true,
+      dataType: 'json',
+      success: function(result) {
+        var $form = $('#import-layer-edit-form div #featureform');
+        new_name = $form.find('#id_name').val();
+        new_description = $form.find('#id_description').val();
+        updateImportLayer(new_name, new_description);
+        $('#import-layer-edit-modal').modal('hide');
+      },
+      error: function(result) {
+        $('#import-layer-edit-form-info').css("display", "none");
+        $('#import-layer-edit-form-error').css("display", "");
+        $('#import-modal-edit-error-text').text(result.responseText);
+      }
+  });
+
+};
+
+updateImportLayer = function(new_name, new_description) {
+  var layer_button = $('.layer_' + app.currentLayerModel().id + "_name");
+  layer_button.html(new_name);
+  app.currentLayerModel().name = new_name;
+  app.currentLayerModel().overview = new_description;
+};
+
+cancelEditImportLayer = function(data, e) {
 
 };
 

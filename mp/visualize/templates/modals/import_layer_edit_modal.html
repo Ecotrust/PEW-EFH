@@ -10,25 +10,25 @@
 
       <!-- STATUS ALERTS -->
       <div class="row-fluid">
-          <div class="alert alert-info" id="import-layer-form-info" style="display: none">
+          <div class="alert alert-info" id="import-layer-edit-form-info" style="display: none">
             <strong>Importing...</strong>
             <div class="progress progress-striped active">
-              <div id="import-layer-progress-bar" class="bar" style="width: 0%"></div>
+              <div id="import-layer-edit-progress-bar" class="bar" style="width: 0%"></div>
             </div>
           </div>
-          <div class="alert alert-success" id="import-layer-form-success" style="display: none">
+          <div class="alert alert-success" id="import-layer-edit-form-success" style="display: none">
             <strong>Success!</strong> <span>Refresh the page to see your imported layer!</span>
             <p><button onclick="location.reload();">Refresh Page</button></p>
           </div>
-          <div class="alert alert-error" id="import-layer-form-error" style="display: none">
+          <div class="alert alert-error" id="import-layer-edit-form-error" style="display: none">
             <strong>Error!</strong>
-            <p id="import-modal-error-text"></p>
+            <p id="import-modal-edit-error-text"></p>
           </div>
       </div>
 
     </div>
     <div class="modal-footer">
-        <!-- <button href="#" class="btn" data-dismiss="modal">Close</button> -->
-        <button href="#" type="button" class="btn" id="import-layer-form-submit" disabled>Submit</button>
+        <button href="#" class="btn" data-dismiss="modal">Close</button>
+        <button href="#" type="button" class="btn btn-submit" id="import-layer-edit-form-submit">Submit</button>
     </div>
 </div>
