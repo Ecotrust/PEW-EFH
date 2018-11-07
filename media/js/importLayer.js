@@ -108,6 +108,16 @@ editImportLayerInit = function(data, e) {
       // $('.wizard_control').remove();
       $('#import-layer-edit-form-submit').unbind("click");
       $('#import-layer-edit-form-submit').on("click", submitEditImportLayer);
+      var $form = $('#import-layer-edit-form div #featureform');
+      $form.keydown(function (e) {
+        if(e.which == 13){
+          e.stopPropagation();
+          e.preventDefault();
+          submitEditImportLayer($form);
+        }
+      });
+
+
       $('#import-layer-edit-modal').modal('show');
     },
     error: function(result) {
