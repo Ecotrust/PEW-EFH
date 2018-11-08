@@ -8637,7 +8637,7 @@
     "sublayers": [], 
     "url": "https://www.webapps.nwfsc.noaa.gov/server/rest/services/FRAM/REG_PFMC_Landmarks/MapServer/export", 
     "proxy_url": false, 
-    "arcgis_layers": "", 
+    "arcgis_layers": "0", 
     "bookmark": null, 
     "legend_title": "", 
     "attribute_title": "Pacific Fisheries Management Council (PFMC), National Marine Fisheries Service (NMFS) also known as NOAA Fisheries", 
