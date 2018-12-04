@@ -92,7 +92,6 @@ function layerModel(options, parent) {
     if ( !self.legend && self.url && (self.arcgislayers !== -1) ) {
         $.ajax({
             dataType: "jsonp",
-            //http://ocean.floridamarine.org/arcgis/rest/services/SAFMC/SAFMC_Regulations/MapServer/legend/?f=pjson
             url: self.url.replace('/export', '/legend/?f=pjson'),
             type: 'GET',
             success: function(data) {
@@ -101,7 +100,6 @@ function layerModel(options, parent) {
                         if (parseInt(layerobj.layerId, 10) === parseInt(self.arcgislayers, 10)) {
                             self.legend = {'elements': []};
                             $.each(layerobj.legend, function(j, legendobj) {
-                                //http://ocean.floridamarine.org/arcgis/rest/services/SAFMC/SAFMC_Regulations/MapServer/13/images/94ed037ab533027972ba3fc4a7c9d05c
                                 var swatchURL = self.url.replace('/export', '/'+self.arcgislayers+'/images/'+legendobj.url),
                                     label = legendobj.label;
                                 if (label === "") {
@@ -903,7 +901,7 @@ function mapLinksModel() {
             long_url = self.getURL();
 
         $.getJSON(
-            "http://api.bitly.com/v3/shorten?callback=?",
+            "https://api-ssl.bitly.com/v3/shorten?callback=?",
             {
                 "format": "json",
                 "apiKey": bitly_api_key,
@@ -940,7 +938,7 @@ function mapLinksModel() {
             urlHash = '#' + bookmarkState;
         }
         if ( !urlOrigin ) {
-            urlOrigin = 'http://' + window.location.host;
+            urlOrigin = window.location.protocol + '//' + window.location.host;
         }
         var embedURL = urlOrigin + '/embed/map/' + urlHash;
         if ( projectSlug ) {
@@ -959,7 +957,7 @@ function mapLinksModel() {
             mapWindow = window.open('', windowName, windowSize);
         var urlOrigin = window.location.origin;
         if ( !urlOrigin ) {
-            urlOrigin = 'http://' + window.location.host;
+            urlOrigin = window.location.protocol + '//' + window.location.host;
         }
         var header = '<a href="/visualize"><img src="'+urlOrigin+'/media/marco/img/marco-logo_planner.jpg" style="border: 0px;"/></a>';
         var iframeID = '';

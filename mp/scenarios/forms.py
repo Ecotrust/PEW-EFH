@@ -506,7 +506,7 @@ class ScenarioForm(FeatureForm):
             ('hpc_rck_m2', 'hpc_rck_m2_min', None),
             ('hpc_sgr_m2', 'hpc_sgr_m2_min', None)
         )
-
+        import ipdb; ipdb.set_trace()
         return self._get_fields(names)
 
     def get_steps(self):

@@ -128,7 +128,7 @@ $(document).ready(function() {
 
   //Do not display any warning for missing tiles
   OpenLayers.Util.onImageLoadError = function(){
-    this.src = 'http://www.openlayers.org/api/img/blank.gif';
+    this.src = 'https://www.openlayers.org/api/img/blank.gif';
   };
   OpenLayers.Tile.Image.useBlankTile=false;
 

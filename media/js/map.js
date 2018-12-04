@@ -14,7 +14,7 @@ app.init = function() {
     } else {
         max_zoom = 15;
     }
-    // esriOcean = new OpenLayers.Layer.XYZ("ESRI Ocean","http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/${z}/${y}/${x}", {
+    // esriOcean = new OpenLayers.Layer.XYZ("ESRI Ocean","https://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/${z}/${y}/${x}", {
     //     sphericalMercator: true,
     //     isBaseLayer: true,
     //     numZoomLevels: max_zoom,
@@ -23,11 +23,11 @@ app.init = function() {
     // });
     // esriOcean = new OpenLayers.Layer.WMTS({
     //     name: "ESRI Ocean",
-    //     url: "http://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer/0",
+    //     url: "https://services.arcgisonline.com/arcgis/rest/services/Ocean_Basemap/MapServer/0",
     //     layer: 0
     // });
 
-    openStreetMap = new OpenLayers.Layer.OSM("OpenStreetMap", "http://a.tile.openstreetmap.org/${z}/${x}/${y}.png", {
+    openStreetMap = new OpenLayers.Layer.OSM("OpenStreetMap", "https://a.tile.openstreetmap.org/${z}/${x}/${y}.png", {
         sphericalMercator: true,
         isBaseLayer: true,
         numZoomLevels: max_zoom,
@@ -56,28 +56,28 @@ app.init = function() {
     //     buffer: 3
     // });
 
-    esriStreets = new OpenLayers.Layer.XYZ("ESRI Streets", "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/${z}/${y}/${x}", {
+    esriStreets = new OpenLayers.Layer.XYZ("ESRI Streets", "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/${z}/${y}/${x}", {
         sphericalMercator: true,
         isBaseLayer: true,
         numZoomLevels: max_zoom,
         attribution: "Sources: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, METI, TomTom, and others",
         buffer: 3
     });
-    esriTopo = new OpenLayers.Layer.XYZ("ESRI Physical", "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}", {
+    esriTopo = new OpenLayers.Layer.XYZ("ESRI Physical", "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}", {
         sphericalMercator: true,
         isBaseLayer: true,
         numZoomLevels: max_zoom,
         attribution: "Sources: Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, and others",
         buffer: 3
     });
-    esriImagery = new OpenLayers.Layer.XYZ("ESRI Satellite", "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}", {
+    esriImagery = new OpenLayers.Layer.XYZ("ESRI Satellite", "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}", {
         sphericalMercator: true,
         isBaseLayer: true,
         numZoomLevels: max_zoom,
         attribution: "Sources: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and others",
         buffer: 3
     });
-    esriOcean = new OpenLayers.Layer.XYZ("ESRI Ocean", "http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/${z}/${y}/${x}", {
+    esriOcean = new OpenLayers.Layer.XYZ("ESRI Ocean", "https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/${z}/${y}/${x}", {
         sphericalMercator: true,
         isBaseLayer: true,
         numZoomLevels: max_zoom,
@@ -94,13 +94,13 @@ app.init = function() {
         numZoomLevels: 13
     });*/
 
-    // need api key from http://bingmapsportal.com/
+    // need api key from https://bingmapsportal.com/
     /*var bingHybrid = new OpenLayers.Layer.Bing({
         name: "Bing Hybrid",
         key: "AvD-cuulbvBqwFDQGNB1gCXDEH4S6sEkS7Yw9r79gOyCvd2hBvQYPaRBem8cpkjv",
         type: "AerialWithLabels"
     });*/
-    nauticalCharts = new OpenLayers.Layer.ArcGIS93Rest("Nautical Charts", "http://seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer/exportImage", {
+    nauticalCharts = new OpenLayers.Layer.ArcGIS93Rest("Nautical Charts", "https://seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer/exportImage", {
         layers: 'null'
     }, {
         isBaseLayer: true,
@@ -120,7 +120,7 @@ app.init = function() {
 
     // adding the following for IE10 touch events
     // obtained from the following blog post
-    // http://dotnetbyexample.blogspot.com/2013/03/enabling-basic-openlayers-pinch-zooming.html
+    // https://dotnetbyexample.blogspot.com/2013/03/enabling-basic-openlayers-pinch-zooming.html
     // map.addControl(new OpenLayersWindowsPinchZoom());
 
     //Scale Bar
@@ -387,7 +387,7 @@ app.init = function() {
     app.utils.pip = function(point, vs) {
         // substacks point in polygon
         // ray-casting algorithm based on
-        // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+        // https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 
         var x = point[0],
             y = point[1];
@@ -539,7 +539,7 @@ app.addWmsLayerToMap = function(layer) {
     // var url = app.modifyURL(layer.url);
 
     // layer.layer = new OpenLayers.Layer.WMS(
-    //     "25M Depth Contour", "http://www.coastalatlas.net/services/wms/getmap",
+    //     "25M Depth Contour", "https://www.coastalatlas.net/services/wms/getmap",
     //     // layer.name,
     //     // url,
     //     {
@@ -681,7 +681,7 @@ app.addVectorLayerToMap = function(layer) {
         strokeColor: layer.color,
         strokeOpacity: layer.defaultOpacity,
         //strokeLinecap: "square",
-        //http://dev.openlayers.org/apidocs/files/OpenLayers/Feature/Vector-js.html
+        //https://dev.openlayers.org/apidocs/files/OpenLayers/Feature/Vector-js.html
         //title: 'testing'
         pointRadius: 2,
         externalGraphic: layer.graphic,
