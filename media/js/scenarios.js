@@ -1819,7 +1819,6 @@ function scenariosModel(options) {
         },
         error: function(response){
           console.log('error in scenarios.js: getAttributes');
-          window.alert(response.responseText);
         }
       });
     };

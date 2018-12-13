@@ -90,6 +90,7 @@ class Layer(models.Model):
         ('XYZ', 'XYZ'),
         ('WMS', 'WMS'),
         ('ArcRest', 'ArcRest'),
+        ('MapBox', 'MapBox'),
         ('radio', 'radio'),
         ('checkbox', 'checkbox'),
         ('Vector', 'Vector'),
@@ -145,6 +146,11 @@ class Layer(models.Model):
     vector_fill = models.FloatField(blank=True, null=True, help_text="Fill opacity represented by a floating point value (e.g. '.8')")
     vector_graphic = models.CharField(max_length=255, blank=True, null=True)
     opacity = models.FloatField(default=.5, blank=True, null=True)
+
+    #mapbox fields
+    enable_mapbox_id = models.BooleanField(default=False, help_text="Enable click identification on MapBox layer")
+    mapbox_tileset_id = models.CharField(max_length=255, null=True, blank=True, default=None)
+    mapbox_access_token = models.CharField(max_length=255, null=True, blank=True, default=settings.MAPBOX_ACCESS_TOKEN, help_text="Put your id here if your URL doesn't have 'access_token=' in it")
 
     def __unicode__(self):
         return unicode('%s' % (self.name))
@@ -309,7 +315,10 @@ class Layer(models.Model):
                 'color': layer.vector_color,
                 'fill_opacity': layer.vector_fill,
                 'graphic': layer.vector_graphic,
-                'opacity': layer.opacity
+                'opacity': layer.opacity,
+                'enable_mapbox_id': layer.enable_mapbox_id,
+                'mapbox_tileset_id': layer.mapbox_tileset_id,
+                'mapbox_access_token': layer.mapbox_access_token
             }
             for layer in self.sublayers.all()
         ]
@@ -343,7 +352,10 @@ class Layer(models.Model):
             'color': self.vector_color,
             'fill_opacity': self.vector_fill,
             'graphic': self.vector_graphic,
-            'opacity': self.opacity
+            'opacity': self.opacity,
+            'enable_mapbox_id': self.enable_mapbox_id,
+            'mapbox_tileset_id': self.mapbox_tileset_id,
+            'mapbox_access_token': self.mapbox_access_token
         }
         return layers_dict
 

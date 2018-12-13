@@ -458,6 +458,8 @@ app.addLayerToMap = function(layer) {
             app.addArcRestLayerToMap(layer);
         } else if (layer.type === 'WMS') {
             app.addWmsLayerToMap(layer);
+        } else if (layer.type === 'MapBox') {
+            app.addMapBoxLayerToMap(layer);
         } else { //if XYZ with no utfgrid
             app.addXyzLayerToMap(layer);
         }
@@ -727,6 +729,19 @@ app.addVectorLayerToMap = function(layer) {
     );
 
 
+};
+
+app.addMapBoxLayerToMap = function(layer) {
+    if (layer.url.indexOf('access_token') === -1 && layer.mapbox_access_token != null) {
+      if (layer.url.indexOf('?') === -1) {
+        layer.url = layer.url + '?';
+      } else if (layer.url[layer.url.length-1] != '?' && layer.url[layer.url.length-1] != '&') {
+        layer.url = layer.url + '&';
+      }
+      layer.url = layer.url + 'access_token=' + layer.mapbox_access_token;
+    }
+    app.addXyzLayerToMap(layer);
+    // TODO: add click identification if layer.mapbox_tileset_id and enable_mapbox_id
 };
 
 app.addUtfLayerToMap = function(layer) {

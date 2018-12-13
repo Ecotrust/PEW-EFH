@@ -20,6 +20,9 @@ function layerModel(options, parent) {
     self.legendVisibility = ko.observable(false);
     self.legendTitle = options.legend_title || false;
     self.legendSubTitle = options.legend_subtitle || false;
+    self.enable_mapbox_id = options.enable_mapbox_id || false;
+    self.mapbox_access_token = options.mapbox_access_token || null;
+    self.mapbox_tileset_id = options.mapbox_tileset_id || null;
     self.tocs = ko.observableArray();
     self.themes = ko.observableArray();
     self.attributes = options.attributes ? options.attributes.attributes : [];

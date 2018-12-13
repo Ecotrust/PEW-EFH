@@ -44,3 +44,5 @@ SOCIAL_AUTH_GOOGLE_PLUS_KEY = ''
 SOCIAL_AUTH_GOOGLE_PLUS_SECRET = ''
 ADMIN_MEDIA_PATH = '/home/vagrant/.virtualenvs/marine-planner/lib/python2.7/site-packages/django/contrib/admin/static/admin/' # For Vagrant Deployment
 # ADMIN_MEDIA_PATH = '/usr/local/apps/PEW-EFH/pew-env/lib/python2.7/site-packages/django/contrib/admin/static/admin/'  # For Stage/Prod deployment
+
+MAPBOX_ACCESS_TOKEN = 'set in settings_local.py'

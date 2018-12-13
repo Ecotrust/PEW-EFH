@@ -276,6 +276,8 @@ STRATA_MAP = {
     }
 }
 
+MAPBOX_ACCESS_TOKEN = 'set in settings_local.py'
+
 import logging
 logging.getLogger('django.db.backends').setLevel(logging.ERROR)
 
