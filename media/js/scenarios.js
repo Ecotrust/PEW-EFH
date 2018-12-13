@@ -1792,35 +1792,36 @@ function scenariosModel(options) {
     };
 
     self.getAttributes = function(uid) {
-      uid = uid;
-      $.ajax({
-        url: '/drawing/get_attributes/' + uid,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data){
-          if (app.viewModel.layerIndex[uid].hasOwnProperty('attributes')){
-            app.viewModel.layerIndex[uid].attributes(data);
-          }
-          app.viewModel.layerIndex[uid].scenarioAttributes(data.attributes);
-          var activeLayer = app.viewModel.activeLayers().find(function(obj){return obj.uid == uid;})
-          if (activeLayer) {
-            activeLayer.attributes(data);
-          }
-          if (data.attributes.filter(function(obj){return obj.hasOwnProperty('Status');}).length > 0){
-            console.log('data not yet loaded. Retrying...');
-            setTimeout(app.viewModel.scenarios.getAttributes(uid), 5000);
-          } else {
-            if (app.viewModel.layerIndex[uid].showingLayerAttribution()){
-              var aggAttrs = {};
-              aggAttrs[app.viewModel.layerIndex[uid].name] = self.aggregateTranslate(data.attributes);
-              app.viewModel.aggregatedAttributes(aggAttrs);
+      if (uid != null) {
+        $.ajax({
+          url: '/drawing/get_attributes/' + uid,
+          type: 'GET',
+          dataType: 'json',
+          success: function(data){
+            if (app.viewModel.layerIndex[uid].hasOwnProperty('attributes')){
+              app.viewModel.layerIndex[uid].attributes(data);
             }
+            app.viewModel.layerIndex[uid].scenarioAttributes(data.attributes);
+            var activeLayer = app.viewModel.activeLayers().find(function(obj){return obj.uid == uid;})
+            if (activeLayer) {
+              activeLayer.attributes(data);
+            }
+            if (data.attributes.filter(function(obj){return obj.hasOwnProperty('Status');}).length > 0){
+              console.log('data not yet loaded. Retrying...');
+              setTimeout(app.viewModel.scenarios.getAttributes(uid), 5000);
+            } else {
+              if (app.viewModel.layerIndex[uid].showingLayerAttribution()){
+                var aggAttrs = {};
+                aggAttrs[app.viewModel.layerIndex[uid].name] = self.aggregateTranslate(data.attributes);
+                app.viewModel.aggregatedAttributes(aggAttrs);
+              }
+            }
+          },
+          error: function(response){
+            console.log('error in scenarios.js: getAttributes');
           }
-        },
-        error: function(response){
-          console.log('error in scenarios.js: getAttributes');
-        }
-      });
+        });
+      }
     };
 
     self.loadLeaseblockLayer = function() {
