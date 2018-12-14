@@ -740,8 +740,43 @@ app.addMapBoxLayerToMap = function(layer) {
       }
       layer.url = layer.url + 'access_token=' + layer.mapbox_access_token;
     }
+
     app.addXyzLayerToMap(layer);
-    // TODO: add click identification if layer.mapbox_tileset_id and enable_mapbox_id
+
+    //add click identification if layer.mapbox_tileset_id and enable_mapbox_id
+    layer.layer.events.register('click', layer, function(e){
+      layer = this;
+      coords = app.map.getLonLatFromViewPortPx(e);
+      //transform the projection
+      coords = new OpenLayers.LonLat(coords.lon, coords.lat).transform(new OpenLayers.Projection("EPSG:3857"), new OpenLayers.Projection("EPSG:4326"));
+      url = "https://api.mapbox.com/v4/" + layer.mapbox_tileset_id + "/tilequery/" + coords.lon + "," + coords.lat +  ".json?access_token=" + layer.mapbox_access_token;
+      $.ajax({
+          url: url,
+          type: 'GET',
+          success: function(data) {
+            console.log(data);
+            feature = data.features[0];
+            properties = Object.keys(feature.properties);
+            attrs = []
+            for (var i = 0; i < properties.length; i++) {
+              if (properties[i] !== 'tilequery' && feature.properties[properties[i]] != '' && feature.properties[properties[i]] != null){
+                attr = {
+                  'display': properties[i], //label
+                  'data': feature.properties[properties[i]].toString(), //value
+                }
+                attrs.push(attr);
+              }
+            }
+            clickAttributes = {};
+            clickAttributes[layer.name] = attrs;
+            $.extend(app.map.clickOutput.attributes, clickAttributes);
+            app.viewModel.aggregatedAttributes(app.map.clickOutput.attributes);
+          },
+          error: function(data) {
+            console.log(data);
+          }
+      });
+    });
 };
 
 app.addUtfLayerToMap = function(layer) {
