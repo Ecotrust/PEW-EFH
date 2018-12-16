@@ -754,23 +754,24 @@ app.addMapBoxLayerToMap = function(layer) {
           url: url,
           type: 'GET',
           success: function(data) {
-            console.log(data);
-            feature = data.features[0];
-            properties = Object.keys(feature.properties);
-            attrs = []
-            for (var i = 0; i < properties.length; i++) {
-              if (properties[i] !== 'tilequery' && feature.properties[properties[i]] != '' && feature.properties[properties[i]] != null){
-                attr = {
-                  'display': properties[i], //label
-                  'data': feature.properties[properties[i]].toString(), //value
+            if (data.features.length > 0) {
+              feature = data.features[0];
+              properties = Object.keys(feature.properties);
+              attrs = []
+              for (var i = 0; i < properties.length; i++) {
+                if (properties[i] !== 'tilequery' && feature.properties[properties[i]] != '' && feature.properties[properties[i]] != null){
+                  attr = {
+                    'display': properties[i], //label
+                    'data': feature.properties[properties[i]].toString(), //value
+                  }
+                  attrs.push(attr);
                 }
-                attrs.push(attr);
               }
+              clickAttributes = {};
+              clickAttributes[layer.name] = attrs;
+              $.extend(app.map.clickOutput.attributes, clickAttributes);
+              app.viewModel.aggregatedAttributes(app.map.clickOutput.attributes);
             }
-            clickAttributes = {};
-            clickAttributes[layer.name] = attrs;
-            $.extend(app.map.clickOutput.attributes, clickAttributes);
-            app.viewModel.aggregatedAttributes(app.map.clickOutput.attributes);
           },
           error: function(data) {
             console.log(data);
