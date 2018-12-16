@@ -38,6 +38,7 @@ DATABASES = {
 
 MEDIA_ROOT = '/home/vagrant/marine-planner/media/'  # For Vagrant deployment
 # MEDIA_ROOT = '/usr/local/apps/PEW-EFH/mediaroot/'  # For Stage/Prod deployment
+CSV_DIR = '%s/csvs/' % MEDIA_ROOT
 MEDIA_URL = '/media/'
 SOCKET_URL = ''
 SOCIAL_AUTH_GOOGLE_PLUS_KEY = ''

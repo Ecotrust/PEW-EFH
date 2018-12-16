@@ -58,7 +58,7 @@ EOF
 apt-get install python-gdal -y
 
 # Virtualenv setup for project
-bash -c "/usr/bin/virtualenv --system-site-packages $VIRTUALENV_DIR && \
+bash -c "/usr/bin/virtualenv --python=/usr/bin/python2.7 --system-site-packages $VIRTUALENV_DIR && \
     echo $PROJECT_DIR > $VIRTUALENV_DIR/.project && \
     PIP_DOWNLOAD_CACHE=$PIP_DOWNLOAD_CACHE $PIP install pillow && \
     PIP_DOWNLOAD_CACHE=$PIP_DOWNLOAD_CACHE $PIP install -r $PROJECT_DIR/../requirements.txt"
