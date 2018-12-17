@@ -21,4 +21,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder ".", "/usr/local/apps/PEW-EFH"
 
+  if File.exist? "Vagrantfile.local"
+      instance_eval File.read("Vagrantfile.local"), "Vagrantfile.local"
+  end
+
 end

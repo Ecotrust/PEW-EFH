@@ -2,7 +2,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
-from django.utils import simplejson
+import json as simplejson
 from django.views.decorators.cache import cache_page
 from models import *
 

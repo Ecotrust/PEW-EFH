@@ -41,7 +41,7 @@ INSTALLED_APPS += ('django_extensions',
                    'explore',
                    'visualize',
                    'django.contrib.humanize',
-                   'flatblocks',
+                   # 'flatblocks',
                    'mp_proxy',
                    'map_proxy'
                    )

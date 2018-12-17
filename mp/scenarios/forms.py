@@ -510,6 +510,7 @@ class ScenarioForm(FeatureForm):
         return self._get_fields(names)
 
     def get_steps(self):
+        import ipdb; ipdb.set_trace()
         return self.get_step_0_fields(), self.get_step_1_fields(), self.get_step_2_fields(), self.get_step_3_fields(), self.get_step_4_fields()
 
     def _get_fields(self, names):
