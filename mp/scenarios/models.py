@@ -49,7 +49,7 @@ def userSaveCallback(sender, **kwargs):
 @register
 class Scenario(Analysis):
 
-    species = models.BooleanField()
+    species = models.BooleanField(default=None)
     species_input = models.CharField(max_length=255, blank=True, null=True)
 
     LIFESTAGE_CHOICES = (
@@ -59,100 +59,100 @@ class Scenario(Analysis):
         ('larvae', 'Larvae')
     )
 
-    lifestage = models.BooleanField()
+    lifestage = models.BooleanField(default=None)
     lifestage_input = models.CharField(max_length=30, blank=True, null=True, choices=LIFESTAGE_CHOICES)
 
-    min_fthm = models.BooleanField()
+    min_fthm = models.BooleanField(default=None)
     # min_fthm_min = models.FloatField(null=True, blank=True)
     # min_fthm_max = models.FloatField(null=True, blank=True)
     # min_fthm_input = models.TextField(null=True, blank=True)
 
-    mean_fthm = models.BooleanField()
+    mean_fthm = models.BooleanField(default=None)
     mean_fthm_min = models.FloatField(null=True, blank=True)
     mean_fthm_max = models.FloatField(null=True, blank=True)
     # mean_fthm_input = models.TextField(null=True, blank=True)
 
-    max_fthm = models.BooleanField()
+    max_fthm = models.BooleanField(default=None)
     # max_fthm_min = models.FloatField(null=True, blank=True)
     # max_fthm_max = models.FloatField(null=True, blank=True)
     # max_fthm_input = models.TextField(null=True, blank=True)
 
-    min_meter = models.BooleanField()
+    min_meter = models.BooleanField(default=None)
 
-    mean_meter = models.BooleanField()
+    mean_meter = models.BooleanField(default=None)
     mean_meter_min = models.IntegerField(null=True, blank=True)
     mean_meter_max = models.IntegerField(null=True, blank=True)
 
-    max_meter = models.BooleanField()
+    max_meter = models.BooleanField(default=None)
 
-    sft_sub_m2 = models.BooleanField()
+    sft_sub_m2 = models.BooleanField(default=None)
     # sft_sub_m2_min = models.FloatField(null=True, blank=True)
     # sft_sub_m2_max = models.FloatField(null=True, blank=True)
     sft_sub_m2_input = models.TextField(null=True, blank=True)
 
-    mix_sub_m2 = models.BooleanField()
+    mix_sub_m2 = models.BooleanField(default=None)
     # mix_sub_m2_min = models.FloatField(null=True, blank=True)
     # mix_sub_m2_max = models.FloatField(null=True, blank=True)
     mix_sub_m2_input = models.TextField(null=True, blank=True)
 
-    hrd_sub_m2 = models.BooleanField()
+    hrd_sub_m2 = models.BooleanField(default=None)
     # hrd_sub_m2_min = models.FloatField(null=True, blank=True)
     # hrd_sub_m2_max = models.FloatField(null=True, blank=True)
     hrd_sub_m2_input = models.TextField(null=True, blank=True)
 
-    rck_sub_m2 = models.BooleanField()
+    rck_sub_m2 = models.BooleanField(default=None)
     # rck_sub_m2_min = models.FloatField(null=True, blank=True)
     # rck_sub_m2_max = models.FloatField(null=True, blank=True)
     rck_sub_m2_input = models.TextField(null=True, blank=True)
 
-    cnt_cs = models.BooleanField()
+    cnt_cs = models.BooleanField(default=None)
     # cnt_cs_min = models.FloatField(null=True, blank=True)
     # cnt_cs_max = models.FloatField(null=True, blank=True)
     cnt_cs_input = models.TextField(null=True, blank=True)
 
-    cnt_penn = models.BooleanField()
+    cnt_penn = models.BooleanField(default=None)
     # cnt_penn_min = models.FloatField(null=True, blank=True)
     # cnt_penn_max = models.FloatField(null=True, blank=True)
     cnt_penn_input = models.TextField(null=True, blank=True)
 
-    ra_cs = models.BooleanField()
+    ra_cs = models.BooleanField(default=None)
     # ra_cs_min = models.FloatField(null=True, blank=True)
     # ra_cs_max = models.FloatField(null=True, blank=True)
     # ra_cs_input = models.TextField(null=True, blank=True)
 
-    cs_obs = models.BooleanField()
+    cs_obs = models.BooleanField(default=None)
     cs_obs_input = models.TextField(null=True, blank=True)
 
-    cs_spm = models.BooleanField()
+    cs_spm = models.BooleanField(default=None)
     cs_spm_input = models.TextField(null=True, blank=True)
 
-    cs3500_obs = models.BooleanField()
+    cs3500_obs = models.BooleanField(default=None)
     cs3500_obs_input = models.TextField(null=True, blank=True)
 
-    cs3500_spm = models.BooleanField()
+    cs3500_spm = models.BooleanField(default=None)
     cs3500_spm_input = models.TextField(null=True, blank=True)
 
-    ra_penn = models.BooleanField()
+    ra_penn = models.BooleanField(default=None)
     # ra_penn_min = models.FloatField(null=True, blank=True)
     # ra_penn_max = models.FloatField(null=True, blank=True)
     # ra_penn_input = models.TextField(null=True, blank=True)
 
-    hsalcy1_m2 = models.BooleanField()
+    hsalcy1_m2 = models.BooleanField(default=None)
     # hsalcy1_m2_min = models.FloatField(null=True, blank=True)
     # hsalcy1_m2_max = models.FloatField(null=True, blank=True)
     # hsalcy1_m2_input = models.TextField(null=True, blank=True)
 
-    hsalcy2_m2 = models.BooleanField()
+    hsalcy2_m2 = models.BooleanField(default=None)
     # hsalcy2_m2_min = models.FloatField(null=True, blank=True)
     # hsalcy2_m2_max = models.FloatField(null=True, blank=True)
     # hsalcy2_m2_input = models.TextField(null=True, blank=True)
 
-    hsalcy3_m2 = models.BooleanField()
+    hsalcy3_m2 = models.BooleanField(default=None)
     # hsalcy3_m2_min = models.FloatField(null=True, blank=True)
     # hsalcy3_m2_max = models.FloatField(null=True, blank=True)
     # hsalcy3_m2_input = models.TextField(null=True, blank=True)
 
-    hsalcy4_m2 = models.BooleanField()
+    hsalcy4_m2 = models.BooleanField(default=None)
     # hsalcy4_m2_min = models.FloatField(null=True, blank=True)
     # hsalcy4_m2_max = models.FloatField(null=True, blank=True)
     # hsalcy4_m2_input = models.TextField(null=True, blank=True)
@@ -161,136 +161,136 @@ class Scenario(Analysis):
     hsall_m2_min = models.FloatField(null=True, blank=True)
     hsall_m2_checkboxes = models.TextField(null=True, blank=True, default=None)
 
-    hsall1_m2 = models.BooleanField()
+    hsall1_m2 = models.BooleanField(default=None)
     hsall1_m2_min = models.FloatField(null=True, blank=True)
     hsall1_m2_max = models.FloatField(null=True, blank=True)
     # hsall1_m2_input = models.TextField(null=True, blank=True)
 
-    hsall2_m2 = models.BooleanField()
+    hsall2_m2 = models.BooleanField(default=None)
     hsall2_m2_min = models.FloatField(null=True, blank=True)
     hsall2_m2_max = models.FloatField(null=True, blank=True)
     # hsall2_m2_input = models.TextField(null=True, blank=True)
 
-    hsall3_m2 = models.BooleanField()
+    hsall3_m2 = models.BooleanField(default=None)
     hsall3_m2_min = models.FloatField(null=True, blank=True)
     hsall3_m2_max = models.FloatField(null=True, blank=True)
     # hsall3_m2_input = models.TextField(null=True, blank=True)
 
-    hsall4_m2 = models.BooleanField()
+    hsall4_m2 = models.BooleanField(default=None)
     hsall4_m2_min = models.FloatField(null=True, blank=True)
     hsall4_m2_max = models.FloatField(null=True, blank=True)
     # hsall4_m2_input = models.TextField(null=True, blank=True)
 
-    hsanti1_m2 = models.BooleanField()
+    hsanti1_m2 = models.BooleanField(default=None)
     # hsanti1_m2_min = models.FloatField(null=True, blank=True)
     # hsanti1_m2_max = models.FloatField(null=True, blank=True)
     # hsanti1_m2_input = models.TextField(null=True, blank=True)
 
-    hsanti2_m2 = models.BooleanField()
+    hsanti2_m2 = models.BooleanField(default=None)
     # hsanti2_m2_min = models.FloatField(null=True, blank=True)
     # hsanti2_m2_max = models.FloatField(null=True, blank=True)
     # hsanti2_m2_input = models.TextField(null=True, blank=True)
 
-    hsanti3_m2 = models.BooleanField()
+    hsanti3_m2 = models.BooleanField(default=None)
     # hsanti3_m2_min = models.FloatField(null=True, blank=True)
     # hsanti3_m2_max = models.FloatField(null=True, blank=True)
     # hsanti3_m2_input = models.TextField(null=True, blank=True)
 
-    hsanti4_m2 = models.BooleanField()
+    hsanti4_m2 = models.BooleanField(default=None)
 
-    hscalc1_m2 = models.BooleanField()
+    hscalc1_m2 = models.BooleanField(default=None)
     # hscalc1_m2_min = models.FloatField(null=True, blank=True)
     # hscalc1_m2_max = models.FloatField(null=True, blank=True)
     # hscalc1_m2_input = models.TextField(null=True, blank=True)
 
-    hscalc2_m2 = models.BooleanField()
+    hscalc2_m2 = models.BooleanField(default=None)
     # hscalc2_m2_min = models.FloatField(null=True, blank=True)
     # hscalc2_m2_max = models.FloatField(null=True, blank=True)
     # hscalc2_m2_input = models.TextField(null=True, blank=True)
 
-    hscalc3_m2 = models.BooleanField()
+    hscalc3_m2 = models.BooleanField(default=None)
     # hscalc3_m2_min = models.FloatField(null=True, blank=True)
     # hscalc3_m2_max = models.FloatField(null=True, blank=True)
     # hscalc3_m2_input = models.TextField(null=True, blank=True)
 
-    hscalc4_m2 = models.BooleanField()
+    hscalc4_m2 = models.BooleanField(default=None)
     # hscalc4_m2_min = models.FloatField(null=True, blank=True)
     # hscalc4_m2_max = models.FloatField(null=True, blank=True)
     # hscalc4_m2_input = models.TextField(null=True, blank=True)
 
-    hshola1_m2 = models.BooleanField()
+    hshola1_m2 = models.BooleanField(default=None)
     # hshola1_m2_min = models.FloatField(null=True, blank=True)
     # hshola1_m2_max = models.FloatField(null=True, blank=True)
     # hshola1_m2_input = models.TextField(null=True, blank=True)
 
-    hshola2_m2 = models.BooleanField()
+    hshola2_m2 = models.BooleanField(default=None)
     # hshola2_m2_min = models.FloatField(null=True, blank=True)
     # hshola2_m2_max = models.FloatField(null=True, blank=True)
     # hshola2_m2_input = models.TextField(null=True, blank=True)
 
-    hshola3_m2 = models.BooleanField()
+    hshola3_m2 = models.BooleanField(default=None)
     # hshola3_m2_min = models.FloatField(null=True, blank=True)
     # hshola3_m2_max = models.FloatField(null=True, blank=True)
     # hshola3_m2_input = models.TextField(null=True, blank=True)
 
-    hshola4_m2 = models.BooleanField()
+    hshola4_m2 = models.BooleanField(default=None)
     # hshola4_m2_min = models.FloatField(null=True, blank=True)
     # hshola4_m2_max = models.FloatField(null=True, blank=True)
     # hshola4_m2_input = models.TextField(null=True, blank=True)
 
-    hssclr1_m2 = models.BooleanField()
+    hssclr1_m2 = models.BooleanField(default=None)
     # hssclr1_m2_min = models.FloatField(null=True, blank=True)
     # hssclr1_m2_max = models.FloatField(null=True, blank=True)
     # hssclr1_m2_input = models.TextField(null=True, blank=True)
 
-    hssclr2_m2 = models.BooleanField()
+    hssclr2_m2 = models.BooleanField(default=None)
     # hssclr2_m2_min = models.FloatField(null=True, blank=True)
     # hssclr2_m2_max = models.FloatField(null=True, blank=True)
     # hssclr2_m2_input = models.TextField(null=True, blank=True)
 
-    hssclr3_m2 = models.BooleanField()
+    hssclr3_m2 = models.BooleanField(default=None)
     # hssclr3_m2_min = models.FloatField(null=True, blank=True)
     # hssclr3_m2_max = models.FloatField(null=True, blank=True)
     # hssclr3_m2_input = models.TextField(null=True, blank=True)
 
-    hssclr4_m2 = models.BooleanField()
+    hssclr4_m2 = models.BooleanField(default=None)
 
-    hssclx1_m2 = models.BooleanField()
+    hssclx1_m2 = models.BooleanField(default=None)
     # hssclx1_m2_min = models.FloatField(null=True, blank=True)
     # hssclx1_m2_max = models.FloatField(null=True, blank=True)
     # hssclx1_m2_input = models.TextField(null=True, blank=True)
 
-    hssclx2_m2 = models.BooleanField()
+    hssclx2_m2 = models.BooleanField(default=None)
     # hssclx2_m2_min = models.FloatField(null=True, blank=True)
     # hssclx2_m2_max = models.FloatField(null=True, blank=True)
     # hssclx2_m2_input = models.TextField(null=True, blank=True)
 
-    hssclx3_m2 = models.BooleanField()
+    hssclx3_m2 = models.BooleanField(default=None)
     # hssclx3_m2_min = models.FloatField(null=True, blank=True)
     # hssclx3_m2_max = models.FloatField(null=True, blank=True)
     # hssclx3_m2_input = models.TextField(null=True, blank=True)
 
-    hssclx4_m2 = models.BooleanField()
+    hssclx4_m2 = models.BooleanField(default=None)
     # hssclx4_m2_min = models.FloatField(null=True, blank=True)
     # hssclx4_m2_max = models.FloatField(null=True, blank=True)
     # hssclx4_m2_input = models.TextField(null=True, blank=True)
 
-    hpc_est_m2 = models.BooleanField()
+    hpc_est_m2 = models.BooleanField(default=None)
     hpc_est_m2_min = models.FloatField(null=True, blank=True)
     hpc_est_m2_max = models.FloatField(null=True, blank=True)
     # hpc_est_m2_input = models.TextField(null=True, blank=True)
 
-    hpc_klp_m2 = models.BooleanField()
+    hpc_klp_m2 = models.BooleanField(default=None)
     hpc_klp_m2_min = models.FloatField(null=True, blank=True)
     hpc_klp_m2_max = models.FloatField(null=True, blank=True)
     # hpc_klp_m2_input = models.TextField(null=True, blank=True)
 
-    hpc_rck_m2 = models.BooleanField()
+    hpc_rck_m2 = models.BooleanField(default=None)
     hpc_rck_m2_min = models.FloatField(null=True, blank=True)
     hpc_rck_m2_max = models.FloatField(null=True, blank=True)
     # hpc_rck_m2_input = models.TextField(null=True, blank=True)
 
-    hpc_sgr_m2 = models.BooleanField()
+    hpc_sgr_m2 = models.BooleanField(default=None)
     hpc_sgr_m2_min = models.FloatField(null=True, blank=True)
     hpc_sgr_m2_max = models.FloatField(null=True, blank=True)
     # hpc_sgr_m2_input = models.TextField(null=True, blank=True)
