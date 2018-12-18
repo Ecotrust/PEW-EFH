@@ -29,6 +29,7 @@ elementtree==1.2.6.post20050316
 enum34==1.1.6
 eventlet==0.14.0
 Flask==1.0.2
+future==0.17.1
 GDAL==2.3.2
 geos==0.2.1
 greenlet==0.4.14
@@ -70,8 +71,10 @@ prompt-toolkit==1.0.15
 psycopg2==2.7.5
 ptyprocess==0.6.0
 pycrypto==2.6.1
+pycryptodomex==3.7.2
 Pygments==2.3.1
 pygobject==3.26.1
+pyjwkest==1.4.0
 PyJWT==1.7.1
 python-dateutil==2.7.3
 python-debian==0.1.21+nmu2
@@ -100,6 +103,7 @@ Twisted==13.2.0
 typing==3.6.6
 Unidecode==1.0.22
 urllib3==1.24.1
+uWSGI==2.0.17.1
 vine==1.1.4
 virtualenv==1.11.4
 wadllib==1.3.2

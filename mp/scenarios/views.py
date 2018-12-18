@@ -5,7 +5,7 @@ from django.views.decorators.cache import cache_page
 from madrona.features.models import Feature
 from madrona.features import get_feature_by_uid
 from general.utils import meters_to_feet
-from models import *
+from .models import *
 from simplejson import dumps
 from django.contrib.auth.models import Group
 from django.contrib.gis.db.models.aggregates import Union

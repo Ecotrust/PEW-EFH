@@ -8,7 +8,7 @@ from django.utils.safestring import mark_safe
 from django.contrib.gis.geos import fromstr
 from os.path import splitext, split
 from madrona.analysistools.widgets import SliderWidget, DualSliderWidget
-from models import *
+from .models import *
 from widgets import AdminFileWidget, SliderWidgetWithTooltip, DualSliderWidgetWithTooltip, CheckboxSelectMultipleWithTooltip, CheckboxSelectMultipleWithObjTooltip
 
 # http://www.neverfriday.com/sweetfriday/2008/09/-a-long-time-ago.html
@@ -69,13 +69,17 @@ class ScenarioForm(FeatureForm):
         )
     )
     species_choices = sorted([(x.common_name, x.common_name.title()) for x in Species.objects.all()])
+    if len(species_choices) > 0 and len(species_choices[0]) > 0:
+        species_input_initial = species_choices[0][0]
+    else:
+        species_input_initial = None
     species_input = forms.ChoiceField(
         required=False,
         widget=forms.Select(
             attrs={'class': 'parameters'}
         ),
         choices=species_choices,
-        initial=species_choices[0][0]
+        initial=species_input_initial
     )
 
     lifestage = forms.BooleanField(
@@ -497,20 +501,14 @@ class ScenarioForm(FeatureForm):
     def get_step_4_fields(self):
         names = (
             ('hsall_m2', None, None, None, 'hsall_m2_checkboxes'),
-            # ('hsall1_m2', 'hsall1_m2_min', None),
-            # ('hsall2_m2', 'hsall2_m2_min', None),
-            # ('hsall3_m2', 'hsall3_m2_min', None),
-            # ('hsall4_m2', 'hsall4_m2_min', None),
             ('hpc_est_m2', 'hpc_est_m2_min', None),
             ('hpc_klp_m2', 'hpc_klp_m2_min', None),
             ('hpc_rck_m2', 'hpc_rck_m2_min', None),
             ('hpc_sgr_m2', 'hpc_sgr_m2_min', None)
         )
-        import ipdb; ipdb.set_trace()
         return self._get_fields(names)
 
     def get_steps(self):
-        import ipdb; ipdb.set_trace()
         return self.get_step_0_fields(), self.get_step_1_fields(), self.get_step_2_fields(), self.get_step_3_fields(), self.get_step_4_fields()
 
     def _get_fields(self, names):

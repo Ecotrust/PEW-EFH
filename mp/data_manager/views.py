@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 import json as simplejson
 from django.views.decorators.cache import cache_page
-from models import *
+from .models import *
 
 
 #@cache_page(60 * 60 * 24, key_prefix="data_manager_get_json")

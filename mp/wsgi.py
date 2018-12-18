@@ -19,6 +19,7 @@ for item in new_sys_path:
     sys.path.remove(item)
 sys.path[:0] = new_sys_path
 
+# from django.core.handlers.wsgi import WSGIHandler
+from django.core.wsgi import get_wsgi_application
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-from django.core.handlers.wsgi import WSGIHandler
-application = WSGIHandler()
+application = get_wsgi_application()

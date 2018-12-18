@@ -1,7 +1,7 @@
 from django import forms
 from madrona.features.forms import FeatureForm, SpatialFeatureForm
-from models import ImportFeature, ImportLayer
-# from models import AOI, WindEnergySite
+from .models import ImportFeature, ImportLayer
+# from .models import AOI, WindEnergySite
 
 class ImportFeatureForm(SpatialFeatureForm):
     summary = forms.CharField(

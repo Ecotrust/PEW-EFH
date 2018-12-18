@@ -15,7 +15,7 @@ from madrona.features import get_feature_by_uid
 
 import settings
 
-from models import *
+from .models import *
 from data_manager.models import *
 from mp_settings.models import *
 

@@ -1,7 +1,7 @@
 from django import forms
 from madrona.features.forms import FeatureForm, SpatialFeatureForm
-from models import AOI, Collection
-# from models import AOI, WindEnergySite
+from .models import AOI, Collection
+# from .models import AOI, WindEnergySite
 
 class AOIForm(SpatialFeatureForm):
     reg_action = forms.ChoiceField(choices=[('close','Closure'),('reopen','Re-opening')])
