@@ -17,6 +17,7 @@ TIME=`/bin/date +20%y/%m/%d-%H:%M:%S`
 
 /bin/echo $TIME' - running uwsgi' >> /var/log/rc.local.log 2>&1
 
-/usr/bin/uwsgi --ini /usr/local/apps/PEW-EFH/deploy/efh_uwsgi.ini --uid www-data --gid www-data >> /var/log/rc.local.log 2>&1
+# add efh_uwsgi to /etc/uwsgi/apps-available, link it to apps-enabled
+#/usr/bin/uwsgi --ini /usr/local/apps/PEW-EFH/deploy/efh_uwsgi.ini --uid www-data --gid www-data >> /var/log/rc.local.log 2>&1
 
 exit 0
