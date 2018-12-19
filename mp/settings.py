@@ -279,6 +279,9 @@ STRATA_MAP = {
 
 MAPBOX_ACCESS_TOKEN = 'set in settings_local.py'
 
+# Get rid of annoying unittests message
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 import logging
 logging.getLogger('django.db.backends').setLevel(logging.ERROR)
 
