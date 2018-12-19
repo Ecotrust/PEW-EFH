@@ -404,7 +404,7 @@ class ImportLayer(FeatureCollection):
         return layer_dict
 
     def geojson(self):
-        import simplejson
+        import json as simplejson
         geojson_dict = {
             'name': self.name,
             'type': "FeatureCollection",

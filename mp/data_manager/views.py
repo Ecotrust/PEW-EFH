@@ -327,7 +327,6 @@ def import_layer(request):
                     spatialRef = layer.GetSpatialRef()
                 except Exception as e:
                     print("======== %s =========" % str(e))
-                    import ipdb; ipdb.set_trace()
                     shutil.rmtree(unzip_dir, ignore_errors=True)
                     json_response = {
                         "message": str(e),
@@ -370,6 +369,8 @@ def import_layer(request):
                 from django.contrib.gis.geos import GEOSGeometry
                 # Create Feature Object
                 for geom in layer:
+                    if not geom.geometry().Is3D() == 0:
+                        geom.geometry().FlattenTo2D()
                     feature = simplejson.loads(geom.ExportToJson())['geometry']
                     geos_geom = GEOSGeometry(simplejson.dumps(feature))
                     # Store attributes (as a JSON blob for now)
@@ -391,8 +392,7 @@ def import_layer(request):
                         print("======== %s =========" % str(e))
                         try:
                             shutil.rmtree(unzip_dir, ignore_errors=True)
-                            #TODO: get all features belonging to import_layer and delete them!
-                            # import ipdb; ipdb.set_trace()
+                            # get all features belonging to import_layer and delete them!
                             import_layer.full_clean() # ??? maybe this does it?
                             import_layer.delete()
                         except Exception as e2:
