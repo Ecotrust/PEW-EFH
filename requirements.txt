@@ -25,7 +25,7 @@ django-redis==4.8.0
 django-registration==0.8
 django-tastypie==0.13.3
 -e git://github.com/springmeyer/djmapnik.git@8d736a73470b3b3c480503fe55f6f77340b6b7e5#egg=djmapnik
-elementtree==1.2.6.post20050316
+#elementtree==1.2.6.post20050316
 enum34==1.1.6
 eventlet==0.14.0
 Flask==1.0.2
@@ -110,3 +110,4 @@ wadllib==1.3.2
 wcwidth==0.1.7
 Werkzeug==0.14.1
 zope.interface==4.0.5
+-e git://github.com/Ecotrust/madrona.git@dj1.7#egg=madrona
