@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #######
 # This script will create a snapshot of your current running AWS volume
