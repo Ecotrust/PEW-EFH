@@ -41,7 +41,7 @@ snapshots=`aws ec2 describe-snapshots --owner self --output json`
 
 ### parse_snapshots.py takes the json list of snapshots and the age at
 ###     which they are considered to be old in "DAYS"
-old_snaps=`python parse_snapshots.py "$snapshots" 90`
+old_snaps=`/usr/bin/python /usr/local/apps/PEW-EFH/scripts/parse_snapshots.py "$snapshots" 90`
 IFS="|" read -a old_array <<< "$old_snaps"
 
 for i in "${old_array[@]}"
