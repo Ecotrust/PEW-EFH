@@ -258,6 +258,9 @@
                                                                               <!-- ko if: typeof(data) == "string" -->
                                                                                 <span style="font-weight: bold; float:right; margin-right:4px" data-bind="html: data"></span>
                                                                               <!-- /ko -->
+                                                                              <!-- ko if: typeof(data) == "number" -->
+                                                                                <span style="font-weight: bold; float:right; margin-right:4px" data-bind="html: data"></span>
+                                                                              <!-- /ko -->
                                                                               <!-- ko if: typeof(data) == "object" -->
                                                                                 <span style="font-weight: bold; float: right; margin-right:4px" data-bind="html: data.label"></span>
                                                                               <!-- /ko -->
