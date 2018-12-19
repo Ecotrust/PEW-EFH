@@ -12,7 +12,7 @@
 # THEN:
 #    Create cron job to run monthly
 #      sudo crontab -e
-#      0 10 1 * * /usr/local/apps/PEW-EFH/scripts/efh_prod_snapshot.sh (run at 10AM the first day of each month)
+#      0 10 1 * * /bin/sh /usr/local/apps/PEW-EFH/scripts/efh_prod_snapshot.sh (run at 10AM the first day of each month)
 
 #######
 
