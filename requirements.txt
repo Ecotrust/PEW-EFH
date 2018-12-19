@@ -77,7 +77,7 @@ pygobject==3.26.1
 pyjwkest==1.4.0
 PyJWT==1.7.1
 python-dateutil==2.7.3
-python-debian==0.1.21+nmu2
+python-debian==0.1.21-nmu2
 python-mimeparse==1.6.0
 python-openid==2.2.5
 python-slugify==1.2.5
