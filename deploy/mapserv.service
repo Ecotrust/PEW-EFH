@@ -1,13 +1,16 @@
 [Unit]
 Description=MapServer
 ConditionFileIsExecutable=/etc/init.d/mapserv
-After=network.target
+#After=network.target
 #After=syslog.target network.target remote-fs.target nss-lookup.target
 
 [Service]
-Type=forking
+#Type=forking
 ExecStart=/etc/init.d/mapserv start
-TimeoutSec=0
-RemainAfterExit=yes
-Restart=on-failure
-LimitNOFILE=10000
+#TimeoutSec=0
+#RemainAfterExit=yes
+#Restart=on-failure
+#LimitNOFILE=10000
+
+[Install]
+WantedBy=multi-user.target
