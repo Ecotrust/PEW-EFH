@@ -1,4 +1,13 @@
-#!/usr/bin/env sh
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:           mapserv
+# Required-Start:     $all
+# Required-Stop:
+# Default-Start:      2 3 4 5
+# Default-Stop:
+# Short-Description:  Starts mapserv service
+### END INIT INFO
+
 #
 # description: Mapserver Service Manager
 # processname: lt-mapserv
