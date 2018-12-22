@@ -263,7 +263,7 @@ def import_layer(request):
                     }
                     return HttpResponse(simplejson.dumps(json_response))
                 # does it have the correct pieces?
-                required_exts = ['dbf','shp', 'cpg', 'prj', 'shx']
+                required_exts = ['dbf','shp', 'prj', 'shx']
                 namelist = zip_ref.namelist()
                 for ext in required_exts:
                     # if not any(ext in x for x in namelist):
@@ -275,7 +275,7 @@ def import_layer(request):
                         if ext_count > 1:
                             json_response['message'] = "Zipfile contains more than one file of filetype: %s" % ext
                         if ext_count < 1:
-                            json_response['message'] = "No %s file in zipped file. Required filetypes: .cpg, .dbf, .prj, .shp, .shx" % ext
+                            json_response['message'] = "No %s file in zipped file. Required filetypes: .dbf, .prj, .shp, .shx" % ext
                         return HttpResponse(simplejson.dumps(json_response))
                 shapefile_shp = [x for x in namelist if ".shp" in x.lower()][0]
 

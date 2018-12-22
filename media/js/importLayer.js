@@ -4,6 +4,7 @@ initImport = function(data, e) {
   $('#import-layer-form-info').css("display", "none");
   $('#import-layer-form-success').css("display", "none");
   $('#import-layer-form-error').css("display", "none");
+  $('#import-layer-form-other').css("display", "none");
   $('#import-layer-progress-bar').css('width', "1px");
   $('#import-layer-modal').modal('show');
   $('#import-layer-form-name').unbind('input');
@@ -16,6 +17,9 @@ submitImport = function(e) {
   e.preventDefault();
   var name = $('#import-layer-form-name').val();
   $('#import-layer-form-info').css("display", "");
+  $('#import-layer-form-success').css("display", "none");
+  $('#import-layer-form-error').css("display", "none");
+  $('#import-layer-form-other').css("display", "none");
   var $form = $('#import-layer-form');
   var url = $form.attr('action'),
       $bar = $('#import-layer-progress-bar'),
@@ -47,6 +51,7 @@ submitImport = function(e) {
 
   });
 
+
   $.ajax( {
       url: url,
       data: data,
@@ -67,8 +72,19 @@ submitImport = function(e) {
       },
       error: function(result) {
         $('#import-layer-form-info').css("display", "none");
-        $('#import-layer-form-error').css("display", "");
-        $('#import-modal-error-text').text(result.responseText);
+        if (result.status == 504) {
+          $('#import-layer-form-other').css("display", "");
+          var response_text = "Your request is taking longer than normal to process. \
+          If your file was over 50MB, please give the server some more time to \
+          import your data (about 1 minute for every 2 MB) and refresh. If you \
+          do not see your data under the \"Imported\" category after waiting the\
+          appropriate amount of time and then refreshing your browser, you may\
+          try again, or edit your shapefile to be simpler or of smaller scope."
+          $('#import-modal-other-text').text(response_text);
+        } else {
+          $('#import-layer-form-error').css("display", "");
+          $('#import-modal-error-text').text(result.responseText);
+        }
       }
   });
 };

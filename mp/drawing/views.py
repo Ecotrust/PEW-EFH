@@ -351,7 +351,7 @@ def unpack_shapefile_upload(request, collection, retval):
             if ext_count > 1:
                 return fail_upload_check(retval, "Zipfile contains more than one file of filetype: %s" % ext)
             if ext_count < 1:
-                return fail_upload_check(retval, "Zipfile does not contain all required filetypes: .cpg, .dbf, .prj, .shp, .shx")
+                return fail_upload_check(retval, "Zipfile does not contain all required filetypes: .dbf, .prj, .shp, .shx")
         shapefile_shp = [x for x in namelist if ".shp" in x.lower()][0]
 
         # unzip it
