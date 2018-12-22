@@ -1220,6 +1220,8 @@ function scenariosModel(options) {
         return $.ajax({
             url: '/features/scenario/form/',
             success: function(data) {
+                // data = data.replace('http://openlayers.org/api/2.13/OpenLayers.js',"/media/assets/openlayers/OpenLayers-mp-min.js");
+                data = data.replace('<script type="text/javascript" src="http://openlayers.org/api/2.13/OpenLayers.js"></script>',"");
                 self.scenarioForm(true);
                 $('#'+app.viewModel.currentTocId()+'-scenario-form > .scenario-form').html(data);
                 self.scenarioFormModel = new scenarioFormModel();
