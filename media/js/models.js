@@ -1835,10 +1835,12 @@ function viewModel() {
         //show the data tab, close all themes and deactivate all layers, and open the Admin theme
         app.viewModel.closeAllThemes();
         app.viewModel.deactivateAllLayers();
+        var tocid = app.viewModel.tocs()[0].tocid;
+        $('#' + tocid + '-tab a').tab('show');
+        $('#' + tocid + '-dataTab').tab('show');
         app.viewModel.themes()[0].setOpenTheme();
-        //app.setMapPosition(-73, 38.5, 7);
+
         app.initializeMapLocation();
-        $('#dataTab').tab('show');
 
         //start the tour
         setTimeout( function() { $.pageguide('open'); }, 700 );
