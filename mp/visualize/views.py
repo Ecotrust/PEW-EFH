@@ -240,7 +240,7 @@ def get_bookmarks(request):
                     'shared_by_username': username,
                     'shared_by_name': actual_name
                 })
-        return HttpResponse(simplejson.dumps(content), mimetype="application/json", status=200)
+        return HttpResponse(simplejson.dumps(content), content_type="application/json", status=200)
     except:
         return HttpResponse(status=304)
 
@@ -271,6 +271,6 @@ def add_bookmark(request):
             'sharing_groups': sharing_groups
         })
         print 'returning content'
-        return HttpResponse(simplejson.dumps(content), mimetype="application/json", status=200)
+        return HttpResponse(simplejson.dumps(content), content_type="application/json", status=200)
     except:
         return HttpResponse(status=304)

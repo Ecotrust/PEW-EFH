@@ -144,18 +144,8 @@ function bookmarksModel(options) {
         self.showShrinkOption(false);
     }
 
-    self.shrinkBookmarkURL = ko.observable();
-    self.shrinkBookmarkURL.subscribe( function() {
-        if (self.shrinkBookmarkURL()) {
-            self.useShortBookmarkURL();
-        } else {
-            self.useLongBookmarkURL();
-        }
-    });
-
     self.resetBookmarkMapLinks = function(bookmark) {
         self.sharingBookmark(bookmark);
-        self.shrinkBookmarkURL(false);
         $('#short-url').text = self.getCurrentBookmarkURL();
         self.setBookmarkIFrameHTML();
     };
