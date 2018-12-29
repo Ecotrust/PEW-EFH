@@ -52,7 +52,7 @@ function bookmarkModel(options) {
     // get the url from a bookmark
     self.getBookmarkUrl = function() {
         var host = window.location.href.split('#')[0];
-        host = 'https://pewmarineplanner.ecotrust.org/visualize/';
+        host = 'http://pewmarineplanner.ecotrust.org/visualize/';
         return host + "#" + self.getBookmarkHash();
         //return host + "#" + self.state;
     };
