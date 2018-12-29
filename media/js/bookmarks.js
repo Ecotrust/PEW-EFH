@@ -146,7 +146,7 @@ function bookmarksModel(options) {
 
     self.resetBookmarkMapLinks = function(bookmark) {
         self.sharingBookmark(bookmark);
-        $('#short-url').text = self.getCurrentBookmarkURL();
+        $('#short-url').text(self.getCurrentBookmarkURL());
         self.setBookmarkIFrameHTML();
     };
 
