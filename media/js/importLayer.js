@@ -75,11 +75,14 @@ submitImport = function(e) {
         if (result.status == 504) {
           $('#import-layer-form-other').css("display", "");
           var response_text = "Your request is taking longer than normal to process. \
-          If your file was over 50MB, please give the server some more time to \
-          import your data (about 1 minute for every 2 MB) and refresh. If you \
-          do not see your data under the \"Imported\" category after waiting the\
-          appropriate amount of time and then refreshing your browser, you may\
-          try again, or edit your shapefile to be simpler or of smaller scope."
+          Files larger than 10MB are not recommended. \
+          When your upload finishes processing, it will appear under the \"Imported\"\
+          category after your next page refresh. If you \
+          do not see your data under the \"Imported\" category after waiting \
+          5 minutes and then refreshing your browser, you may try your import\
+          again, or edit your shapefile to be simpler or of smaller scope.\
+          If your file was over 10MB, please consider working with the site \
+          administrator to serve this data in another way. "
           $('#import-modal-other-text').text(response_text);
         } else {
           $('#import-layer-form-error').css("display", "");
