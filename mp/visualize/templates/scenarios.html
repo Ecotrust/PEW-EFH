@@ -99,7 +99,7 @@
                                                     <ul class="dropdown-menu">
                                                         <li><a data-bind="visible: ! shared(), click: editScenario">Edit</a></li>
                                                         <li><a data-bind="attr:{id:$parent.tocid+'-share-option'}, visible: ! shared() && app.viewModel.scenarios.hasSharingGroups, click: app.viewModel.scenarios.showSharingModal" class="share-option">Share</a></li>
-                                                        <li><a data-bind="click: $parent.zoomToScenario">Zoom To</a></li>
+                                                        <li><a data-bind="click: app.viewModel.scenarios.zoomToScenario">Zoom To</a></li>
                                                         <li class="divider"></li>
                                                         <li><a data-bind="visible: ! shared(), click: deleteScenario">Delete</a></li>
                                                         <!-- <li><a data-bind="click: createCopyScenario">Create Copy</a></li> -->
@@ -153,7 +153,7 @@
                                         {% include "drawing-collection.html" %}
 
                                         <!-- drawings not in a collection -->
-                                        {% include "drawing.html" %}   
+                                        {% include "drawing.html" %}
 
                                     </div>
                                 </div>
