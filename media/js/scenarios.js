@@ -115,6 +115,12 @@ var madrona = {
                     if (result.status === 400) {
                         $('#'+app.viewModel.currentTocId()+'-scenario-form > div').append(result.responseText);
                         app.viewModel.scenarios.scenarioForm(true);
+                    } else if (result.status = 504) {
+                      app.viewModel.scenarios.errorMessage('Gateway Timeout: The\
+                      server is taking longer than expected to respond. Please \
+                      wait a few minutes and refresh the page. If this doesn\'t \
+                      fix the issue, try breaking your scenario up into smaller, \
+                      simpler pieces and uploading them individually.');
                     } else {
                         app.viewModel.scenarios.errorMessage(result.responseText.split('\n\n')[0]);
                     }
