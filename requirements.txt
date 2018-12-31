@@ -11,7 +11,7 @@ Cheetah==2.4.4
 Click==7.0
 colorama==0.2.5
 configobj==4.7.2
-cryptography==2.1.4
+cryptography==2.3.0
 decorator==4.3.0
 Django==1.7.11
 django-celery==3.2.2
@@ -70,14 +70,13 @@ prettytable==0.7.2
 prompt-toolkit==1.0.15
 psycopg2==2.7.5
 ptyprocess==0.6.0
-pycrypto==2.6.1
 pycryptodomex==3.7.2
 Pygments==2.3.1
 pygobject==3.26.1
 pyjwkest==1.4.0
 PyJWT==1.7.1
 python-dateutil==2.7.3
-python-debian==0.1.21-nmu2
+python-debian==0.1.21+nmu2
 python-mimeparse==1.6.0
 python-openid==2.2.5
 python-slugify==1.2.5
