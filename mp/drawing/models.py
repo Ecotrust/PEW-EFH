@@ -149,6 +149,9 @@ class AOI(GeometryFeature):
 
         if not self.id:  #first save - if part of a large import, now is not a good time to calculate the summary
             super(AOI, self).save(*args, **kwargs) # Call the "real" save() method
+            # We do not want to force_insert a record we just created in the following lines
+            if 'force_insert' in kwargs.keys():
+                kwargs.pop('force_insert')
 
         attributes = {}
         self.summary_reports(attributes)
