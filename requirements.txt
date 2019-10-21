@@ -107,6 +107,6 @@ vine==1.1.4
 virtualenv==1.11.4
 wadllib==1.3.2
 wcwidth==0.1.7
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 zope.interface==4.0.5
 -e git://github.com/Ecotrust/madrona.git@dj1.7#egg=madrona
