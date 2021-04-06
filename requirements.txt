@@ -22,7 +22,7 @@ django-kombu==0.9.4
 django-picklefield==1.0.0
 django-proxy==1.0.2
 django-redis==4.8.0
-django-registration==0.8
+django-registration==3.1.2
 django-tastypie==0.13.3
 -e git://github.com/springmeyer/djmapnik.git@8d736a73470b3b3c480503fe55f6f77340b6b7e5#egg=djmapnik
 #elementtree==1.2.6.post20050316
