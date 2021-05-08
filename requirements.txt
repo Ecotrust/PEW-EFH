@@ -27,7 +27,7 @@ django-tastypie==0.13.3
 -e git://github.com/springmeyer/djmapnik.git@8d736a73470b3b3c480503fe55f6f77340b6b7e5#egg=djmapnik
 #elementtree==1.2.6.post20050316
 enum34==1.1.6
-eventlet==0.14.0
+eventlet==0.31.0
 Flask==1.0.2
 future==0.17.1
 GDAL==2.3.2
